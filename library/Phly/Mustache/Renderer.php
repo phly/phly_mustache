@@ -49,7 +49,7 @@ class Renderer
                     break;
                 case Lexer::TOKEN_SECTION:
                     $section = $this->getValue($data['name'], $view);
-                    if (empty($section)) {
+                    if (!$section) {
                         // Section is not a true value; skip
                         $rendered .= '';
                         break;
@@ -81,7 +81,7 @@ class Renderer
                     break;
                 case Lexer::TOKEN_SECTION_INVERT:
                     $section = $this->getValue($data['name'], $view);
-                    if (!empty($value)) {
+                    if ($section) {
                         // If a value exists for the section, we skip it
                         $rendered .= '';
                         break;
