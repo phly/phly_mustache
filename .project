@@ -5,7 +5,9 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
     Exception.php
     InvalidPartialsException.php
     InvalidTemplatePathException.php
+    Lexer.php
     Mustache.php
+    Renderer.php
     TemplateNotFoundException.php
    }
   }
