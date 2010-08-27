@@ -188,9 +188,9 @@ class Lexer
                     break;
 
                 case self::STATE_SECTION:
-                    $ds = $this->patterns[self::DS];
-                    $de = $this->patterns[self::DE];
                     $sectionData .= $string[$i];
+                    $ds           = $this->patterns[self::DS];
+                    $de           = $this->patterns[self::DE];
                     $pattern      = $ds . '/' . $section . $de;
                     if (preg_match('/' . preg_quote($pattern, '/') . '$/', $sectionData)) {
                         // we have a match. Now, let's make sure we're balanced
