@@ -106,6 +106,9 @@ EOT;
         $this->assertEquals($expected, $test);
     }
 
+    /**
+     * @group iteration
+     */
     public function testTemplateIteratesArrays()
     {
         $this->markTestIncomplete('Iteration not yet implemented');
@@ -124,6 +127,9 @@ EOT;
         $this->assertEquals($expected, $test);
     }
 
+    /**
+     * @group iteration
+     */
     public function testTemplateIteratesTraversableObjects()
     {
         $this->markTestIncomplete('Iteration not yet implemented');
@@ -142,6 +148,9 @@ EOT;
         $this->assertEquals($expected, $test);
     }
 
+    /**
+     * @group higher-order
+     */
     public function testHigherOrderSectionsRenderInsideOut()
     {
         $this->markTestIncomplete('Still determining how to handle higher order sections');
@@ -156,8 +165,12 @@ EOT;
         $this->assertEquals($expected, $test);
     }
 
+    /**
+     * @group dereference
+     */
     public function testTemplateWillDereferenceNestedArrays()
     {
+        $this->markTestIncomplete('dereferencing not yet implemented');
         $view = array(
             'a' => array(
                 'title' => 'this is an object',
@@ -183,8 +196,12 @@ EOT;
         $this->assertEquals($expected, $test);
     }
 
+    /**
+     * @group dereference
+     */
     public function testTemplateWillDereferenceNestedObjects()
     {
+        $this->markTestIncomplete('dereferencing not yet implemented');
         $view = new TestAsset\ViewWithNestedObjects;
         $test = $this->mustache->render(
             'template-with-dereferencing',
@@ -212,8 +229,12 @@ EOT;
         $this->assertEquals($expected, trim($test));
     }
 
+    /**
+     * @group partial
+     */
     public function testRendersPartials()
     {
+        $this->markTestIncomplete('Should partials descend into the view, or just use it?');
         $view = new TestAsset\ViewWithObjectForPartial();
         $test = $this->mustache->render(
             'template-with-partial',
@@ -223,6 +244,9 @@ EOT;
         $this->assertEquals($expected, $test);
     }
 
+    /**
+     * @group partial
+     */
     public function testAllowsAliasingPartials()
     {
         $this->markTestIncomplete('Have not addrssed aliased partials');

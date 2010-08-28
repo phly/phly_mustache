@@ -160,7 +160,7 @@ class Lexer
                                 $tagData = trim($tagData);
 
                                 // Create token
-                                $token = array(self::TOKEN_VARIABLE_RAW, $tagData);
+                                $tokens[] = array(self::TOKEN_VARIABLE_RAW, $tagData);
                                 $state = self::STATE_CONTENT;
                                 ++$i;
                                 break;
@@ -185,6 +185,7 @@ class Lexer
                                     $partialTokens = $manager->tokenize($partial);
                                     $token[1]['tokens'] = $partialTokens;
                                 }
+                                $tokens[] = $token;
 
                                 $state = self::STATE_CONTENT;
                                 ++$i;
