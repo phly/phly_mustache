@@ -37,6 +37,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      template-with-implicit-iterator.html
      template-with-inverted-section.html
      template-with-method-substitution.html
+     template-with-aliased-partial.html
      template-with-partial.html
     }
    }

@@ -37,6 +37,35 @@ class Lexer
     );
 
     /**
+     * @var Mustache
+     */
+    protected $manager;
+
+    /**
+     * Set mustache manager
+     *
+     * Used internally to resolve and tokenize partials
+     * 
+     * @param  Mustache $manager 
+     * @return Lexer
+     */
+    public function setManager(Mustache $manager)
+    {
+        $this->manager = $manager;
+        return $this;
+    }
+
+    /**
+     * Retrieve the mustache manager
+     * 
+     * @return null|Mustache
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+    /**
      * Compile a string into a set of tokens
      * 
      * @todo   Store full matched text with each token?
@@ -148,7 +177,15 @@ class Lexer
                                 $partial = trim($tagData);
 
                                 // Create token
-                                $token = array(self::TOKEN_PARTIAL, $partial);
+                                $token = array(self::TOKEN_PARTIAL, array(
+                                    'partial' => $partial,
+                                ));
+                                if (null !== ($manager = $this->getManager())) {
+                                    // Get the tokens for the partial
+                                    $partialTokens = $manager->tokenize($partial);
+                                    $token[1]['tokens'] = $partialTokens;
+                                }
+
                                 $state = self::STATE_CONTENT;
                                 ++$i;
                                 break;
@@ -217,8 +254,8 @@ class Lexer
 
                             // compile sections later
                             $tokens[] = array($tokenType, array(
-                                'name'    => $section,
-                                'content' => $sectionData,
+                                'name'     => $section,
+                                'template' => $sectionData,
                             ));
                             $state = self::STATE_CONTENT;
                         }
@@ -255,7 +292,7 @@ class Lexer
                     $delimStart = $this->patterns['delim_start'];
                     $delimEnd   = $this->patterns['delim_end'];
 
-                    $token[1]['content'] = $this->compile($token[1]['content']);
+                    $token[1]['content'] = $this->compile($token[1]['template']);
                     $tokens[$key] = $token;
 
                     // Reset delimiters to retain scope

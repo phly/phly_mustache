@@ -7,7 +7,6 @@ class Renderer
     /**
      * Render a set of tokens with view substitutions
      * 
-     * @todo   handle partials
      * @param  array $tokens 
      * @param  mixed $view 
      * @return string
@@ -61,6 +60,17 @@ class Renderer
                         // If an array, simply merge it with the view, giving 
                         // precedence to values in the section
                         $sectionView = array_merge($view, $section);
+                    } elseif (is_callable($section)) {
+                        /** @todo Not sure how to handle higher order sections;
+                         *        Supposedly, should pass a renderer and text, but
+                         *        that means no view is passed, which will cause 
+                         *        issues. Half thinking just pass the rendered 
+                         *        template would be sufficient.
+                         */
+                        // Higher order section; execute the callback, and use the
+                        // returned string.
+                        $rendered .= call_user_func($section, $data['content'], array($this, 'render'));
+                        break;
                     } elseif (is_object($section)) {
                         // For objects, merge in values from the view that do 
                         // not exist in the section
@@ -91,7 +101,12 @@ class Renderer
                     $rendered .= $this->render($data['content'], $view);
                     break;
                 case Lexer::TOKEN_PARTIAL:
-                    /** @todo How should partials be handled internally? */
+                    /** @todo do we need partial views? do we care? */
+                    if (!isset($data['tokens'])) {
+                        // No tokens, so nothing to render
+                        break;
+                    }
+                    $rendered .= $this->render($data['tokens'], $view);
                     break;
                 case Lexer::TOKEN_DELIM_SET:
                 case Lexer::COMMENT:

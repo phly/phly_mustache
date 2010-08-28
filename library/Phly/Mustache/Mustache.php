@@ -14,11 +14,17 @@ use ArrayObject,
  */
 class Mustache
 {
-    /** @var array Cached file-based templates */
+    /** @var array Cached file-based templates; contains template name/token pairs */
     protected $cachedTemplates = array();
 
     /** @var SplStack Stack of template paths to search */
     protected $templatePath;
+
+    /** @var Lexer */
+    protected $lexer;
+
+    /** @var Renderer */
+    protected $renderer;
 
     /**
      * Constructor
@@ -28,6 +34,57 @@ class Mustache
     public function __construct()
     {
         $this->templatePath = new SplStack;
+    }
+
+    /**
+     * Set lexer to use when tokenizing templates
+     * 
+     * @param  Lexer $lexer 
+     * @return Mustache
+     */
+    public function setLexer(Lexer $lexer)
+    {
+        $this->lexer = $lexer;
+        $this->lexer->setManager($this);
+        return $this;
+    }
+
+    /**
+     * Get lexer
+     * 
+     * @return Lexer
+     */
+    public function getLexer()
+    {
+        if (null === $this->lexer) {
+            $this->setLexer(new Lexer());
+        }
+        return $this->lexer;
+    }
+
+    /**
+     * Set renderer
+     * 
+     * @param  Renderer $renderer 
+     * @return Mustache
+     */
+    public function setRenderer(Renderer $renderer)
+    {
+        $this->renderer = $renderer;
+        return $this;
+    }
+
+    /**
+     * Get renderer
+     * 
+     * @return Renderer
+     */
+    public function getRenderer()
+    {
+        if (null === $this->renderer) {
+            $this->setRenderer(new Renderer());
+        }
+        return $this->renderer;
     }
 
     /**
@@ -49,6 +106,7 @@ class Mustache
     /**
      * Render a template using a view, and optionally a list of partials
      * 
+     * @todo   should partials be passed here? or simply referenced?
      * @param  string $template Either a template string or a template file in the template path
      * @param  array|object $view An array or object with items to inject in the template
      * @param  array|object $partials A list of partial names/template pairs for rendering as partials
@@ -57,10 +115,9 @@ class Mustache
      */
     public function render($template, $view, $partials = null)
     {
-        if (!strstr($template, '{{')) {
-            $template = $this->getTemplateFromFile($template);
-        }
+        $tokens = $this->tokenize($template);
 
+        /*
         if (null !== $partials) {
             if (!is_array($partials) && !is_object($partials)) {
                 throw new InvalidPartialsException();
@@ -73,16 +130,33 @@ class Mustache
                 }
             }
         }
-
-        /*
-         * - Tokenize template
-         * - Determine what pragmas are in place and update rules
-         * - Handle straight variable substitutions
-         *   - Escape double mustaches
-         *   - Do not escape triple mustaches
-         * - Render and capture partials
-         * - Handle sections/loops/higher order sections
          */
+
+        $renderer = $this->getRenderer();
+        return $renderer->render($tokens, $view);
+    }
+
+    /**
+     * Tokenize a template
+     * 
+     * @param  string $template Either a template string or a reference to a template
+     * @return array Array of tokens
+     */
+    public function tokenize($template)
+    {
+        $lexer = $this->getLexer();
+        if (false !== strstr($template, '{{')) {
+            return $lexer->compile($template);
+        }
+
+        if (array_key_exists($template, $this->cachedTemplates)) {
+            return $this->cachedTemplates[$template];
+        }
+
+        $templateString = $this->fetchTemplate($template);
+        $tokens = $lexer->compile($templateString);
+        $this->cachedTemplates[$template] = $tokens;
+        return $tokens;
     }
 
     /**
@@ -92,12 +166,8 @@ class Mustache
      * @return string
      * @throws TemplateNotFoundException
      */
-    protected function getTemplateFromFile($template)
+    protected function fetchTemplate($template)
     {
-        if (array_key_exists($template, $this->cachedTemplates)) {
-            return $this->cachedTemplates[$template];
-        }
-
         foreach ($this->templatePath as $path) {
             $file = $path . DIRECTORY_SEPARATOR . $template . '.html';
             if (file_exists($file)) {
