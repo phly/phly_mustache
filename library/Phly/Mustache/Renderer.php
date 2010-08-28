@@ -56,10 +56,23 @@ class Renderer
 
                     // Build the section view
                     $sectionView = $section;
+                    if (is_bool($section)) {
+                        // For a boolean true, pass the current view
+                        $sectionView = $view;
+                    }
                     if (is_array($section)) {
-                        // If an array, simply merge it with the view, giving 
-                        // precedence to values in the section
-                        $sectionView = array_merge($view, $section);
+                        if ($this->isAssocArray($section)) {
+                            // Nested view; pass it as the view
+                            $sectionView = $section;
+                        } else {
+                            // Iteration
+                            $renderedSection = '';
+                            foreach ($section as $sectionView) {
+                                $renderedSection .= $this->render($data['content'], $sectionView);
+                            }
+                            $rendered .= $renderedSection;
+                            break;
+                        }
                     } elseif (is_callable($section)) {
                         /** @todo Not sure how to handle higher order sections;
                          *        Supposedly, should pass a renderer and text, but
@@ -72,14 +85,7 @@ class Renderer
                         $rendered .= call_user_func($section, $data['content'], array($this, 'render'));
                         break;
                     } elseif (is_object($section)) {
-                        // For objects, merge in values from the view that do 
-                        // not exist in the section
-                        $sectionVars = array_keys(get_object_vars($section));
-                        foreach ($view as $key => $value) {
-                            if (!in_array($key, $sectionVars)) {
-                                $section->$key = $value;
-                            }
-                        }
+                        // In this case, the child object is the view.
                         $sectionView = $section;
                     } else {
                         // All other types, simply pass the current view
@@ -130,6 +136,15 @@ class Renderer
         return htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8');
     }
 
+    /**
+     * Get a named value from the view
+     * 
+     * Returns an empty string if no matching value found.
+     *
+     * @param  string $key 
+     * @param  array $view 
+     * @return mixed
+     */
     protected function getValue($key, array $view)
     {
         if (isset($view[$key])) {
@@ -139,5 +154,20 @@ class Renderer
             return $view[$key];
         } 
         return '';
+    }
+
+    /**
+     * Determine if an array is associative
+     * 
+     * @param  array $array 
+     * @return bool
+     */
+    protected function isAssocArray(array $array)
+    {
+        return (is_array($array) 
+            && (count($array) == 0 
+                || 0 !== count(array_diff_key($array, array_keys(array_keys($array))))
+            )
+        );
     }
 }

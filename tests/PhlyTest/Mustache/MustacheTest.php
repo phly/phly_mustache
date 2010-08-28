@@ -170,7 +170,6 @@ EOT;
      */
     public function testTemplateWillDereferenceNestedArrays()
     {
-        $this->markTestIncomplete('dereferencing not yet implemented');
         $view = array(
             'a' => array(
                 'title' => 'this is an object',
@@ -186,12 +185,18 @@ EOT;
             $view
         );
         $expected =<<<EOT
+
     <h1>this is an object</h1>
     <p>one of its attributes is a list</p>
     <ul>
+        
         <li>listitem1</li>
+        
         <li>listitem2</li>
+        
     </ul>
+
+
 EOT;
         $this->assertEquals($expected, $test);
     }
@@ -201,19 +206,24 @@ EOT;
      */
     public function testTemplateWillDereferenceNestedObjects()
     {
-        $this->markTestIncomplete('dereferencing not yet implemented');
         $view = new TestAsset\ViewWithNestedObjects;
         $test = $this->mustache->render(
             'template-with-dereferencing',
             $view
         );
         $expected =<<<EOT
+
     <h1>this is an object</h1>
     <p>one of its attributes is a list</p>
     <ul>
+        
         <li>listitem1</li>
+        
         <li>listitem2</li>
+        
     </ul>
+
+
 EOT;
         $this->assertEquals($expected, $test);
     }
