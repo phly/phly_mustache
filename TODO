@@ -1,8 +1,5 @@
-Pragma tokenizing
-    Recognize pragmas and tokenize them
-    Ideally, provide methodology for extending lexer and renderer via pragmas
-Partial rendering
-    Gateway should act as a facade for lexing and rendering
-    Inject itself into renderer
-    When a partial is found, render the partial using the current view
-        Current renderer then appends the output
+API documentation
+Tests for recursive sections and partials
+End-user docs (particularly for extending via pragmas)
+Potential revamping of pragmas
+    Register stack of pragma handlers per token, potentially as signal-slot?
