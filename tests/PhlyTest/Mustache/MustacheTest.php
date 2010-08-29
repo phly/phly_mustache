@@ -159,7 +159,6 @@ EOT;
      */
     public function testHigherOrderSectionsRenderInsideOut()
     {
-        $this->markTestIncomplete('Still determining how to handle higher order sections');
         $view = new TestAsset\ViewWithHigherOrderSection();
         $test = $this->mustache->render(
             '{{#bolder}}Hi {{name}}.{{/bolder}}',

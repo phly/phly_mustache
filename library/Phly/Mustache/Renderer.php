@@ -5,6 +5,35 @@ namespace Phly\Mustache;
 class Renderer
 {
     /**
+     * @var Mustache
+     */
+    protected $manager;
+
+    /**
+     * Set mustache manager
+     *
+     * Used internally to resolve and tokenize partials
+     * 
+     * @param  Mustache $manager 
+     * @return Lexer
+     */
+    public function setManager(Mustache $manager)
+    {
+        $this->manager = $manager;
+        return $this;
+    }
+
+    /**
+     * Retrieve the mustache manager
+     * 
+     * @return null|Mustache
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+    /**
      * Render a set of tokens with view substitutions
      * 
      * @param  array $tokens 
@@ -13,7 +42,10 @@ class Renderer
      */
     public function render(array $tokens, $view, array $partials = null)
     {
-        $inLoop = false;
+        // Do some pre-initialization of variables used later in the routine
+        $renderer = $this;
+        $inLoop   = false;
+
         if (is_object($view)) {
             // If we have an object, get a list of properties and methods, 
             // giving methods precedence.
@@ -107,7 +139,14 @@ class Renderer
                          */
                         // Higher order section; execute the callback, and use the
                         // returned string.
-                        $rendered .= call_user_func($section, $data['content'], array($this, 'render'));
+                        $rendered .= call_user_func($section, $data['template'], function($text) use ($renderer, $view, $partials) {
+                            $manager = $renderer->getManager();
+                            if (!$manager instanceof Mustache) {
+                                return $text;
+                            }
+                            $tokens = $manager->tokenize($text);
+                            return $renderer->render($tokens, $view, $partials);
+                        });
                         break;
                     } elseif (is_object($section)) {
                         // In this case, the child object is the view.

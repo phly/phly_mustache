@@ -71,6 +71,7 @@ class Mustache
     public function setRenderer(Renderer $renderer)
     {
         $this->renderer = $renderer;
+        $this->renderer->setManager($this);
         return $this;
     }
 
