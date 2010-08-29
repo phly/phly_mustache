@@ -25,6 +25,7 @@ class Lexer
     const TOKEN_SECTION_INVERT  = 105;
     const TOKEN_PARTIAL         = 106;
     const TOKEN_DELIM_SET       = 107;
+    const TOKEN_PRAGMA          = 108;
 
     /**
      * Patterns referenced by lexer
@@ -34,6 +35,7 @@ class Lexer
         'delim_start' => self::DEFAULT_DELIM_START,
         'delim_end'   => self::DEFAULT_DELIM_END,
         'varname'     => '([a-z][a-z0-9_?.-]*|[.])',
+        'pragma'      => '[A-Z][A-Z0-9_-]*',
     );
 
     /**
@@ -69,7 +71,6 @@ class Lexer
      * Compile a string into a set of tokens
      * 
      * @todo   Store full matched text with each token?
-     * @todo   Handle pragmas
      * @param  string $string 
      * @return array
      * @throws Exception
@@ -205,6 +206,39 @@ class Lexer
                                 ));
                                 $state = self::STATE_CONTENT;
                                 ++$i;
+                                break;
+                            case '%':
+                                // Pragmas
+                                $data    = ltrim($tagData, '%');
+                                $options = array();
+                                if (!strstr($data, '=')) {
+                                    // No options
+                                    if (!preg_match('/^(?P<pragma>' . $this->patterns['pragma'] . ')$/', $data, $matches)) {
+                                        throw new \Exception('Invalid pragma name provided');
+                                    }
+                                    $pragma = $matches['pragma'];
+                                } else {
+                                    list($pragma, $options) = explode(' ', $data, 2);
+                                    if (!preg_match('/^' . $this->patterns['pragma'] . '$/', $pragma)) {
+                                        throw new \Exception('Invalid pragma name provided');
+                                    }
+                                    $pairs = explode(' ', $options);
+                                    $options = array();
+                                    foreach ($pairs as $pair) {
+                                        if (!strstr($pair, '=')) {
+                                            $options[$pair] = null;
+                                        } else {
+                                            list($key, $value) = explode('=', $pair, 2);
+                                            $options[$key] = $value;
+                                        }
+                                    }
+                                }
+                                $tokens[] = array(self::TOKEN_PRAGMA, array(
+                                    'pragma'  => $pragma,
+                                    'options' => $options,
+                                ));
+                                $state = self::STATE_CONTENT;
+                                $i++;
                                 break;
                             default:
                                 // We have a simple variable replacement

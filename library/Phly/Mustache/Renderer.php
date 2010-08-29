@@ -44,6 +44,7 @@ class Renderer
     {
         // Do some pre-initialization of variables used later in the routine
         $renderer = $this;
+        $pragmas  = array();
         $inLoop   = false;
 
         if (is_object($view)) {
@@ -71,32 +72,20 @@ class Renderer
         $rendered = '';
         foreach ($tokens as $token) {
             list($type, $data) = $token;
+            if ($pragma = $this->handlePragma($type, $data, $view, $pragmas)) {
+                $rendered .= $pragma;
+                continue;
+            }
             switch ($type) {
                 case Lexer::TOKEN_CONTENT:
                     $rendered .= $data;
                     break;
                 case Lexer::TOKEN_VARIABLE:
-                    if ($inLoop) {
-                        $value = '';
-                        if ('.' == $data) {
-                            $value = $this->escape($view);
-                        }
-                        $rendered .= $value;
-                        break;
-                    }
                     $value = $this->getValue($data, $view);
                     $value = ('' === $value) ? '' : $this->escape($value);
                     $rendered .= $value;
                     break;
                 case Lexer::TOKEN_VARIABLE_RAW:
-                    if ($inLoop) {
-                        $value = '';
-                        if ('.' == $data) {
-                            $value = $view;
-                        }
-                        $rendered .= $value;
-                        break;
-                    }
                     $value = $this->getValue($data, $view);
                     $rendered .= $value;
                     break;
@@ -131,14 +120,9 @@ class Renderer
                             break;
                         }
                     } elseif (is_callable($section)) {
-                        /** @todo Not sure how to handle higher order sections;
-                         *        Supposedly, should pass a renderer and text, but
-                         *        that means no view is passed, which will cause 
-                         *        issues. Half thinking just pass the rendered 
-                         *        template would be sufficient.
-                         */
-                        // Higher order section; execute the callback, and use the
-                        // returned string.
+                        // Higher order section
+                        // Execute the callback, passing it the section's template 
+                        // string, as well as a renderer lambda.
                         $rendered .= call_user_func($section, $data['template'], function($text) use ($renderer, $view, $partials) {
                             $manager = $renderer->getManager();
                             if (!$manager instanceof Mustache) {
@@ -188,6 +172,9 @@ class Renderer
                         break;
                     }
                     $rendered .= $this->render($data['tokens'], $view);
+                    break;
+                case Lexer::TOKEN_PRAGMA:
+                    $this->registerPragma($data, $pragmas);
                     break;
                 case Lexer::TOKEN_DELIM_SET:
                 case Lexer::COMMENT:
@@ -255,5 +242,144 @@ class Renderer
                 || 0 !== count(array_diff_key($array, array_keys(array_keys($array))))
             )
         );
+    }
+
+    /**
+     * Register a pragma for the current rendering session
+     * 
+     * @param  array $definition 
+     * @param  array $pragmas
+     * @return void
+     */
+    protected function registerPragma(array $definition, array &$pragmas)
+    {
+        $pragmas[$definition['pragma']] = $definition['options'];
+    }
+
+    /**
+     * Does a given pragma exist?
+     * 
+     * @param  string $pragma 
+     * @param  array $pragmas 
+     * @return bool
+     */
+    protected function hasPragma($pragma, array $pragmas)
+    {
+        return array_key_exists($pragma, $pragmas);
+    }
+
+    /**
+     * Handle pragmas
+     *
+     * Extend the functionality of the renderer via pragmas. When creating new
+     * pragmas, extend the appropriate method for the token types affected. 
+     * Returning an empty value indicates that the renderer should render normally.
+     *
+     * This implementation includes the IMPLICIT-ITERATOR pragma, which affects 
+     * values within loops.
+     * 
+     * @param  string $token 
+     * @param  mixed $data 
+     * @param  mixed $view 
+     * @param  array $pragmas 
+     * @return mixed
+     */
+    public function handlePragma($token, $data, $view, $pragmas)
+    {
+        switch ($token) {
+            case Lexer::TOKEN_CONTENT:
+                return $this->handleContentPragmas($data, $view, $pragmas);
+            case Lexer::TOKEN_VARIABLE:
+                return $this->handleVariablePragmas($data, $view, $pragmas);
+            case Lexer::TOKEN_VARIABLE_RAW:
+                return $this->handleRawVariablePragmas($data, $view, $pragmas);
+            case Lexer::TOKEN_SECTION:
+                return $this->handleSectionPragmas($data, $view, $pragmas);
+            case Lexer::TOKEN_SECTION_INVERT:
+                return $this->handleInvertedSectionPragmas($data, $view, $pragmas);
+        }
+    }
+
+    /**
+     * Handle TOKEN_CONTENT pragmas
+     * 
+     * @param  string $content 
+     * @param  mixed $view 
+     * @param  array $pragmas 
+     * @return mixed
+     */
+    public function handleContentPragmas($content, $view, array $pragmas)
+    {
+    }
+
+    /**
+     * Handle TOKEN_VARIABLE pragmas
+     *
+     * This implements the IMPLICIT-ITERATOR pragma.
+     * 
+     * @param  string $variable 
+     * @param  mixed $view 
+     * @param  array $pragmas 
+     * @return mixed
+     */
+    public function handleVariablePragmas($variable, $view, array $pragmas)
+    {
+        if (!$this->hasPragma('IMPLICIT-ITERATOR', $pragmas)) {
+            return;
+        }
+        $options = $pragmas['IMPLICIT-ITERATOR'];
+        $iterator = isset($options['iterator']) ? $options['iterator'] : '.';
+        if ($iterator == $variable) {
+            return $this->escape($view);
+        }
+    }
+
+    /**
+     * Handle TOKEN_VARIABLE_RAW pragmas
+     * 
+     * This implements the IMPLICIT-ITERATOR pragma.
+     * 
+     * @param  string $variable 
+     * @param  mixed $view 
+     * @param  array $pragmas 
+     * @return void
+     */
+    public function handleRawVariablePragmas($variable, $view, array $pragmas)
+    {
+        if (!$this->hasPragma('IMPLICIT-ITERATOR', $pragmas)) {
+            return;
+        }
+        if (!is_scalar($view)) {
+            return;
+        }
+        $options = $pragmas['IMPLICIT-ITERATOR'];
+        $iterator = isset($options['iterator']) ? $options['iterator'] : '.';
+        if ($iterator == $variable) {
+            return $view;
+        }
+    }
+
+    /**
+     * Handle TOKEN_SECTION pragmas
+     * 
+     * @param  array $section 
+     * @param  mixed $view 
+     * @param  array $pragmas 
+     * @return mixed
+     */
+    public function handleSectionPragmas($section, $view, array $pragmas)
+    {
+    }
+
+    /**
+     * Handle TOKEN_SECTION_INVERT pragmas
+     * 
+     * @param  array $section 
+     * @param  mixed $view 
+     * @param  array $pragmas 
+     * @return mixed
+     */
+    public function handleInvertedSectionPragmas($section, $view, array $pragmas)
+    {
     }
 }

@@ -293,26 +293,40 @@ EOT;
         $this->assertEquals('t&h\\e"s<e>', $test);
     }
 
+    /**
+     * @group pragma
+     */
     public function testAllowsAlteringBehaviorUsingPragmas()
     {
         $this->markTestIncomplete('Looking for examples of use cases');
     }
 
+    /**
+     * @group pragma
+     */
     public function testHonorsImplicitIteratorPragma()
     {
-        $this->markTestIncomplete('Pragmas not yet implemented');
         $view = array('foo' => array(1, 2, 3, 4, 5, 'french'));
         $test = $this->mustache->render(
             'template-with-implicit-iterator',
             $view
         );
         $expected =<<<EOT
+
+
     1
+
     2
+
     3
+
     4
+
     5
+
     french
+
+
 EOT;
         $this->assertEquals($expected, $test);
     }
