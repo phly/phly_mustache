@@ -111,7 +111,6 @@ EOT;
      */
     public function testTemplateIteratesArrays()
     {
-        $this->markTestIncomplete('Iteration not yet implemented');
         $view = new TestAsset\ViewWithArrayEnumerable;
         $test = $this->mustache->render(
             'template-with-enumerable',
@@ -120,9 +119,13 @@ EOT;
         $expected =<<<EOT
 Joe's shopping card:
 <ul>
+
     <li>bananas</li>
+
     <li>apples</li>
+
 </ul>
+
 EOT;
         $this->assertEquals($expected, $test);
     }
@@ -132,7 +135,6 @@ EOT;
      */
     public function testTemplateIteratesTraversableObjects()
     {
-        $this->markTestIncomplete('Iteration not yet implemented');
         $view = new TestAsset\ViewWithTraversableObject;
         $test = $this->mustache->render(
             'template-with-enumerable',
@@ -141,9 +143,13 @@ EOT;
         $expected =<<<EOT
 Joe's shopping card:
 <ul>
+
     <li>bananas</li>
+
     <li>apples</li>
+
 </ul>
+
 EOT;
         $this->assertEquals($expected, $test);
     }

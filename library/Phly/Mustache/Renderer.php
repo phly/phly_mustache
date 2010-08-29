@@ -13,6 +13,7 @@ class Renderer
      */
     public function render(array $tokens, $view, array $partials = null)
     {
+        $inLoop = false;
         if (is_object($view)) {
             // If we have an object, get a list of properties and methods, 
             // giving methods precedence.
@@ -26,8 +27,9 @@ class Renderer
             }
             $view = $props;
         }
-        if (!is_array($view)) {
-            throw new \Exception('Invalid view provided; must be an array or object, received ' . gettype($view));
+        if (is_scalar($view)) {
+            // Iteration over lists will sometimes involve scalars
+            $inLoop = true;
         }
 
         if (null === $partials) {
@@ -42,19 +44,38 @@ class Renderer
                     $rendered .= $data;
                     break;
                 case Lexer::TOKEN_VARIABLE:
+                    if ($inLoop) {
+                        $value = '';
+                        if ('.' == $data) {
+                            $value = $this->escape($view);
+                        }
+                        $rendered .= $value;
+                        break;
+                    }
                     $value = $this->getValue($data, $view);
                     $value = ('' === $value) ? '' : $this->escape($value);
                     $rendered .= $value;
                     break;
                 case Lexer::TOKEN_VARIABLE_RAW:
+                    if ($inLoop) {
+                        $value = '';
+                        if ('.' == $data) {
+                            $value = $view;
+                        }
+                        $rendered .= $value;
+                        break;
+                    }
                     $value = $this->getValue($data, $view);
                     $rendered .= $value;
                     break;
                 case Lexer::TOKEN_SECTION:
+                    if ($inLoop) {
+                        // In a loop, with scalar values; skip
+                        break;
+                    }
                     $section = $this->getValue($data['name'], $view);
                     if (!$section) {
                         // Section is not a true value; skip
-                        $rendered .= '';
                         break;
                     }
 
@@ -64,8 +85,8 @@ class Renderer
                         // For a boolean true, pass the current view
                         $sectionView = $view;
                     }
-                    if (is_array($section)) {
-                        if ($this->isAssocArray($section)) {
+                    if (is_array($section) || $section instanceof \Traversable) {
+                        if (is_array($section) && $this->isAssocArray($section)) {
                             // Nested view; pass it as the view
                             $sectionView = $section;
                         } else {
@@ -100,6 +121,10 @@ class Renderer
                     $rendered .= $this->render($data['content'], $sectionView);
                     break;
                 case Lexer::TOKEN_SECTION_INVERT:
+                    if ($inLoop) {
+                        // In a loop, with scalar values; skip
+                        break;
+                    }
                     $section = $this->getValue($data['name'], $view);
                     if ($section) {
                         // If a value exists for the section, we skip it
@@ -111,6 +136,10 @@ class Renderer
                     $rendered .= $this->render($data['content'], $view);
                     break;
                 case Lexer::TOKEN_PARTIAL:
+                    if ($inLoop) {
+                        // In a loop, with scalar values; skip
+                        break;
+                    }
                     if (!isset($data['tokens'])) {
                         // Check to see if the partial invoked is an aliased partial
                         $name = $data['partial'];
@@ -149,11 +178,22 @@ class Renderer
      * Returns an empty string if no matching value found.
      *
      * @param  string $key 
-     * @param  array $view 
+     * @param  mixed $view 
      * @return mixed
      */
-    protected function getValue($key, array $view)
+    protected function getValue($key, $view)
     {
+        if (is_scalar($view)) {
+            return $view;
+        }
+        if (is_object($view)) {
+            if (isset($view->$key)) {
+                if (is_callable($view->$key)) {
+                    return call_user_func($view->$key);
+                }
+            }
+            return '';
+        }
         if (isset($view[$key])) {
             if (is_callable($view[$key])) {
                 return call_user_func($view[$key]);

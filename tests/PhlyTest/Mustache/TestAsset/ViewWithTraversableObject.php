@@ -5,9 +5,11 @@ namespace PhlyTest\Mustache\TestAsset;
 class ViewWithTraversableObject
 {
     public $name = "Joe's shopping card";
-    public function items()
+    public $items;
+
+    public function __construct()
     {
-        return new \ArrayObject(array(
+        $this->items = new \ArrayObject(array(
             'bananas',
             'apples',
         ));
