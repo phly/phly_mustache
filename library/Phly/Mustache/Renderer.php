@@ -11,7 +11,7 @@ class Renderer
      * @param  mixed $view 
      * @return string
      */
-    public function render(array $tokens, $view)
+    public function render(array $tokens, $view, array $partials = null)
     {
         if (is_object($view)) {
             // If we have an object, get a list of properties and methods, 
@@ -28,6 +28,10 @@ class Renderer
         }
         if (!is_array($view)) {
             throw new \Exception('Invalid view provided; must be an array or object, received ' . gettype($view));
+        }
+
+        if (null === $partials) {
+            $partials = array();
         }
 
         $rendered = '';
@@ -107,9 +111,12 @@ class Renderer
                     $rendered .= $this->render($data['content'], $view);
                     break;
                 case Lexer::TOKEN_PARTIAL:
-                    /** @todo do we need partial views? do we care? */
                     if (!isset($data['tokens'])) {
-                        // No tokens, so nothing to render
+                        // Check to see if the partial invoked is an aliased partial
+                        $name = $data['partial'];
+                        if (isset($partials[$data['partial']])) {
+                            $rendered .= $this->render($partials[$data['partial']], $view);
+                        }
                         break;
                     }
                     $rendered .= $this->render($data['tokens'], $view);

@@ -6,9 +6,9 @@ class ViewWithObjectForPartial
 {
     public $name = 'Joe';
     public $winnings;
-
-    public function __construct()
+    public $value = 1000;
+    public function taxed_value() 
     {
-        $this->winnings = new PartialView();
+        return $this->value - ($this->value * 0.4);
     }
 }

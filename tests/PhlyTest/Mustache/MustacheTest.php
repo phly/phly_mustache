@@ -244,14 +244,13 @@ EOT;
      */
     public function testRendersPartials()
     {
-        $this->markTestIncomplete('Should partials descend into the view, or just use it?');
         $view = new TestAsset\ViewWithObjectForPartial();
         $test = $this->mustache->render(
             'template-with-partial',
             $view
         );
         $expected = 'Welcome, Joe! You just won $1000 (which is $600 after tax)';
-        $this->assertEquals($expected, $test);
+        $this->assertEquals($expected, trim($test));
     }
 
     /**
@@ -259,7 +258,6 @@ EOT;
      */
     public function testAllowsAliasingPartials()
     {
-        $this->markTestIncomplete('Have not addrssed aliased partials');
         $view = new TestAsset\ViewWithObjectForPartial();
         $test = $this->mustache->render(
             'template-with-aliased-partial',
@@ -267,7 +265,7 @@ EOT;
             array('winnings' => 'partial-template')
         );
         $expected = 'Welcome, Joe! You just won $1000 (which is $600 after tax)';
-        $this->assertEquals($expected, $test);
+        $this->assertEquals($expected, trim($test));
     }
 
     public function testEscapesStandardCharacters()

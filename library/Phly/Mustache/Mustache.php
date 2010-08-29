@@ -115,25 +115,29 @@ class Mustache
      */
     public function render($template, $view, $partials = null)
     {
-        $tokens = $this->tokenize($template);
-
-        /*
+        // Tokenize and alias partials
+        $tokenizedPartials = array();
         if (null !== $partials) {
             if (!is_array($partials) && !is_object($partials)) {
                 throw new InvalidPartialsException();
             }
-            if (is_object($partials)) {
-                if ($partials instanceof ArrayObject) {
-                    $partials = $partials->getArrayCopy();
-                } else {
-                    $partials = (array) $partials;
+
+            // Get tokenized partials
+            foreach ($partials as $alias => $partialTemplate) {
+                if (!is_string($partialTemplate)) {
+                    continue;
                 }
+                $tokenizedPartials[$alias] = $this->tokenize($partialTemplate);
+
+                // Cache under this alias as well
+                $this->cachedTemplates[$alias] = $tokenizedPartials[$alias];
             }
         }
-         */
+
+        $tokens = $this->tokenize($template);
 
         $renderer = $this->getRenderer();
-        return $renderer->render($tokens, $view);
+        return $renderer->render($tokens, $view, $tokenizedPartials);
     }
 
     /**
