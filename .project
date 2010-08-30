@@ -1,4 +1,7 @@
 mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" {
+ LICENSE
+ README.txt
+ TODO
  library=library {
   Phly=Phly {
    Mustache=Mustache {
@@ -44,17 +47,17 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      ViewWithObjectForPartial.php
      ViewWithTraversableObject.php
     }
-    templates=templates {
-     partial-template.html
-     renders-file-templates.html
-     template-with-conditional.html
-     template-with-dereferencing.html
-     template-with-enumerable.html
-     template-with-implicit-iterator.html
-     template-with-inverted-section.html
-     template-with-method-substitution.html
-     template-with-aliased-partial.html
-     template-with-partial.html
+    templates=templates filter="*.mustache" {
+     partial-template.mustache
+     renders-file-templates.mustache
+     template-with-aliased-partial.mustache
+     template-with-conditional.mustache
+     template-with-dereferencing.mustache
+     template-with-enumerable.mustache
+     template-with-implicit-iterator.mustache
+     template-with-inverted-section.mustache
+     template-with-method-substitution.mustache
+     template-with-partial.mustache
     }
    }
   }

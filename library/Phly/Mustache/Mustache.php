@@ -174,7 +174,7 @@ class Mustache
     protected function fetchTemplate($template)
     {
         foreach ($this->templatePath as $path) {
-            $file = $path . DIRECTORY_SEPARATOR . $template . '.html';
+            $file = $path . DIRECTORY_SEPARATOR . $template . '.mustache';
             if (file_exists($file)) {
                 $content = file_get_contents($file);
                 $this->cachedTemplates[$template] = $content;
