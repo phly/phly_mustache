@@ -2,7 +2,8 @@
 
 namespace PhlyTest\Mustache;
 
-use Phly\Mustache\Mustache;
+use Phly\Mustache\Mustache,
+    Phly\Mustache\Pragma;
 
 class MustacheTest extends \PHPUnit_Framework_TestCase
 {
@@ -306,6 +307,7 @@ EOT;
      */
     public function testHonorsImplicitIteratorPragma()
     {
+        $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
         $view = array('foo' => array(1, 2, 3, 4, 5, 'french'));
         $test = $this->mustache->render(
             'template-with-implicit-iterator',

@@ -373,7 +373,7 @@ class Renderer
      * @param  array $pragmas 
      * @return mixed
      */
-    protected function handlePragma($token, $data, $view, $pragmas)
+    protected function handlePragmas($token, $data, $view, $pragmas)
     {
         foreach ($pragmas as $name => $options) {
             if (null !== ($handler = $this->getPragma($name))) {
