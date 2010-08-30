@@ -332,4 +332,11 @@ EOT;
 EOT;
         $this->assertEquals($expected, $test);
     }
+
+    public function testAllowsSettingAlternateTemplateSuffix()
+    {
+        $this->mustache->setSuffix('html');
+        $test = $this->mustache->render('alternate-suffix', array());
+        $this->assertContains('alternate template suffix', $test);
+    }
 }

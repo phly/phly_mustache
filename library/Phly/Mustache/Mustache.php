@@ -26,6 +26,9 @@ class Mustache
     /** @var Renderer */
     protected $renderer;
 
+    /** @var string Suffix used when resolving templates */
+    protected $suffix = '.mustache';
+
     /**
      * Constructor
      * 
@@ -105,6 +108,28 @@ class Mustache
     }
 
     /**
+     * Set suffix used when resolving templates
+     * 
+     * @param  string $suffix 
+     * @return Mustache
+     */
+    public function setSuffix($suffix)
+    {
+        $this->suffix = '.' . ltrim($suffix, '.');
+        return $this;
+    }
+
+    /**
+     * Get template suffix
+     * 
+     * @return string
+     */
+    public function getSuffix()
+    {
+        return $this->suffix;
+    }
+
+    /**
      * Render a template using a view, and optionally a list of partials
      * 
      * @todo   should partials be passed here? or simply referenced?
@@ -174,7 +199,7 @@ class Mustache
     protected function fetchTemplate($template)
     {
         foreach ($this->templatePath as $path) {
-            $file = $path . DIRECTORY_SEPARATOR . $template . '.mustache';
+            $file = $path . DIRECTORY_SEPARATOR . $template . $this->getSuffix();
             if (file_exists($file)) {
                 $content = file_get_contents($file);
                 $this->cachedTemplates[$template] = $content;

@@ -48,6 +48,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      ViewWithTraversableObject.php
     }
     templates=templates filter="*.mustache" {
+     alternate-suffix.html
      partial-template.mustache
      renders-file-templates.mustache
      template-with-aliased-partial.mustache
