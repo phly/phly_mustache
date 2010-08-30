@@ -1,3 +1,13 @@
+Allow specifying a template suffix
 API documentation
-Tests for recursive sections and partials
+Tests 
+    for comments
+    for delimiters
+    for ensuring pragmas, delimiters are section-specific
+        Delimiters should not extend to partials
+        Pragmas should only apply to the current template
+    for recursive sections and partials
+    tokenization
 End-user docs (particularly for extending via pragmas)
+Whitespace handling
+    If a section start and/or end is on a line by itself, don't add whitespace (including newlines)
