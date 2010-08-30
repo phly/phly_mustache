@@ -98,7 +98,7 @@ class Mustache
     public function setTemplatePath($path)
     {
         if (!is_dir($path)) {
-            throw new InvalidTemplatePathException();
+            throw new Exception\InvalidTemplatePathException();
         }
         $this->templatePath->push($path);
         return $this;
@@ -120,7 +120,7 @@ class Mustache
         $tokenizedPartials = array();
         if (null !== $partials) {
             if (!is_array($partials) && !is_object($partials)) {
-                throw new InvalidPartialsException();
+                throw new Exception\InvalidPartialsException();
             }
 
             // Get tokenized partials
@@ -181,6 +181,6 @@ class Mustache
                 return $content;
             }
         }
-        throw new TemplateNotFoundException('Template by name "' . $template . '" not found');
+        throw new Exception\TemplateNotFoundException('Template by name "' . $template . '" not found');
     }
 }

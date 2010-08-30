@@ -214,7 +214,7 @@ class Renderer
     public function setEscaper($callback)
     {
         if (!is_callable($callback)) {
-            throw new InvalidEscaperException();
+            throw new Exception\InvalidEscaperException();
         }
         $this->escaper = $callback;
         return $this;
@@ -352,7 +352,7 @@ class Renderer
     {
         $name = $definition['pragma'];
         if (!$this->hasPragma($name)) {
-            throw new UnregisteredPragmaException('No handler for pragma "' . $name . '" registered; cannot proceed rendering');
+            throw new Exception\UnregisteredPragmaException('No handler for pragma "' . $name . '" registered; cannot proceed rendering');
         }
         $pragmas[$name] = $definition['options'];
     }

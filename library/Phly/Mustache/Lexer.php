@@ -78,7 +78,7 @@ class Lexer
     public function compile($string)
     {
         if (!is_string($string)) {
-            throw new InvalidTemplateException();
+            throw new Exception\InvalidTemplateException();
         }
 
         $len     = strlen($string);
@@ -194,7 +194,7 @@ class Lexer
                             case '=':
                                 // Delimiter set
                                 if (!$preg_match('/^=(\S+)\s+(\S+)=$/', $tagData, $matches)) {
-                                    throw new InvalidDelimiterException('Did not find delimiters!');
+                                    throw new Exception\InvalidDelimiterException('Did not find delimiters!');
                                 }
                                 $this->patterns[self::DS] = $delimStart = $matches[1];
                                 $this->patterns[self::DE] = $delimEnd   = $matches[2];
@@ -214,13 +214,13 @@ class Lexer
                                 if (!strstr($data, '=')) {
                                     // No options
                                     if (!preg_match('/^(?P<pragma>' . $this->patterns['pragma'] . ')$/', $data, $matches)) {
-                                        throw new InvalidPragmaNameException();
+                                        throw new Exception\InvalidPragmaNameException();
                                     }
                                     $pragma = $matches['pragma'];
                                 } else {
                                     list($pragma, $options) = explode(' ', $data, 2);
                                     if (!preg_match('/^' . $this->patterns['pragma'] . '$/', $pragma)) {
-                                        throw new InvalidPragmaNameException();
+                                        throw new Exception\InvalidPragmaNameException();
                                     }
                                     $pairs = explode(' ', $options);
                                     $options = array();
@@ -243,7 +243,7 @@ class Lexer
                             default:
                                 // We have a simple variable replacement
                                 if (!preg_match($this->patterns[self::VARNAME], $tagData)) {
-                                    throw new InvalidVariableNameException('Invalid variable name provided (' . $tagData . ')');
+                                    throw new Exception\InvalidVariableNameException('Invalid variable name provided (' . $tagData . ')');
                                 }
 
                                 // Create token
@@ -300,7 +300,7 @@ class Lexer
                     ++$i;
                     break;
                 default:
-                    throw new InvalidStateException('Invalid state invoked ("' . var_export($state, 1) . '")?');
+                    throw new Exception\InvalidStateException('Invalid state invoked ("' . var_export($state, 1) . '")?');
             }
         }
 
@@ -312,10 +312,10 @@ class Lexer
                 break;
             case self::STATE_TAG:
                 // Un-closed content
-                throw new UnbalancedTagException();
+                throw new Exception\UnbalancedTagException();
             case self::STATE_SECTION:
                 // Un-closed section
-                throw new UnbalancedSectionException('Unbalanced section in template');
+                throw new Exception\UnbalancedSectionException('Unbalanced section in template');
         }
 
         // Tokenize any sections discovered

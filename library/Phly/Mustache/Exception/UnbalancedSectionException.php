@@ -1,6 +1,8 @@
 <?php
 
-namespace Phly\Mustache;
+namespace Phly\Mustache\Exception;
+
+use Phly\Mustache\Exception;
 
 class UnbalancedSectionException
     extends \Exception 
