@@ -20,22 +20,27 @@ Pragmas are tags of the form:
 
  {{%PRAGMA-NAME option=value}}
 
-where options are key/value pairs, and are entirely optional. The renderer
-handles pragmas internally. For each token, it will check to see if a pragma
-handler can render the token; if so, that value will be used, otherwise it will
-use the default rendering.
+where options are key/value pairs, and are entirely optional. Pragmas are
+user-defined, and can be used to extend the capabilities of the renderer.
 
-Each pragma has a method that will be called as a handler; extend the class and
-override the appropriate method(s) in order to implement your pragma.
+Pragmas should implement Phly\Mustache\Pragma, which defines methods for
+retrieving the pragma name (used during registration of the pragma, and
+referenced by templates; this is case sensitive currently), determining whether
+or not the pragma can intercept rendering of a specific token type, and handling
+the token. 
 
-The following tokens currently accept pragmas:
+Pragmas should be registered _before_ rendering any template that references
+them.
 
- - Lexer::TOKEN_CONTENT: handleContentPragma()
- - Lexer::TOKEN_VARIABLE: handleVariablePragma()
- - Lexer::TOKEN_VARIABLE_RAW: handleRawVariablePragma()
- - Lexer::TOKEN_SECTION: handleSectionPragma()
- - Lexer::TOKEN_SECTION_INVERT: handleInvertedSectionPragma()
+An example is the "IMPLICIT-ITERATOR" pragma, which is included with this
+distribution. This pragma allows iteration of indexed arrays or Traversable
+objects with scalar values, with the option of specifying the iterator "key" to
+use within the template. You can review
 
-Currently, the IMPLICIT-ITERATOR pragma is available, allowing iteration of
-indexed arrays or Traversable objects with scalar values. These require the
-handleVariablePragma() and handleRawVariablePragma() methods.
+    Phly/Mustache/Pragma/ImplicitIterator.php 
+
+for details on how it accomplishes this, as well as the unit test
+
+    PhlyTest\Mustache\MustacheTest::testHonorsImplicitIteratorPragma() 
+
+for details on usage.

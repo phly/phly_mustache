@@ -1,5 +1,3 @@
 API documentation
 Tests for recursive sections and partials
 End-user docs (particularly for extending via pragmas)
-Potential revamping of pragmas
-    Register stack of pragma handlers per token, potentially as signal-slot?
