@@ -9,6 +9,12 @@ class Renderer
      */
     protected $manager;
 
+    /** @var array Array of registered pragmas */
+    protected $pragmas = array();
+
+    /** @var Closure Callback for escaping variable content */
+    protected $escaper;
+
     /**
      * Set mustache manager
      *
@@ -72,8 +78,8 @@ class Renderer
         $rendered = '';
         foreach ($tokens as $token) {
             list($type, $data) = $token;
-            if ($pragma = $this->handlePragma($type, $data, $view, $pragmas)) {
-                $rendered .= $pragma;
+            if ($value = $this->handlePragmas($type, $data, $view, $pragmas)) {
+                $rendered .= $value;
                 continue;
             }
             switch ($type) {
@@ -195,7 +201,98 @@ class Renderer
      */
     public function escape($value)
     {
-        return htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8');
+        $escaper = $this->getEscaper();
+        return call_user_func($escaper, $value);
+    }
+
+    /**
+     * Set escaping mechanism
+     * 
+     * @param  callback $callback 
+     * @return Renderer
+     */
+    public function setEscaper($callback)
+    {
+        if (!is_callable($callback)) {
+            throw new InvalidEscaperException();
+        }
+        $this->escaper = $callback;
+        return $this;
+    }
+
+    public function getEscaper()
+    {
+        if (null === $this->escaper) {
+            $this->escaper = function($value) {
+                return htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8');
+            };
+        }
+        return $this->escaper;
+    }
+
+    /**
+     * Add a pragma
+     *
+     * Pragmas allow extension of mustache capabilities.
+     * 
+     * @param  Pragma $pragma 
+     * @return Renderer
+     */
+    public function addPragma(Pragma $pragma)
+    {
+        $this->pragmas[$pragma->getName()] = $pragma;
+        return $this;
+    }
+
+    /**
+     * Retrieve all registered pragmas
+     * 
+     * @return array
+     */
+    public function getPragmas()
+    {
+        return $this->pragmas;
+    }
+
+    /**
+     * Do we have a pragma by a specified name?
+     * 
+     * @param  string $name 
+     * @return bool
+     */
+    public function hasPragma($name)
+    {
+        return isset($this->pragmas[(string) $name]);
+    }
+
+    /**
+     * Get a registered pragma by name
+     * 
+     * @param  string $name 
+     * @return null|Pragma
+     */
+    public function getPragma($name)
+    {
+        $name = (string) $name;
+        if ($this->hasPragma($name)) {
+            return $this->pragmas[$name];
+        }
+        return null;
+    }
+
+    /**
+     * Remove a given pragma
+     * 
+     * @param  string $name 
+     * @return bool Returns true if found and removed; false otherwise
+     */
+    public function removePragma($name)
+    {
+        if ($this->hasPragma($name)) {
+            unset($this->pragma[$name]);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -253,19 +350,11 @@ class Renderer
      */
     protected function registerPragma(array $definition, array &$pragmas)
     {
-        $pragmas[$definition['pragma']] = $definition['options'];
-    }
-
-    /**
-     * Does a given pragma exist?
-     * 
-     * @param  string $pragma 
-     * @param  array $pragmas 
-     * @return bool
-     */
-    protected function hasPragma($pragma, array $pragmas)
-    {
-        return array_key_exists($pragma, $pragmas);
+        $name = $definition['pragma'];
+        if (!$this->hasPragma($name)) {
+            throw new UnregisteredPragmaException('No handler for pragma "' . $name . '" registered; cannot proceed rendering');
+        }
+        $pragmas[$name] = $definition['options'];
     }
 
     /**
@@ -284,102 +373,16 @@ class Renderer
      * @param  array $pragmas 
      * @return mixed
      */
-    public function handlePragma($token, $data, $view, $pragmas)
+    protected function handlePragma($token, $data, $view, $pragmas)
     {
-        switch ($token) {
-            case Lexer::TOKEN_CONTENT:
-                return $this->handleContentPragmas($data, $view, $pragmas);
-            case Lexer::TOKEN_VARIABLE:
-                return $this->handleVariablePragmas($data, $view, $pragmas);
-            case Lexer::TOKEN_VARIABLE_RAW:
-                return $this->handleRawVariablePragmas($data, $view, $pragmas);
-            case Lexer::TOKEN_SECTION:
-                return $this->handleSectionPragmas($data, $view, $pragmas);
-            case Lexer::TOKEN_SECTION_INVERT:
-                return $this->handleInvertedSectionPragmas($data, $view, $pragmas);
+        foreach ($pragmas as $name => $options) {
+            if (null !== ($handler = $this->getPragma($name))) {
+                if ($handler->handlesToken($token)) {
+                    if ($value = $handler->handle($token, $data, $view, $options)) {
+                        return $value;
+                    }
+                }
+            }
         }
-    }
-
-    /**
-     * Handle TOKEN_CONTENT pragmas
-     * 
-     * @param  string $content 
-     * @param  mixed $view 
-     * @param  array $pragmas 
-     * @return mixed
-     */
-    public function handleContentPragmas($content, $view, array $pragmas)
-    {
-    }
-
-    /**
-     * Handle TOKEN_VARIABLE pragmas
-     *
-     * This implements the IMPLICIT-ITERATOR pragma.
-     * 
-     * @param  string $variable 
-     * @param  mixed $view 
-     * @param  array $pragmas 
-     * @return mixed
-     */
-    public function handleVariablePragmas($variable, $view, array $pragmas)
-    {
-        if (!$this->hasPragma('IMPLICIT-ITERATOR', $pragmas)) {
-            return;
-        }
-        $options = $pragmas['IMPLICIT-ITERATOR'];
-        $iterator = isset($options['iterator']) ? $options['iterator'] : '.';
-        if ($iterator == $variable) {
-            return $this->escape($view);
-        }
-    }
-
-    /**
-     * Handle TOKEN_VARIABLE_RAW pragmas
-     * 
-     * This implements the IMPLICIT-ITERATOR pragma.
-     * 
-     * @param  string $variable 
-     * @param  mixed $view 
-     * @param  array $pragmas 
-     * @return void
-     */
-    public function handleRawVariablePragmas($variable, $view, array $pragmas)
-    {
-        if (!$this->hasPragma('IMPLICIT-ITERATOR', $pragmas)) {
-            return;
-        }
-        if (!is_scalar($view)) {
-            return;
-        }
-        $options = $pragmas['IMPLICIT-ITERATOR'];
-        $iterator = isset($options['iterator']) ? $options['iterator'] : '.';
-        if ($iterator == $variable) {
-            return $view;
-        }
-    }
-
-    /**
-     * Handle TOKEN_SECTION pragmas
-     * 
-     * @param  array $section 
-     * @param  mixed $view 
-     * @param  array $pragmas 
-     * @return mixed
-     */
-    public function handleSectionPragmas($section, $view, array $pragmas)
-    {
-    }
-
-    /**
-     * Handle TOKEN_SECTION_INVERT pragmas
-     * 
-     * @param  array $section 
-     * @param  mixed $view 
-     * @param  array $pragmas 
-     * @return mixed
-     */
-    public function handleInvertedSectionPragmas($section, $view, array $pragmas)
-    {
     }
 }
