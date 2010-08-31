@@ -339,4 +339,17 @@ EOT;
         $test = $this->mustache->render('alternate-suffix', array());
         $this->assertContains('alternate template suffix', $test);
     }
+
+    public function testStripsCommentsFromRenderedOutput()
+    {
+        $test = $this->mustache->render('template-with-comments', array());
+        $expected =<<<EOT
+First line 
+Second line
+
+Third line
+
+EOT;
+        $this->assertEquals($expected, $test);
+    }
 }

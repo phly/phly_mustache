@@ -1,6 +1,5 @@
 API documentation
 Tests 
-    for comments
     for delimiters
     for ensuring pragmas, delimiters are section-specific
         Delimiters should not extend to partials

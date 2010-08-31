@@ -169,6 +169,7 @@ class Lexer
                                 // Comment
                                 // Create token
                                 $token = array(self::TOKEN_COMMENT, ltrim($tagData, '!'));
+                                $state = self::STATE_CONTENT;
                                 ++$i;
                                 break;
                             case '>':
