@@ -180,10 +180,18 @@ class Renderer
                     $pragmas = $this->invokedPragmas;
                     $this->clearPragmas();
                     if (!isset($data['tokens'])) {
-                        // Check to see if the partial invoked is an aliased partial
                         $name = $data['partial'];
                         if (isset($partials[$data['partial']])) {
+                            // Partial invoked is an aliased partial
                             $rendered .= $this->render($partials[$data['partial']], $view);
+                        } else {
+                            $manager = $this->getManager();
+                            if ($manager  instanceof Mustache) {
+                                $partialTokens = $manager->tokenize($data['partial']);
+                                $rendered .= $this->render($partialTokens, $view);
+                            } else {
+                                throw new Exception\InvalidPartialException('Unable to resolve partial "' . $data['partial'] . '"');
+                            }
                         }
                         $this->registerPragmas($pragmas);
                         break;

@@ -75,7 +75,7 @@ class Lexer
      * @return array
      * @throws Exception
      */
-    public function compile($string)
+    public function compile($string, $templateName = null)
     {
         if (!is_string($string)) {
             throw new Exception\InvalidTemplateException();
@@ -182,7 +182,9 @@ class Lexer
                                 $token = array(self::TOKEN_PARTIAL, array(
                                     'partial' => $partial,
                                 ));
-                                if (null !== ($manager = $this->getManager())) {
+                                if ($partial !== $templateName
+                                    && null !== ($manager = $this->getManager())
+                                ) {
                                     // Get the tokens for the partial
 
                                     // First, reset the delimiters
@@ -341,7 +343,7 @@ class Lexer
                     $delimStart = $this->patterns[self::DS];
                     $delimEnd   = $this->patterns[self::DE];
 
-                    $token[1]['content'] = $this->compile($token[1]['template']);
+                    $token[1]['content'] = $this->compile($token[1]['template'], $templateName);
                     $tokens[$key] = $token;
 
                     // Reset delimiters to retain scope

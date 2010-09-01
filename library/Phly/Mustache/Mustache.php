@@ -179,12 +179,14 @@ class Mustache
             return $lexer->compile($template);
         }
 
-        if (array_key_exists($template, $this->cachedTemplates)) {
+        if (array_key_exists($template, $this->cachedTemplates)
+            && is_array($this->cachedTemplates[$template])
+        ) {
             return $this->cachedTemplates[$template];
         }
 
         $templateString = $this->fetchTemplate($template);
-        $tokens = $lexer->compile($templateString);
+        $tokens = $lexer->compile($templateString, $template);
         $this->cachedTemplates[$template] = $tokens;
         return $tokens;
     }

@@ -450,6 +450,7 @@ EOT;
 
     /**
      * @group pragma
+     * @group partial
      */
     public function testPragmasDoNotExtendToPartials()
     {
@@ -465,5 +466,46 @@ EOT;
         $this->assertEquals(0, substr_count($test, '1'));
         $this->assertEquals(0, substr_count($test, '2'));
         $this->assertEquals(0, substr_count($test, '3'));
+    }
+
+    /**
+     * @group partial
+     */
+    public function testHandlesRecursivePartials()
+    {
+        $view = array(
+            'top_nodes' => array(
+                'contents' => '1',
+                'children' => array(
+                    array(
+                        'contents' => '2',
+                        'children' => array(
+                            array(
+                                'contents' => 3,
+                                'children' => array(),
+                            )
+                        ),
+                    ),
+                    array(
+                        'contents' => '4',
+                        'children' => array(
+                            array(
+                                'contents' => '5',
+                                'children' => array(
+                                    array(
+                                        'contents' => '6',
+                                        'children' => array(),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+        $test = $this->mustache->render('crazy_recursive', $view);
+        foreach(range(1, 6) as $content) {
+            $this->assertEquals(1, substr_count($test, $content));
+        }
     }
 }
