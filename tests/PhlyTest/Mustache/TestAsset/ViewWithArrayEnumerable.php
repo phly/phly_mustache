@@ -6,7 +6,7 @@ class ViewWithArrayEnumerable
 {
     public $name = "Joe's shopping card";
     public $items = array(
-        'bananas',
-        'apples',
+        array('item' => 'bananas'),
+        array('item' => 'apples'),
     );
 }
