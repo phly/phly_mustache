@@ -65,9 +65,7 @@ EOT;
         $expected =<<<EOT
 Hello Chris
 You have just won \$1000000!
-
 Well, \$600000, after taxes.
-
 
 EOT;
         $this->assertEquals($expected, $test);
@@ -85,7 +83,6 @@ EOT;
 Hello Chris
 You have just won \$1000000!
 
-
 EOT;
         $this->assertEquals($expected, $test);
     }
@@ -101,7 +98,6 @@ EOT;
         $expected =<<<EOT
 Hello Chris
 You have just won \$1000000!
-
 
 EOT;
         $this->assertEquals($expected, $test);
@@ -120,11 +116,8 @@ EOT;
         $expected =<<<EOT
 Joe's shopping card:
 <ul>
-
     <li>bananas</li>
-
     <li>apples</li>
-
 </ul>
 
 EOT;
@@ -144,11 +137,8 @@ EOT;
         $expected =<<<EOT
 Joe's shopping card:
 <ul>
-
     <li>bananas</li>
-
     <li>apples</li>
-
 </ul>
 
 EOT;
@@ -173,6 +163,7 @@ EOT;
 
     /**
      * @group dereference
+     * @group whitespace-issues
      */
     public function testTemplateWillDereferenceNestedArrays()
     {
@@ -191,17 +182,12 @@ EOT;
             $view
         );
         $expected =<<<EOT
-
     <h1>this is an object</h1>
     <p>one of its attributes is a list</p>
     <ul>
-        
         <li>listitem1</li>
-        
-        <li>listitem2</li>
-        
-    </ul>
-
+                <li>listitem2</li>
+            </ul>
 
 EOT;
         $this->assertEquals($expected, $test);
@@ -209,6 +195,7 @@ EOT;
 
     /**
      * @group dereference
+     * @group whitespace-issues
      */
     public function testTemplateWillDereferenceNestedObjects()
     {
@@ -218,17 +205,12 @@ EOT;
             $view
         );
         $expected =<<<EOT
-
     <h1>this is an object</h1>
     <p>one of its attributes is a list</p>
     <ul>
-        
         <li>listitem1</li>
-        
-        <li>listitem2</li>
-        
-    </ul>
-
+                <li>listitem2</li>
+            </ul>
 
 EOT;
         $this->assertEquals($expected, $test);
@@ -315,19 +297,12 @@ EOT;
         );
         $expected =<<<EOT
 
-
     1
-
     2
-
     3
-
     4
-
     5
-
     french
-
 
 EOT;
         $this->assertEquals($expected, $test);
@@ -360,7 +335,6 @@ EOT;
     {
         $test = $this->mustache->render('template-with-delim-set', array('substitution' => 'working'));
         $expected = <<<EOT
-
 This is content, working, from new delimiters.
 
 EOT;
@@ -381,10 +355,7 @@ EOT;
         ));
         $expected =<<<EOT
 Some text with style
-
-
     -World
-
 P.S. Done
 
 EOT;
@@ -398,11 +369,8 @@ EOT;
     {
         $test = $this->mustache->render('template-with-sections-and-delim-set', array('content' => 'style', 'substitution' => array('name' => '-World')));
         $expected = <<<EOT
-
 Some text with style
-
     -World
-
 
 EOT;
         $this->assertEquals($expected, $test);
@@ -419,7 +387,6 @@ EOT;
             'taxed_value'  =>  400000,
         ));
         $expected =<<<EOT
-
 This is content, style, from new delimiters.
 You just won $1000000 (which is $400000 after tax)
 
@@ -480,6 +447,9 @@ EOT;
         }
     }
 
+    /**
+     * @group whitespace-issues
+     */
     public function testLexerStripsUnwantedWhitespaceFromTokens()
     {
         $view = $this->getRecursiveView();
@@ -491,36 +461,43 @@ EOT;
         <li>
     1
     <ul>
-        <li>
+            <li>
     2
     <ul>
-        <li>
+            <li>
     3
     <ul>
     </ul>
 </li>
-    </ul>
+
+            </ul>
 </li>
-<li>
+
+                    <li>
     4
     <ul>
-        <li>
+            <li>
     5
     <ul>
-        <li>
+            <li>
     6
     <ul>
     </ul>
 </li>
-    </ul>
+
+            </ul>
 </li>
-    </ul>
+
+            </ul>
 </li>
-    </ul>
+
+            </ul>
 </li>
-</ul>
+
+    </ul>
 </body>
 </html>
+
 EOT;
         $this->assertEquals($expected, $test);
     }

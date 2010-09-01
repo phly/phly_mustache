@@ -2,4 +2,5 @@ API documentation
 Tests 
     tokenization
 Whitespace handling
-    If a section start and/or end is on a line by itself, don't add whitespace (including newlines)
+    Some lingering issues with too much indentation and/or extra newlines; all
+    such tests are marked "whitespace-issues"

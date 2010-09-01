@@ -43,6 +43,24 @@ class Lexer
      */
     protected $manager;
 
+    /** @var spool whether or not to strip whitespace */
+    protected $stripWhitespaceFlag = true;
+
+    /**
+     * Set or get the flag indicating whether or not to strip whitespace
+     * 
+     * @param  null|bool $flag Null indicates retrieving; boolean value sets
+     * @return bool|Lexer
+     */
+    protected function disableStripWhitespace($flag = null)
+    {
+        if (null === $flag) {
+            return !$this->stripWhitespaceFlag;
+        }
+        $this->stripWhitespaceFlag = !(bool) $flag;
+        return $this;
+    }
+
     /**
      * Set mustache manager
      *
@@ -334,7 +352,7 @@ class Lexer
                 throw new Exception\UnbalancedSectionException('Unbalanced section in template');
         }
 
-        // Tokenize any sections discovered
+        // Tokenize any sections discovered, strip whitespaces as necessary
         foreach ($tokens as $key => $token) {
             $type = $token[0];
             switch ($type) {
@@ -351,11 +369,14 @@ class Lexer
                     $this->patterns[self::DE] = $delimEnd;
 
                     // Clean whitespace
-                    $this->stripWhitespace($tokens, $key);
+                    if (!$this->disableStripWhitespace()) {
+                        $this->stripWhitespace($tokens, $key);
+                    }
                     break;
-                case self::TOKEN_COMMENT:
                 case self::TOKEN_DELIM_SET:
-                    $this->stripWhitespace($tokens, $key);
+                    if (!$this->disableStripWhitespace()) {
+                        $this->stripWhitespace($tokens, $key);
+                    }
                     break;
                 default:
                     // do nothing
@@ -364,10 +385,15 @@ class Lexer
         return $tokens;
     }
 
+    /**
+     * Strip whitespace in content tokens surrounding a given token
+     * 
+     * @param  ref $tokens Reference to the tokens array
+     * @param  int $position 
+     * @return void
+     */
     protected function stripWhitespace(&$tokens, $position)
     {
-$curType = $tokens[$position][0];
-echo "Stripping whitespace for token type $curType\n";
         switch ($tokens[$position][0]) {
             case self::TOKEN_SECTION:
             case self::TOKEN_SECTION_INVERT:
@@ -392,14 +418,11 @@ echo "Stripping whitespace for token type $curType\n";
             default:
                 break;
         }
-        if ($position - 1 > 0) {
+        if (($position - 1) > -1) {
             $previous = $tokens[$position - 1];
             $type = $previous[0];
             if ($type === self::TOKEN_CONTENT) {
-echo "Checking for whitespace in PREVIOUS token\n";
-echo "    ORIGINAL content:" . var_export($previous[1], 1) . "\n";
-                $content = preg_replace('/(\r\n?|\n)\s*$/s', '$1', $previous[1]);
-echo "    REVISED content:" . var_export($previous[1], 1) . "\n";
+                $content = preg_replace('/(\r\n?|\n)\s+$/s', '$1', $previous[1]);
                 $previous = array(
                     self::TOKEN_CONTENT,
                     $content,
@@ -412,10 +435,7 @@ echo "    REVISED content:" . var_export($previous[1], 1) . "\n";
             $next = $tokens[$position + 1];
             $type = $next[0];
             if ($type === self::TOKEN_CONTENT) {
-echo "Checking for whitespace in NEXT token\n";
-echo "    ORIGINAL content:" . var_export($next[1], 1) . "\n";
                 $content = preg_replace('/^\s*?(\r\n?|\n)/s', '', $next[1]);
-echo "    REVISED content:" . var_export($next[1], 1) . "\n";
                 $next = array(
                     self::TOKEN_CONTENT,
                     $content,
