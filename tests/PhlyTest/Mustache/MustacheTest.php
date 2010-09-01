@@ -473,7 +473,61 @@ EOT;
      */
     public function testHandlesRecursivePartials()
     {
-        $view = array(
+        $view = $this->getRecursiveView();
+        $test = $this->mustache->render('crazy_recursive', $view);
+        foreach(range(1, 6) as $content) {
+            $this->assertEquals(1, substr_count($test, $content));
+        }
+    }
+
+    public function testLexerStripsUnwantedWhitespaceFromTokens()
+    {
+        $view = $this->getRecursiveView();
+        $test = $this->mustache->render('crazy_recursive', $view);
+        $expected = <<<EOT
+<html>
+<body>
+<ul>
+        <li>
+    1
+    <ul>
+        <li>
+    2
+    <ul>
+        <li>
+    3
+    <ul>
+    </ul>
+</li>
+    </ul>
+</li>
+<li>
+    4
+    <ul>
+        <li>
+    5
+    <ul>
+        <li>
+    6
+    <ul>
+    </ul>
+</li>
+    </ul>
+</li>
+    </ul>
+</li>
+    </ul>
+</li>
+</ul>
+</body>
+</html>
+EOT;
+        $this->assertEquals($expected, $test);
+    }
+
+    protected function getRecursiveView()
+    {
+        return array(
             'top_nodes' => array(
                 'contents' => '1',
                 'children' => array(
@@ -503,9 +557,5 @@ EOT;
                 ),
             ),
         );
-        $test = $this->mustache->render('crazy_recursive', $view);
-        foreach(range(1, 6) as $content) {
-            $this->assertEquals(1, substr_count($test, $content));
-        }
     }
 }

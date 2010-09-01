@@ -168,7 +168,7 @@ class Lexer
                             case '!':
                                 // Comment
                                 // Create token
-                                $token = array(self::TOKEN_COMMENT, ltrim($tagData, '!'));
+                                $tokens[] = array(self::TOKEN_COMMENT, ltrim($tagData, '!'));
                                 $state = self::STATE_CONTENT;
                                 ++$i;
                                 break;
@@ -349,11 +349,80 @@ class Lexer
                     // Reset delimiters to retain scope
                     $this->patterns[self::DS] = $delimStart;
                     $this->patterns[self::DE] = $delimEnd;
+
+                    // Clean whitespace
+                    $this->stripWhitespace($tokens, $key);
+                    break;
+                case self::TOKEN_COMMENT:
+                case self::TOKEN_DELIM_SET:
+                    $this->stripWhitespace($tokens, $key);
                     break;
                 default:
                     // do nothing
             }
         }
         return $tokens;
+    }
+
+    protected function stripWhitespace(&$tokens, $position)
+    {
+$curType = $tokens[$position][0];
+echo "Stripping whitespace for token type $curType\n";
+        switch ($tokens[$position][0]) {
+            case self::TOKEN_SECTION:
+            case self::TOKEN_SECTION_INVERT:
+                // Analyze first token of section, and strip leading newlines
+                $sectionTokens = $tokens[$position][1]['content'];
+                if (0 === count($sectionTokens)) {
+                    break;
+                }
+                $token = $sectionTokens[0];
+                if ($token[0] === self::TOKEN_CONTENT) {
+                    $content = preg_replace('/^\s*?(\r\n?|\n)/s', '', $token[1]);
+                    $token = array(
+                        self::TOKEN_CONTENT,
+                        $content,
+                        'original_content' => $token[1],
+                    );
+                    $sectionTokens[0] = $token;
+                    $tokens[$position][1]['content'] = $sectionTokens;
+                    break;
+                }
+                break;
+            default:
+                break;
+        }
+        if ($position - 1 > 0) {
+            $previous = $tokens[$position - 1];
+            $type = $previous[0];
+            if ($type === self::TOKEN_CONTENT) {
+echo "Checking for whitespace in PREVIOUS token\n";
+echo "    ORIGINAL content:" . var_export($previous[1], 1) . "\n";
+                $content = preg_replace('/(\r\n?|\n)\s*$/s', '$1', $previous[1]);
+echo "    REVISED content:" . var_export($previous[1], 1) . "\n";
+                $previous = array(
+                    self::TOKEN_CONTENT,
+                    $content,
+                    'original_content' => $previous[1],
+                );
+                $tokens[$position - 1] = $previous;
+            }
+        }
+        if (isset($tokens[$position + 1])) {
+            $next = $tokens[$position + 1];
+            $type = $next[0];
+            if ($type === self::TOKEN_CONTENT) {
+echo "Checking for whitespace in NEXT token\n";
+echo "    ORIGINAL content:" . var_export($next[1], 1) . "\n";
+                $content = preg_replace('/^\s*?(\r\n?|\n)/s', '', $next[1]);
+echo "    REVISED content:" . var_export($next[1], 1) . "\n";
+                $next = array(
+                    self::TOKEN_CONTENT,
+                    $content,
+                    'original_content' => $next[1],
+                );
+                $tokens[$position + 1] = $next;
+            }
+        }
     }
 }

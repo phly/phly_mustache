@@ -203,7 +203,7 @@ class Renderer
                     $this->registerPragma($data);
                     break;
                 case Lexer::TOKEN_DELIM_SET:
-                case Lexer::COMMENT:
+                case Lexer::TOKEN_COMMENT:
                 default:
                     // do nothing; only necessary for tokenization/parsing
                     break;
