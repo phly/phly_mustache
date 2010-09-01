@@ -10,7 +10,6 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
     Mustache.php
     Pragma.php
     Renderer.php
-    TemplateNotFoundException.php
     Exception=Exception {
      InvalidDelimiterException.php
      InvalidEscaperException.php
@@ -20,6 +19,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      InvalidTemplateException.php
      InvalidTemplatePathException.php
      InvalidVariableNameException.php
+     TemplateNotFoundException.php
      UnbalancedSectionException.php
      UnbalancedTagException.php
      UnregisteredPragmaException.php
