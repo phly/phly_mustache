@@ -1,9 +1,7 @@
 API documentation
 Tests 
-    for delimiters
-    for ensuring pragmas, delimiters are section-specific
-        Delimiters should not extend to partials
-        Pragmas should only apply to the current template
+    Pragmas are section-specific
+    Pragmas should only apply to the current template (not partials)
     for recursive sections and partials
     tokenization
 End-user docs (particularly for extending via pragmas)

@@ -352,4 +352,79 @@ Third line
 EOT;
         $this->assertEquals($expected, $test);
     }
+
+    /**
+     * @group delim
+     */
+    public function testAllowsSpecifyingAlternateDelimiters()
+    {
+        $test = $this->mustache->render('template-with-delim-set', array('substitution' => 'working'));
+        $expected = <<<EOT
+
+This is content, working, from new delimiters.
+
+EOT;
+        $this->assertEquals($expected, $test);
+    }
+
+    /**
+     * @group delim
+     */
+    public function testAlternateDelimitersSetInSectionOnlyApplyToThatSection()
+    {
+        $test = $this->mustache->render('template-with-delim-set-in-section', array(
+            'content' => 'style',
+            'section' => array(
+                'name' => '-World',
+            ),
+            'postcontent' => 'P.S. Done',
+        ));
+        $expected =<<<EOT
+Some text with style
+
+
+    -World
+
+P.S. Done
+
+EOT;
+        $this->assertEquals($expected, $test);
+    }
+
+    /**
+     * @group delim
+     */
+    public function testAlternateDelimitersApplyToChildSections()
+    {
+        $test = $this->mustache->render('template-with-sections-and-delim-set', array('content' => 'style', 'substitution' => array('name' => '-World')));
+        $expected = <<<EOT
+
+Some text with style
+
+    -World
+
+
+EOT;
+        $this->assertEquals($expected, $test);
+    }
+
+    /**
+     * @group delim
+     */
+    public function testAlternateDelimitersDoNotCarryToPartials()
+    {
+        $test = $this->mustache->render('template-with-partials-and-delim-set', array(
+            'substitution' => 'style',
+            'value'        => 1000000,
+            'taxed_value'  =>  400000,
+        ));
+        $expected =<<<EOT
+
+This is content, style, from new delimiters.
+You just won $1000000 (which is $400000 after tax)
+
+
+EOT;
+        $this->assertEquals($expected, $test);
+    }
 }

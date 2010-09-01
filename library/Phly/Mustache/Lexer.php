@@ -184,7 +184,20 @@ class Lexer
                                 ));
                                 if (null !== ($manager = $this->getManager())) {
                                     // Get the tokens for the partial
+
+                                    // First, reset the delimiters
+                                    $delimStart = $this->patterns[self::DS];
+                                    $delimEnd   = $this->patterns[self::DE];
+                                    $this->patterns[self::DS] = self::DEFAULT_DELIM_START;
+                                    $this->patterns[self::DE] = self::DEFAULT_DELIM_END;
+                                    
+                                    // Tokenize the partial
                                     $partialTokens = $manager->tokenize($partial);
+
+                                    // Restore the delimiters
+                                    $this->patterns[self::DS] = $delimStart;
+                                    $this->patterns[self::DE] = $delimEnd;
+
                                     $token[1]['tokens'] = $partialTokens;
                                 }
                                 $tokens[] = $token;
@@ -194,7 +207,7 @@ class Lexer
                                 break;
                             case '=':
                                 // Delimiter set
-                                if (!$preg_match('/^=(\S+)\s+(\S+)=$/', $tagData, $matches)) {
+                                if (!preg_match('/^=(\S+)\s+(\S+)=$/', $tagData, $matches)) {
                                     throw new Exception\InvalidDelimiterException('Did not find delimiters!');
                                 }
                                 $this->patterns[self::DS] = $delimStart = $matches[1];
@@ -325,15 +338,15 @@ class Lexer
             switch ($type) {
                 case self::TOKEN_SECTION:
                 case self::TOKEN_SECTION_INVERT:
-                    $delimStart = $this->patterns['delim_start'];
-                    $delimEnd   = $this->patterns['delim_end'];
+                    $delimStart = $this->patterns[self::DS];
+                    $delimEnd   = $this->patterns[self::DE];
 
                     $token[1]['content'] = $this->compile($token[1]['template']);
                     $tokens[$key] = $token;
 
                     // Reset delimiters to retain scope
-                    $this->patterns['delim_start'] = $delimStart;
-                    $this->patterns['delim_end']   = $delimEnd;
+                    $this->patterns[self::DS] = $delimStart;
+                    $this->patterns[self::DE] = $delimEnd;
                     break;
                 default:
                     // do nothing
