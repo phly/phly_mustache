@@ -1,6 +1,5 @@
 API documentation
 Tests 
     tokenization
-End-user docs (particularly for extending via pragmas)
 Whitespace handling
     If a section start and/or end is on a line by itself, don't add whitespace (including newlines)
