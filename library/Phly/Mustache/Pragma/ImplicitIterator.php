@@ -50,7 +50,7 @@ class ImplicitIterator extends AbstractPragma
         $iterator = isset($options['iterator']) ? $options['iterator'] : '.';
         if ($iterator === $data) {
             // Match found, so replace the value
-            return ($escape) ? $this->escape($view) : $view;
+            return ($escape) ? $this->getRenderer()->escape($view) : $view;
         }
     }
 }

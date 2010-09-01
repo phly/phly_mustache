@@ -427,4 +427,43 @@ You just won $1000000 (which is $400000 after tax)
 EOT;
         $this->assertEquals($expected, $test);
     }
+
+    /**
+     * @group pragma
+     */
+    public function testPragmasAreSectionSpecific()
+    {
+        $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
+        $test = $this->mustache->render('template-with-pragma-in-section', array(
+            'type' => 'style',
+            'section' => array(
+                'subsection' => array(1, 2, 3),
+            ),
+            'section2' => array(
+                'subsection' => array(1, 2, 3),
+            ),
+        ));
+        $this->assertEquals(1, substr_count($test, '1'), $test);
+        $this->assertEquals(1, substr_count($test, '2'), $test);
+        $this->assertEquals(1, substr_count($test, '3'), $test);
+    }
+
+    /**
+     * @group pragma
+     */
+    public function testPragmasDoNotExtendToPartials()
+    {
+        $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
+        $test = $this->mustache->render('template-with-pragma-and-partial', array(
+            'type' => 'style',
+            'section' => array(
+                'subsection' => array(1, 2, 3),
+            ),
+        ));
+        $this->assertEquals(1, substr_count($test, 'Some content, with style'));
+        $this->assertEquals(1, substr_count($test, 'This is from the partial'));
+        $this->assertEquals(0, substr_count($test, '1'));
+        $this->assertEquals(0, substr_count($test, '2'));
+        $this->assertEquals(0, substr_count($test, '3'));
+    }
 }

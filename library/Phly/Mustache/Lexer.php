@@ -34,7 +34,7 @@ class Lexer
     protected $patterns = array(
         'delim_start' => self::DEFAULT_DELIM_START,
         'delim_end'   => self::DEFAULT_DELIM_END,
-        'varname'     => '([a-z][a-z0-9_?.-]*|[.])',
+        'varname'     => '([a-z.][a-z0-9_?.-]*|[.])',
         'pragma'      => '[A-Z][A-Z0-9_-]*',
     );
 

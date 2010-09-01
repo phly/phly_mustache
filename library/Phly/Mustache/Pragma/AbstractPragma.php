@@ -3,7 +3,8 @@
 namespace Phly\Mustache\Pragma;
 
 use Phly\Mustache\Pragma,
-    Phly\Mustache\Renderer;
+    Phly\Mustache\Renderer,
+    Phly\Mustache\Lexer;
 
 abstract class AbstractPragma implements Pragma
 {
@@ -39,6 +40,16 @@ abstract class AbstractPragma implements Pragma
     public function setRenderer(Renderer $renderer)
     {
         $this->renderer = $renderer;
+    }
+
+    /**
+     * Retrieve renderer
+     * 
+     * @return Renderer
+     */
+    public function getRenderer()
+    {
+        return $this->renderer;
     }
 
     /**

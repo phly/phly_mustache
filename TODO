@@ -1,7 +1,5 @@
 API documentation
 Tests 
-    Pragmas are section-specific
-    Pragmas should only apply to the current template (not partials)
     for recursive sections and partials
     tokenization
 End-user docs (particularly for extending via pragmas)
