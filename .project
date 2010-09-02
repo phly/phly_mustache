@@ -5,6 +5,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
  library=library {
   Phly=Phly {
    Mustache=Mustache {
+    _autoload.php
     Exception.php
     Lexer.php
     Mustache.php

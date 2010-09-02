@@ -32,6 +32,7 @@ At this time, it has support for the following:
  - Pragmas are section specific
  - Pragmas do not extend to partials
  - Handles recursive partials
+ - Lexer strips unwanted whitespace from tokens
 
 Architecture
 ============
@@ -48,6 +49,7 @@ Usage
 =====
 Usage is fairly straightforward:
 
+    include '/path/to/library/Phly/Mustache/_autoload.php';
     use Phly\Mustache\Mustache;
 
     $mustache = new Mustache();
@@ -100,6 +102,14 @@ the return value of the callback will be used.
     };
 
 The following sections detail unique and/or advanced features of phly_mustache.
+
+Autoloading
+===========
+phly_mustache follows the PSR-0 standard for class naming conventions, meaning
+any PSR-0-compliant class loader will work. To simplify things out of the box,
+the component contains an "_autoload.php" file which will register an autoloader
+for the phly_mustache component with spl_autoload. You can simply include that
+file, and start using phly_mustache.
 
 Higher Order Sections
 =====================

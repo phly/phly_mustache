@@ -1,22 +1,49 @@
 <?php
-
+/**
+ * phly_mustache
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
+/** @namespace */
 namespace Phly\Mustache;
 
+/**
+ * Mustache Lexer
+ *
+ * Compiles mustache templates into a list of tokens.
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ */
 class Lexer
 {
-    // Constants referenced within lexer
+    /**@+
+     * Constants referenced within lexer
+     * @var string
+     */
     CONST DS                  = 'delim_start';
     CONST DE                  = 'delim_end';
     CONST VARNAME             = 'varname';
     const DEFAULT_DELIM_START = '{{';
     const DEFAULT_DELIM_END   = '}}';
+    /**@-*/
 
-    // State constants
+    /**@+
+     * Constants referencing lexing states
+     * @var int
+     */
     const STATE_CONTENT = 0;
     const STATE_TAG     = 1;
     const STATE_SECTION = 2;
+    /**@-*/
 
-    // Token constants
+    /**@+
+     * Constants referencing token types
+     * @var int
+     */
     const TOKEN_CONTENT         = 100;
     const TOKEN_VARIABLE        = 101;
     const TOKEN_VARIABLE_RAW    = 102;
@@ -26,6 +53,7 @@ class Lexer
     const TOKEN_PARTIAL         = 106;
     const TOKEN_DELIM_SET       = 107;
     const TOKEN_PRAGMA          = 108;
+    /**@-*/
 
     /**
      * Patterns referenced by lexer
@@ -418,6 +446,9 @@ class Lexer
             default:
                 break;
         }
+
+        // Analyze preceding token; if content token, and ending with a newline 
+        // and optionally whitespace, trim the whitespace.
         if (($position - 1) > -1) {
             $previous = $tokens[$position - 1];
             $type = $previous[0];
@@ -431,6 +462,9 @@ class Lexer
                 $tokens[$position - 1] = $previous;
             }
         }
+
+        // Analyze next token. If it is a content token, and begins with optional
+        // whitespace, followed by a newline, trim this whitespace.
         if (isset($tokens[$position + 1])) {
             $next = $tokens[$position + 1];
             $type = $next[0];

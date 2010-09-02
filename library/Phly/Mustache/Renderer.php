@@ -1,7 +1,25 @@
 <?php
+/**
+ * phly_mustache
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
 
+/** @namespace */
 namespace Phly\Mustache;
 
+/**
+ * Mustache renderer
+ *
+ * Loops through tokens, performing substitutions from the view, branching
+ * based on token type and/or view values.
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ */
 class Renderer
 {
     /**
@@ -240,6 +258,11 @@ class Renderer
         return $this;
     }
 
+    /**
+     * Get escaping mechanism
+     * 
+     * @return callback
+     */
     public function getEscaper()
     {
         if (null === $this->escaper) {
@@ -325,7 +348,7 @@ class Renderer
      * @param  mixed $view 
      * @return mixed
      */
-    protected function getValue($key, $view)
+    public function getValue($key, $view)
     {
         if (is_scalar($view)) {
             return '';

@@ -1,7 +1,31 @@
 <?php
+/**
+ * phly_mustache
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
 
+/** @namespace */
 namespace Phly\Mustache;
 
+/**
+ * Pragma interface
+ * 
+ * Pragmas may be used to extend the capabilities of the renderer. Typically,
+ * this will involve parsing tokens slightly differently (implicit-iterator 
+ * allows specifying what "variable" token name can be used), or allowing
+ * alternate subsitution strategies (for instance, allowing scalar views, or
+ * replacing contents with a string representation of an object).
+ *
+ * In most cases, you will want to extend {@link Phly\Mustache\Pragma\AbstractPragma},
+ * as it provides some convenience features.
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ */
 interface Pragma
 {
     /**

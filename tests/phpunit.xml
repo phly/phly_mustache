@@ -1,14 +1,14 @@
 <phpunit bootstrap="./bootstrap.php">
-    <testsuite name="Phly Mustache Test Suite">
+    <testsuite name="phly_mustache Test Suite">
         <directory>./</directory>
     </testsuite>
 
     <filter>
+        <blacklist>
+            <directory suffix=".mustache">./PhlyTest/Mustache/templates</directory>
+        </blacklist>
         <whitelist>
             <directory suffix=".php">../library/</directory>
-            <exclude>
-                <!-- <directory suffix=".phtml">../application/</directory> -->
-            </exclude>
         </whitelist>
     </filter>
 

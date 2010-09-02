@@ -1,9 +1,39 @@
 <?php
+/**
+ * phly_mustache
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ * @subpackage Pragma
+ * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
 
+/** @namespace */
 namespace Phly\Mustache\Pragma;
 
 use Phly\Mustache\Lexer;
 
+/**
+ * IMPLICIT-ITERATOR pragma
+ *
+ * When enabled, allows passing an indexed array or Traversable object to a 
+ * section within a view, instead of an array of associative arrays or array of 
+ * objects. By default, the tag {{.}} will render the current item in the array;
+ * you may specify an alternate tag name using the "iterator" option of the 
+ * pragma:
+ *
+ * <code>
+ * {{%IMPLICIT-ITERATOR iterator=foo}}
+ * {{#section}}
+ *     {{foo}}
+ * {{/section}}
+ * </code>
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ * @subpackage Pragma
+ */
 class ImplicitIterator extends AbstractPragma
 {
     protected $name = 'IMPLICIT-ITERATOR';

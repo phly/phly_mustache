@@ -1,10 +1,27 @@
 <?php
+/**
+ * phly_mustache
+ *
+ * @category   PhlyTest
+ * @package    phly_mustache
+ * @subpackage UnitTests
+ * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
 
+/** @namespace */
 namespace PhlyTest\Mustache;
 
 use Phly\Mustache\Mustache,
     Phly\Mustache\Pragma;
 
+/**
+ * Unit tests for Mustache implementation
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ * @subpackage UnitTests
+ */
 class MustacheTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
