@@ -217,3 +217,27 @@ for details on how it accomplishes this, as well as the unit test
     PhlyTest\Mustache\MustacheTest::testHonorsImplicitIteratorPragma() 
 
 for details on usage.
+
+Caching Tokens
+==============
+Tokens from parsed templates may be cached for later usage; alternately, a new
+instance of phly_mustache may be seeded with cached tokens from a previous
+instance. 
+
+To get the list of tokens, use the following:
+
+    $tokens = $mustache->getAllTokens();
+
+This will return a list of template name/token list pairs, based on the
+templates compiled by this instance. You may then seed another instance using
+the following:
+
+    $mustache->restoreTokens($tokens);
+
+This will overwrite any tokens already compiled by that instance.
+
+Since the tokens are template name/token list pairs, you can safely pass them to
+array_merge(), allowing multiple instances of phly_mustache to build up a large
+cache of template tokens. This will greatly improve performance when rendering
+templates on subsequent calls -- particularly if you cache the tokens in a
+memory store such as memcached.

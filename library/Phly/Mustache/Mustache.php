@@ -200,6 +200,37 @@ class Mustache
     }
 
     /**
+     * Returns an array of template name/token list pairs
+     *
+     * Returns an array of template name/token list pairs for all templates
+     * which have been rendered by this instance. These can then be cached for
+     * use with other instances, either in parallel or later.
+     *
+     * To seed an instance with these tokens, use {@link restoreTokens()}.
+     * 
+     * @return array
+     */
+    public function getAllTokens()
+    {
+        return $this->cachedTemplates;
+    }
+
+    /**
+     * Restore or seed this instance's list of cached template tokens
+     *
+     * This list should be in the form of template name/token list pairs, 
+     * ideally as received from {@link getAllTokens()}. 
+     * 
+     * @param  array $tokens 
+     * @return Mustache
+     */
+    public function restoreTokens(array $tokens)
+    {
+        $this->cachedTemplates = $tokens;
+        return $this;
+    }
+
+    /**
      * Locate and retrieve a template in the template path stack
      * 
      * @param  string $template 
