@@ -218,6 +218,19 @@ for details on how it accomplishes this, as well as the unit test
 
 for details on usage.
 
+Whitespace Stripping
+====================
+Because this is a very literal compiler, whitespace can sometimes be an issue. A
+number of measures have been built in to reduce such issues by stripping
+whitespace (primarily newlines) surrounding certain tokens, but they come at a
+slight performance penalty.
+
+For markup languages like XML, XHTML or HTML5, you likely will not run into
+issues in the final rendered output. As such, you can optionally disable
+whitespace stripping:
+
+    $mustache->getLexer()->disableStripWhitespace(true);
+
 Caching Tokens
 ==============
 Tokens from parsed templates may be cached for later usage; alternately, a new
