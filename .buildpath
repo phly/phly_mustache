@@ -2,5 +2,5 @@
 <buildpath>
 	<buildpathentry kind="con" path="com.zend.php.phpunit.CONTAINER"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-	<buildpathentry excluding="*.mustache" including="library/**/*.php|tests/**/*.php" kind="src" path=""/>
+	<buildpathentry kind="src" path=""/>
 </buildpath>
