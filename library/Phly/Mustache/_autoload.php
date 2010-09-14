@@ -19,6 +19,8 @@ $_map = array (
   'Phly\\Mustache\\Exception' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception.php',
   'Phly\\Mustache\\Pragma\\AbstractPragma' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/AbstractPragma.php',
   'Phly\\Mustache\\Pragma\\ImplicitIterator' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/ImplicitIterator.php',
+  'Phly\\Mustache\\Pragma\\SubView' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/SubView.php',
+  'Phly\\Mustache\\Pragma\\SubViews' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/SubViews.php',
   'Phly\\Mustache\\Pragma' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma.php',
 );
 spl_autoload_register(function($class) use ($_map) {

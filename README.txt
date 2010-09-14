@@ -172,52 +172,6 @@ A few things to remember when using partials:
 Basically, partials render in their own scope. If you remember that one rule,
 you should have no problems.
 
-Pragmas
-=======
-Pragmas are tags of the form:
-
- {{%PRAGMA-NAME option=value}}
-
-where options are key/value pairs, and are entirely optional. Pragmas are
-user-defined, and can be used to extend and/or modify the capabilities of the
-renderer.
-
-Pragmas should implement Phly\Mustache\Pragma, which defines methods for
-retrieving the pragma name (used during registration of the pragma, and
-referenced by templates; this is case sensitive currently), determining whether
-or not the pragma can intercept rendering of a specific token type, and handling
-the token. 
-
-Pragmas should be registered _before_ rendering any template that references
-them. 
-
-    $this->mustache->getRenderer()->addPragma($pragmaObject);
-    // ...
-    $this->mustache->render(/*...*/);
-
-When declared in a template, they exist for the duration of the current
-scope, which means:
-
- - If declared in a section, they apply to that section and any child sections
-   *only*
- - If declared for a file, they apply to that file and all child sections *only*
- - Pragmas are never passed on to partials; each partial is rendered with an
-   empty set of pragmas, and must declare any pragmas it requires for
-   appropriate rendering.
-
-An example is the "IMPLICIT-ITERATOR" pragma, which is included with this
-distribution. This pragma allows iteration of indexed arrays or Traversable
-objects with scalar values, with the option of specifying the iterator "key" to
-use within the template. You can review
-
-    library/Phly/Mustache/Pragma/ImplicitIterator.php 
-
-for details on how it accomplishes this, as well as the unit test
-
-    PhlyTest\Mustache\MustacheTest::testHonorsImplicitIteratorPragma() 
-
-for details on usage.
-
 Whitespace Stripping
 ====================
 Because this is a very literal compiler, whitespace can sometimes be an issue. A
@@ -254,3 +208,111 @@ array_merge(), allowing multiple instances of phly_mustache to build up a large
 cache of template tokens. This will greatly improve performance when rendering
 templates on subsequent calls -- particularly if you cache the tokens in a
 memory store such as memcached.
+
+Pragmas
+=======
+Pragmas are tags of the form:
+
+ {{%PRAGMA-NAME option=value}}
+
+where options are key/value pairs, and are entirely optional. Pragmas are
+user-defined, and can be used to extend and/or modify the capabilities of the
+renderer.
+
+Pragmas should implement Phly\Mustache\Pragma, which defines methods for
+retrieving the pragma name (used during registration of the pragma, and
+referenced by templates; this is case sensitive currently), determining whether
+or not the pragma can intercept rendering of a specific token type, and handling
+the token. 
+
+Pragmas should be registered _before_ rendering any template that references
+them. 
+
+    $this->mustache->getRenderer()->addPragma($pragmaObject);
+    // ...
+    $this->mustache->render(/*...*/);
+
+When declared in a template, they exist for the duration of the current
+scope, which means:
+
+ - If declared in a section, they apply to that section and any child sections
+   *only*
+ - If declared for a file, they apply to that file and all child sections *only*
+ - Pragmas are never passed on to partials; each partial is rendered with an
+   empty set of pragmas, and must declare any pragmas it requires for
+   appropriate rendering.
+
+For ideas on how you might use or implement pragmas, examine the pragmas shipped
+with phly_mustache.
+
+Pragmas shipped with phly_mustache
+----------------------------------
+
+IMPLICIT-ITERATOR
+This pragma allows iteration of indexed arrays or Traversable objects with
+scalar values, with the option of specifying the iterator "key" to use within
+the template. By default, a variable key "." will be replaced by the current
+value of the iterator.
+
+A sample template:
+
+    {{#some_iterable_data}}
+        {{.}}
+    {{/some_iterable_data}}
+
+To use an explicit iterator key, specify it via the "iterator" option of the
+pragma:
+
+    {{%IMPLICIT-ITERATOR iterator=bob}}
+    {{#some_iterable_data}}
+        {{bob}}
+    {{/some_iterable_data}}
+
+SUB-VIEWS
+The Sub-Views pragma allows you to implement the two-step view pattern using
+Mustache. When active, any variable whose value is an instance of
+Phly\Mustache\Pragma\SubView will be substituted by rendering the template and
+view that object encapsulates.
+
+The SubView class takes a template name and a view as a constructor:
+
+    use Phly\Mustache\Pragma\SubView;
+    $subView = new SubView('some-partial', array('name' => 'Matthew'));
+
+That object is then assigned as a value to a view key:
+
+    $view = new \stdClass;
+    $view->content = $subView;
+
+The template might look like this:
+
+    {{!layout}}
+    {{%SUB-VIEWS}}
+    <html>
+    <body>
+        {{content}}
+    </body>
+    </html>
+
+and the partial like this:
+
+    {{!some-partial}}
+    Hello, {{name}}!
+
+Rendering the view:
+
+    use Phly\Mustache\Mustache,
+        Phly\Mustache\Pragma\SubViews;
+    $mustache = new Mustache();
+    $subViews = new SubViews($mustache);
+    $rendered = $mustache->render('layout', $view);
+
+will result in:
+
+    <html>
+    <body>
+        Hello, Matthew!
+    </body>
+    </html>
+
+Sub views may be nested, and re-used.

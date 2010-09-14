@@ -1,76 +1,22 @@
-mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" {
- LICENSE
- README.txt
- TODO
- library=library {
-  Phly=Phly {
-   Mustache=Mustache {
-    _autoload.php
-    Exception.php
-    Lexer.php
-    Mustache.php
-    Pragma.php
-    Renderer.php
-    Exception=Exception {
-     InvalidDelimiterException.php
-     InvalidEscaperException.php
-     InvalidPartialsException.php
-     InvalidPragmaNameException.php
-     InvalidStateException.php
-     InvalidTemplateException.php
-     InvalidTemplatePathException.php
-     InvalidVariableNameException.php
-     TemplateNotFoundException.php
-     UnbalancedSectionException.php
-     UnbalancedTagException.php
-     UnregisteredPragmaException.php
-    }
-    Pragma=Pragma {
-     AbstractPragma.php
-     ImplicitIterator.php
-    }
-   }
-  }
- }
- tests=tests {
-  bootstrap.php
-  phpunit.xml
-  PhlyTest=PhlyTest {
-   Mustache=Mustache {
-    MustacheTest.php
-    TestAsset=TestAsset {
-     NestedObject.php
-     PartialView.php
-     ViewWithArrayEnumerable.php
-     ViewWithHigherOrderSection.php
-     ViewWithMethod.php
-     ViewWithNestedObjects.php
-     ViewWithObjectForPartial.php
-     ViewWithTraversableObject.php
-    }
-    templates=templates filter="*.mustache" {
-     crazy_recursive.mustache
-     node.mustache
-     partial-template.mustache
-     partial-with-section.mustache
-     renders-file-templates.mustache
-     template-with-aliased-partial.mustache
-     template-with-comments.mustache
-     template-with-conditional.mustache
-     template-with-delim-set-in-section.mustache
-     template-with-delim-set.mustache
-     template-with-dereferencing.mustache
-     template-with-enumerable.mustache
-     template-with-implicit-iterator.mustache
-     template-with-inverted-section.mustache
-     template-with-method-substitution.mustache
-     template-with-partial.mustache
-     template-with-partials-and-delim-set.mustache
-     template-with-pragma-in-section.mustache
-     template-with-pragma-and-partial.mustache
-     template-with-sections-and-delim-set.mustache
-    }
-   }
-  }
- }
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>phly_mustache</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.wst.validation.validationbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.dltk.core.scriptbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.php.core.PHPNature</nature>
+	</natures>
+</projectDescription>

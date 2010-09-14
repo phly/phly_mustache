@@ -28,6 +28,8 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
     Pragma=Pragma {
      AbstractPragma.php
      ImplicitIterator.php
+     SubView.php
+     SubViews.php
     }
    }
   }
@@ -38,6 +40,9 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
   PhlyTest=PhlyTest {
    Mustache=Mustache {
     MustacheTest.php
+    Pragma=Pragma {
+     SubViewsTest.php
+    }
     TestAsset=TestAsset {
      NestedObject.php
      PartialView.php
@@ -54,6 +59,9 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      partial-template.mustache
      partial-with-section.mustache
      renders-file-templates.mustache
+     sub-view-containing-sub-views.mustache
+     sub-view-sidebar.mustache
+     sub-view-template.mustache
      template-with-aliased-partial.mustache
      template-with-comments.mustache
      template-with-conditional.mustache
@@ -69,6 +77,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      template-with-pragma-in-section.mustache
      template-with-pragma-and-partial.mustache
      template-with-sections-and-delim-set.mustache
+     template-with-sub-view.mustache
     }
    }
   }
