@@ -1,5 +1,7 @@
 Phly\Mustache
 =============
+This branch is a PHP 5.2 version of Phly\Mustache.
+
 Phly\Mustache is a Mustache (http://mustache.github.com) implementation written
 for PHP 5.3+. It conforms to the principles of mustache, and allows for
 extension of the format via pragmas.

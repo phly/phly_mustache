@@ -9,9 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace PhlyTest\Mustache\TestAsset;
-
 /**
  * View containing content used by a partial
  *
@@ -19,7 +16,7 @@ namespace PhlyTest\Mustache\TestAsset;
  * @package    phly_mustache
  * @subpackage UnitTests
  */
-class ViewWithObjectForPartial
+class PhlyTest_Mustache_TestAsset_ViewWithObjectForPartial
 {
     public $name = 'Joe';
     public $winnings;

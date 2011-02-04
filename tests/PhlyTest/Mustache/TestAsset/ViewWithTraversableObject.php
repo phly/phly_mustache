@@ -9,9 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace PhlyTest\Mustache\TestAsset;
-
 /**
  * View containing a traversable object
  *
@@ -19,14 +16,14 @@ namespace PhlyTest\Mustache\TestAsset;
  * @package    phly_mustache
  * @subpackage UnitTests
  */
-class ViewWithTraversableObject
+class PhlyTest_Mustache_TestAsset_ViewWithTraversableObject
 {
     public $name = "Joe's shopping card";
     public $items;
 
     public function __construct()
     {
-        $this->items = new \ArrayObject(array(
+        $this->items = new ArrayObject(array(
             array('item' => 'bananas'),
             array('item' => 'apples'),
         ));

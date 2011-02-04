@@ -9,9 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace PhlyTest\Mustache\TestAsset;
-
 /**
  * View containing a nested object
  *
@@ -19,10 +16,10 @@ namespace PhlyTest\Mustache\TestAsset;
  * @package    phly_mustache
  * @subpackage UnitTests
  */
-class ViewWithNestedObjects
+class PhlyTest_Mustache_TestAsset_ViewWithNestedObjects
 {
     public function __construct()
     {
-        $this->a = new NestedObject();
+        $this->a = new PhlyTest_Mustache_TestAsset_NestedObject();
     }
 }

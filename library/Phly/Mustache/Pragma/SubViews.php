@@ -9,12 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace Phly\Mustache\Pragma;
-
-use Phly\Mustache\Mustache,
-    Phly\Mustache\Lexer;
-
 /**
  * SUB-VIEWS pragma
  *
@@ -51,7 +45,7 @@ use Phly\Mustache\Mustache,
  *
  * Along with the following view:
  * <code>
- * $content = new SubView('controller/action', array(
+ * $content = new Phly_Mustache_Pragma_SubView('controller/action', array(
  *     'name'     => 'Matthew',
  *     'greeting' => 'Welcome',
  * ));
@@ -77,24 +71,24 @@ use Phly\Mustache\Mustache,
  * @package    phly_mustache
  * @subpackage Pragma
  */
-class SubViews extends AbstractPragma
+class Phly_Mustache_Pragma_SubViews extends Phly_Mustache_Pragma_AbstractPragma
 {
     protected $name = 'SUB-VIEWS';
 
     protected $tokensHandled = array(
-        Lexer::TOKEN_VARIABLE,
+        Phly_Mustache_Lexer::TOKEN_VARIABLE,
     );
 
-    /** @var Mustache */
+    /** @var Phly_Mustache_Mustache */
     protected $manager;
 
     /**
      * Constructor
      * 
-     * @param  Mustache $manager 
+     * @param  Phly_Mustache_Mustache $manager 
      * @return void
      */
-    public function __construct(Mustache $manager = null)
+    public function __construct(Phly_Mustache_Mustache $manager = null)
     {
         if (null !== $manager) {
             $this->setManager($manager);
@@ -106,10 +100,10 @@ class SubViews extends AbstractPragma
      *
      * Sets manager object and registers self as a pragma on the renderer.
      * 
-     * @param  Mustache $manager 
-     * @return SubViews
+     * @param  Phly_Mustache_Mustache $manager 
+     * @return Phly_Mustache_Pragma_SubViews
      */
-    public function setManager(Mustache $manager)
+    public function setManager(Phly_Mustache_Mustache $manager)
     {
         $this->manager = $manager;
         $this->manager->getRenderer()->addPragma($this);
@@ -119,7 +113,7 @@ class SubViews extends AbstractPragma
     /**
      * Retrieve manager object
      * 
-     * @return Mustache
+     * @return Phly_Mustache_Mustache
      */
     public function getManager()
     {
@@ -145,7 +139,7 @@ class SubViews extends AbstractPragma
         }
 
         // If the view value is not a SubView, we can't handle it here
-        if (!$view[$data] instanceof SubView) {
+        if (!$view[$data] instanceof Phly_Mustache_Pragma_SubView) {
             return;
         }
 

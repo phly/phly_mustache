@@ -8,9 +8,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace Phly\Mustache;
-
 /**
  * Pragma interface
  * 
@@ -26,7 +23,7 @@ namespace Phly\Mustache;
  * @category   Phly
  * @package    phly_mustache
  */
-interface Pragma
+interface Phly_Mustache_Pragma
 {
     /**
      * Retrieve the name of the pragma
@@ -41,7 +38,7 @@ interface Pragma
      * @param  Renderer $renderer 
      * @return void
      */
-    public function setRenderer(Renderer $renderer);
+    public function setRenderer(Phly_Mustache_Renderer $renderer);
 
     /**
      * Whether or not this pragma can handle the given token

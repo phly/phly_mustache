@@ -7,11 +7,6 @@
  * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
-/** @namespace */
-namespace Phly\Mustache;
-
-use ArrayObject,
-    SplStack;
 
 /**
  * Mustache implementation
@@ -20,13 +15,13 @@ use ArrayObject,
  * @category Phly
  * @package  phly_mustache
  */
-class Mustache
+class Phly_Mustache_Mustache
 {
     /** @var array Cached file-based templates; contains template name/token pairs */
     protected $cachedTemplates = array();
 
-    /** @var SplStack Stack of template paths to search */
-    protected $templatePath;
+    /** @var array Stack of template paths to search */
+    protected $templatePath = array();
 
     /** @var Lexer */
     protected $lexer;
@@ -38,22 +33,12 @@ class Mustache
     protected $suffix = '.mustache';
 
     /**
-     * Constructor
-     * 
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->templatePath = new SplStack;
-    }
-
-    /**
      * Set lexer to use when tokenizing templates
      * 
      * @param  Lexer $lexer 
      * @return Mustache
      */
-    public function setLexer(Lexer $lexer)
+    public function setLexer(Phly_Mustache_Lexer $lexer)
     {
         $this->lexer = $lexer;
         $this->lexer->setManager($this);
@@ -68,7 +53,7 @@ class Mustache
     public function getLexer()
     {
         if (null === $this->lexer) {
-            $this->setLexer(new Lexer());
+            $this->setLexer(new Phly_Mustache_Lexer());
         }
         return $this->lexer;
     }
@@ -79,7 +64,7 @@ class Mustache
      * @param  Renderer $renderer 
      * @return Mustache
      */
-    public function setRenderer(Renderer $renderer)
+    public function setRenderer(Phly_Mustache_Renderer $renderer)
     {
         $this->renderer = $renderer;
         $this->renderer->setManager($this);
@@ -94,7 +79,7 @@ class Mustache
     public function getRenderer()
     {
         if (null === $this->renderer) {
-            $this->setRenderer(new Renderer());
+            $this->setRenderer(new Phly_Mustache_Renderer());
         }
         return $this->renderer;
     }
@@ -109,9 +94,9 @@ class Mustache
     public function setTemplatePath($path)
     {
         if (!is_dir($path)) {
-            throw new Exception\InvalidTemplatePathException();
+            throw new Phly_Mustache_Exception_InvalidTemplatePathException();
         }
-        $this->templatePath->push($path);
+        $this->templatePath[] = $path;
         return $this;
     }
 
@@ -153,7 +138,7 @@ class Mustache
         $tokenizedPartials = array();
         if (null !== $partials) {
             if (!is_array($partials) && !is_object($partials)) {
-                throw new Exception\InvalidPartialsException();
+                throw new Phly_Mustache_Exception_InvalidPartialsException();
             }
 
             // Get tokenized partials
@@ -247,6 +232,6 @@ class Mustache
                 return $content;
             }
         }
-        throw new Exception\TemplateNotFoundException('Template by name "' . $template . '" not found');
+        throw new Phly_Mustache_Exception_TemplateNotFoundException('Template by name "' . $template . '" not found');
     }
 }

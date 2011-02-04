@@ -9,11 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace Phly\Mustache\Exception;
-
-use Phly\Mustache\Exception;
-
 /**
  * Exception raised when an invalid template path is provided
  *
@@ -21,8 +16,8 @@ use Phly\Mustache\Exception;
  * @package    phly_mustache
  * @subpackage Exception
  */
-class InvalidTemplatePathException 
-    extends \Exception 
-    implements Exception
+class Phly_Mustache_Exception_InvalidTemplatePathException 
+    extends Exception 
+    implements Phly_Mustache_Exception
 {
 }

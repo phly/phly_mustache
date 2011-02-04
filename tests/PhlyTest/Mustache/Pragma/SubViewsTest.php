@@ -9,13 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace PhlyTest\Mustache\Pragma;
-
-use Phly\Mustache\Mustache,
-    Phly\Mustache\Pragma\SubViews,
-    Phly\Mustache\Pragma\SubView;
-
 /**
  * Unit tests for Sub-Views pragma
  *
@@ -23,20 +16,20 @@ use Phly\Mustache\Mustache,
  * @package    phly_mustache
  * @subpackage UnitTests
  */
-class SubViewsTest extends \PHPUnit_Framework_TestCase
+class PhlyTest_Mustache_Pragma_SubViewsTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->mustache = new Mustache();
+        $this->mustache = new Phly_Mustache_Mustache();
         $this->mustache->setTemplatePath(__DIR__ . '/../templates');
-        $subViews = new SubViews();
+        $subViews = new Phly_Mustache_Pragma_SubViews();
         $subViews->setManager($this->mustache);
         $this->mustache->getRenderer()->addPragma($subViews);
     }
 
     public function testSubViewContentIsCapturedInParent()
     {
-        $content = new SubView('sub-view-template', array(
+        $content = new Phly_Mustache_Pragma_SubView('sub-view-template', array(
             'greeting' => 'Hello',
             'name'     => 'World',
         ));
@@ -47,12 +40,12 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
 
     public function testRendersNestedSubViews()
     {
-        $sidebar = new SubView('sub-view-sidebar', array('name' => 'final'));
-        $content = new SubView('sub-view-template', array(
+        $sidebar = new Phly_Mustache_Pragma_SubView('sub-view-sidebar', array('name' => 'final'));
+        $content = new Phly_Mustache_Pragma_SubView('sub-view-template', array(
             'greeting' => 'Goodbye',
             'name'     => 'cruel world',
         ));
-        $mainContent = new SubView('sub-view-containing-sub-views', array(
+        $mainContent = new Phly_Mustache_Pragma_SubView('sub-view-containing-sub-views', array(
             'content' => $content,
             'sidebar' => $sidebar,
         ));
@@ -63,8 +56,8 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
 
     public function testSubViewUsesParentViewWhenNoViewProvided()
     {
-        $sidebar = new SubView('sub-view-sidebar');
-        $content = new SubView('sub-view-template');
+        $sidebar = new Phly_Mustache_Pragma_SubView('sub-view-sidebar');
+        $content = new Phly_Mustache_Pragma_SubView('sub-view-template');
         $view = array(
             'name'     => 'bat', 
             'greeting' => 'Shabaz', 

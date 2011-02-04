@@ -8,9 +8,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace Phly\Mustache;
-
 /**
  * Mustache renderer
  *
@@ -20,7 +17,7 @@ namespace Phly\Mustache;
  * @category   Phly
  * @package    phly_mustache
  */
-class Renderer
+class Phly_Mustache_Renderer
 {
     /**
      * @var Mustache
@@ -44,7 +41,7 @@ class Renderer
      * @param  Mustache $manager 
      * @return Lexer
      */
-    public function setManager(Mustache $manager)
+    public function setManager(Phly_Mustache_Mustache $manager)
     {
         $this->manager = $manager;
         return $this;
@@ -103,19 +100,19 @@ class Renderer
                 continue;
             }
             switch ($type) {
-                case Lexer::TOKEN_CONTENT:
+                case Phly_Mustache_Lexer::TOKEN_CONTENT:
                     $rendered .= $data;
                     break;
-                case Lexer::TOKEN_VARIABLE:
+                case Phly_Mustache_Lexer::TOKEN_VARIABLE:
                     $value = $this->getValue($data, $view);
                     $value = ('' === $value) ? '' : $this->escape($value);
                     $rendered .= $value;
                     break;
-                case Lexer::TOKEN_VARIABLE_RAW:
+                case Phly_Mustache_Lexer::TOKEN_VARIABLE_RAW:
                     $value = $this->getValue($data, $view);
                     $rendered .= $value;
                     break;
-                case Lexer::TOKEN_SECTION:
+                case Phly_Mustache_Lexer::TOKEN_SECTION:
                     if ($inLoop) {
                         // In a loop, with scalar values; skip
                         break;
@@ -132,7 +129,7 @@ class Renderer
                         // For a boolean true, pass the current view
                         $sectionView = $view;
                     }
-                    if (is_array($section) || $section instanceof \Traversable) {
+                    if (is_array($section) || $section instanceof Traversable) {
                         if (is_array($section) && $this->isAssocArray($section)) {
                             // Nested view; pass it as the view
                             $sectionView = $section;
@@ -152,7 +149,7 @@ class Renderer
                         $pragmas = $this->invokedPragmas;
                         $rendered .= call_user_func($section, $data['template'], function($text) use ($renderer, $view, $partials) {
                             $manager = $renderer->getManager();
-                            if (!$manager instanceof Mustache) {
+                            if (!$manager instanceof Phly_Mustache_Mustache) {
                                 return $text;
                             }
                             $tokens = $manager->tokenize($text);
@@ -173,7 +170,7 @@ class Renderer
                     $rendered .= $this->render($data['content'], $sectionView);
                     $this->registerPragmas($pragmas);
                     break;
-                case Lexer::TOKEN_SECTION_INVERT:
+                case Phly_Mustache_Lexer::TOKEN_SECTION_INVERT:
                     if ($inLoop) {
                         // In a loop, with scalar values; skip
                         break;
@@ -190,7 +187,7 @@ class Renderer
                     $rendered .= $this->render($data['content'], $view);
                     $this->registerPragmas($pragmas);
                     break;
-                case Lexer::TOKEN_PARTIAL:
+                case Phly_Mustache_Lexer::TOKEN_PARTIAL:
                     if ($inLoop) {
                         // In a loop, with scalar values; skip
                         break;
@@ -204,11 +201,11 @@ class Renderer
                             $rendered .= $this->render($partials[$data['partial']], $view);
                         } else {
                             $manager = $this->getManager();
-                            if ($manager  instanceof Mustache) {
+                            if ($manager  instanceof Phly_Mustache_Mustache) {
                                 $partialTokens = $manager->tokenize($data['partial']);
                                 $rendered .= $this->render($partialTokens, $view);
                             } else {
-                                throw new Exception\InvalidPartialException('Unable to resolve partial "' . $data['partial'] . '"');
+                                throw new Phly_Mustache_Exception_InvalidPartialException('Unable to resolve partial "' . $data['partial'] . '"');
                             }
                         }
                         $this->registerPragmas($pragmas);
@@ -217,11 +214,11 @@ class Renderer
                     $rendered .= $this->render($data['tokens'], $view);
                     $this->registerPragmas($pragmas);
                     break;
-                case Lexer::TOKEN_PRAGMA:
+                case Phly_Mustache_Lexer::TOKEN_PRAGMA:
                     $this->registerPragma($data);
                     break;
-                case Lexer::TOKEN_DELIM_SET:
-                case Lexer::TOKEN_COMMENT:
+                case Phly_Mustache_Lexer::TOKEN_DELIM_SET:
+                case Phly_Mustache_Lexer::TOKEN_COMMENT:
                 default:
                     // do nothing; only necessary for tokenization/parsing
                     break;
@@ -252,7 +249,7 @@ class Renderer
     public function setEscaper($callback)
     {
         if (!is_callable($callback)) {
-            throw new Exception\InvalidEscaperException();
+            throw new Phly_Mustache_Exception_InvalidEscaperException();
         }
         $this->escaper = $callback;
         return $this;
@@ -266,11 +263,22 @@ class Renderer
     public function getEscaper()
     {
         if (null === $this->escaper) {
-            $this->escaper = function($value) {
-                return htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8');
-            };
+            $this->escaper = array($this, 'defaultEscaper');
         }
         return $this->escaper;
+    }
+
+    /**
+     * Default escape mechanism
+     *
+     * Introduced, as PHP 5.2 does not have closures.
+     * 
+     * @param  string $value 
+     * @return string
+     */
+    public function defaultEscaper($value)
+    {
+        return htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8');
     }
 
     /**
@@ -281,7 +289,7 @@ class Renderer
      * @param  Pragma $pragma 
      * @return Renderer
      */
-    public function addPragma(Pragma $pragma)
+    public function addPragma(Phly_Mustache_Pragma $pragma)
     {
         $pragma->setRenderer($this);
         $this->pragmas[$pragma->getName()] = $pragma;
@@ -313,7 +321,7 @@ class Renderer
      * Get a registered pragma by name
      * 
      * @param  string $name 
-     * @return null|Pragma
+     * @return null|Phly_Mustache_Pragma
      */
     public function getPragma($name)
     {
@@ -395,7 +403,7 @@ class Renderer
     {
         $name = $definition['pragma'];
         if (!$this->hasPragma($name)) {
-            throw new Exception\UnregisteredPragmaException('No handler for pragma "' . $name . '" registered; cannot proceed rendering');
+            throw new Phly_Mustache_Exception_UnregisteredPragmaException('No handler for pragma "' . $name . '" registered; cannot proceed rendering');
         }
         $this->invokedPragmas[$name] = $definition['options'];
     }

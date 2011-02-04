@@ -9,12 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace PhlyTest\Mustache;
-
-use Phly\Mustache\Mustache,
-    Phly\Mustache\Pragma;
-
 /**
  * Unit tests for Mustache implementation
  *
@@ -22,11 +16,11 @@ use Phly\Mustache\Mustache,
  * @package    phly_mustache
  * @subpackage UnitTests
  */
-class MustacheTest extends \PHPUnit_Framework_TestCase
+class PhlyTest_Mustache_MustacheTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->mustache = new Mustache();
+        $this->mustache = new Phly_Mustache_Mustache();
         $this->mustache->setTemplatePath(__DIR__ . '/templates');
     }
 
@@ -49,7 +43,7 @@ class MustacheTest extends \PHPUnit_Framework_TestCase
 
     public function testCanUseObjectPropertiesForSubstitutions()
     {
-        $view = new \stdClass;
+        $view = new stdClass;
         $view->planet = 'World';
         $test = $this->mustache->render(
             'Hello {{planet}}',
@@ -60,7 +54,7 @@ class MustacheTest extends \PHPUnit_Framework_TestCase
 
     public function testCanUseMethodReturnValueForSubstitutions()
     {
-        $chris = new TestAsset\ViewWithMethod;
+        $chris = new PhlyTest_Mustache_TestAsset_ViewWithMethod;
         $test = $this->mustache->render(
             'template-with-method-substitution',
             $chris
@@ -74,7 +68,7 @@ EOT;
 
     public function testTemplateMayUseConditionals()
     {
-        $chris = new TestAsset\ViewWithMethod;
+        $chris = new PhlyTest_Mustache_TestAsset_ViewWithMethod;
         $test = $this->mustache->render(
             'template-with-conditional',
             $chris
@@ -90,7 +84,7 @@ EOT;
 
     public function testConditionalIsSkippedIfValueIsFalse()
     {
-        $chris = new TestAsset\ViewWithMethod;
+        $chris = new PhlyTest_Mustache_TestAsset_ViewWithMethod;
         $chris->in_ca = false;
         $test = $this->mustache->render(
             'template-with-conditional',
@@ -106,7 +100,7 @@ EOT;
 
     public function testConditionalIsSkippedIfValueIsEmpty()
     {
-        $chris = new TestAsset\ViewWithMethod;
+        $chris = new PhlyTest_Mustache_TestAsset_ViewWithMethod;
         $chris->in_ca = null;
         $test = $this->mustache->render(
             'template-with-conditional',
@@ -125,7 +119,7 @@ EOT;
      */
     public function testTemplateIteratesArrays()
     {
-        $view = new TestAsset\ViewWithArrayEnumerable;
+        $view = new PhlyTest_Mustache_TestAsset_ViewWithArrayEnumerable;
         $test = $this->mustache->render(
             'template-with-enumerable',
             $view
@@ -146,7 +140,7 @@ EOT;
      */
     public function testTemplateIteratesTraversableObjects()
     {
-        $view = new TestAsset\ViewWithTraversableObject;
+        $view = new PhlyTest_Mustache_TestAsset_ViewWithTraversableObject;
         $test = $this->mustache->render(
             'template-with-enumerable',
             $view
@@ -167,7 +161,7 @@ EOT;
      */
     public function testHigherOrderSectionsRenderInsideOut()
     {
-        $view = new TestAsset\ViewWithHigherOrderSection();
+        $view = new PhlyTest_Mustache_TestAsset_ViewWithHigherOrderSection();
         $test = $this->mustache->render(
             '{{#bolder}}Hi {{name}}.{{/bolder}}',
             $view
@@ -216,7 +210,7 @@ EOT;
      */
     public function testTemplateWillDereferenceNestedObjects()
     {
-        $view = new TestAsset\ViewWithNestedObjects;
+        $view = new PhlyTest_Mustache_TestAsset_ViewWithNestedObjects;
         $test = $this->mustache->render(
             'template-with-dereferencing',
             $view
@@ -249,7 +243,7 @@ EOT;
      */
     public function testRendersPartials()
     {
-        $view = new TestAsset\ViewWithObjectForPartial();
+        $view = new PhlyTest_Mustache_TestAsset_ViewWithObjectForPartial();
         $test = $this->mustache->render(
             'template-with-partial',
             $view
@@ -263,7 +257,7 @@ EOT;
      */
     public function testAllowsAliasingPartials()
     {
-        $view = new TestAsset\ViewWithObjectForPartial();
+        $view = new PhlyTest_Mustache_TestAsset_ViewWithObjectForPartial();
         $test = $this->mustache->render(
             'template-with-aliased-partial',
             $view,
@@ -306,7 +300,7 @@ EOT;
      */
     public function testHonorsImplicitIteratorPragma()
     {
-        $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
+        $this->mustache->getRenderer()->addPragma(new Phly_Mustache_Pragma_ImplicitIterator());
         $view = array('foo' => array(1, 2, 3, 4, 5, 'french'));
         $test = $this->mustache->render(
             'template-with-implicit-iterator',
@@ -417,7 +411,7 @@ EOT;
      */
     public function testPragmasAreSectionSpecific()
     {
-        $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
+        $this->mustache->getRenderer()->addPragma(new Phly_Mustache_Pragma_ImplicitIterator());
         $test = $this->mustache->render('template-with-pragma-in-section', array(
             'type' => 'style',
             'section' => array(
@@ -438,7 +432,7 @@ EOT;
      */
     public function testPragmasDoNotExtendToPartials()
     {
-        $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
+        $this->mustache->getRenderer()->addPragma(new Phly_Mustache_Pragma_ImplicitIterator());
         $test = $this->mustache->render('template-with-pragma-and-partial', array(
             'type' => 'style',
             'section' => array(

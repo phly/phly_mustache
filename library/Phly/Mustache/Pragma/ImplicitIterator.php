@@ -9,11 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace Phly\Mustache\Pragma;
-
-use Phly\Mustache\Lexer;
-
 /**
  * IMPLICIT-ITERATOR pragma
  *
@@ -34,13 +29,13 @@ use Phly\Mustache\Lexer;
  * @package    phly_mustache
  * @subpackage Pragma
  */
-class ImplicitIterator extends AbstractPragma
+class Phly_Mustache_Pragma_ImplicitIterator extends Phly_Mustache_Pragma_AbstractPragma
 {
     protected $name = 'IMPLICIT-ITERATOR';
 
     protected $tokensHandled = array(
-        Lexer::TOKEN_VARIABLE,
-        Lexer::TOKEN_VARIABLE_RAW,
+        Phly_Mustache_Lexer::TOKEN_VARIABLE,
+        Phly_Mustache_Lexer::TOKEN_VARIABLE_RAW,
     );
 
     /**
@@ -64,10 +59,10 @@ class ImplicitIterator extends AbstractPragma
         // Do we escape?
         $escape = true;
         switch ($token) {
-            case Lexer::TOKEN_VARIABLE:
+            case Phly_Mustache_Lexer::TOKEN_VARIABLE:
                 // Yes
                 break;
-            case Lexer::TOKEN_VARIABLE_RAW:
+            case Phly_Mustache_Lexer::TOKEN_VARIABLE_RAW:
                 // No
                 $escape = false;
                 break;

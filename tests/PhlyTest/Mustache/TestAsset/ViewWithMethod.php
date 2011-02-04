@@ -9,9 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace PhlyTest\Mustache\TestAsset;
-
 /**
  * View containing a method
  *
@@ -19,7 +16,7 @@ namespace PhlyTest\Mustache\TestAsset;
  * @package    phly_mustache
  * @subpackage UnitTests
  */
-class ViewWithMethod
+class PhlyTest_Mustache_TestAsset_ViewWithMethod
 {
     public $name  = 'Chris';
     public $value = 1000000;

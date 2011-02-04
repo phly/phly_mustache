@@ -9,9 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace PhlyTest\Mustache\TestAsset;
-
 /**
  * View with an embedded array enumerable for iteration
  *
@@ -19,7 +16,7 @@ namespace PhlyTest\Mustache\TestAsset;
  * @package    phly_mustache
  * @subpackage UnitTests
  */
-class ViewWithArrayEnumerable
+class PhlyTest_Mustache_TestAsset_ViewWithArrayEnumerable
 {
     public $name = "Joe's shopping card";
     public $items = array(

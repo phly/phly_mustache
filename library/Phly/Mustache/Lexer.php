@@ -7,8 +7,6 @@
  * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
-/** @namespace */
-namespace Phly\Mustache;
 
 /**
  * Mustache Lexer
@@ -18,7 +16,7 @@ namespace Phly\Mustache;
  * @category   Phly
  * @package    phly_mustache
  */
-class Lexer
+class Phly_Mustache_Lexer
 {
     /**@+
      * Constants referenced within lexer
@@ -67,7 +65,7 @@ class Lexer
     );
 
     /**
-     * @var Mustache
+     * @var Phly_Mustache_Mustache
      */
     protected $manager;
 
@@ -78,7 +76,7 @@ class Lexer
      * Set or get the flag indicating whether or not to strip whitespace
      * 
      * @param  null|bool $flag Null indicates retrieving; boolean value sets
-     * @return bool|Lexer
+     * @return bool|Phly_Mustache_Lexer
      */
     protected function disableStripWhitespace($flag = null)
     {
@@ -94,10 +92,10 @@ class Lexer
      *
      * Used internally to resolve and tokenize partials
      * 
-     * @param  Mustache $manager 
-     * @return Lexer
+     * @param  Phly_Mustache_Mustache $manager 
+     * @return Phly_Mustache_Lexer
      */
-    public function setManager(Mustache $manager)
+    public function setManager(Phly_Mustache_Mustache $manager)
     {
         $this->manager = $manager;
         return $this;
@@ -106,7 +104,7 @@ class Lexer
     /**
      * Retrieve the mustache manager
      * 
-     * @return null|Mustache
+     * @return null|Phly_Mustache_Mustache
      */
     public function getManager()
     {
@@ -119,12 +117,12 @@ class Lexer
      * @todo   Store full matched text with each token?
      * @param  string $string 
      * @return array
-     * @throws Exception
+     * @throws Phly_Mustache_Exception
      */
     public function compile($string, $templateName = null)
     {
         if (!is_string($string)) {
-            throw new Exception\InvalidTemplateException();
+            throw new Phly_Mustache_Exception_InvalidTemplateException();
         }
 
         $len     = strlen($string);
@@ -256,7 +254,7 @@ class Lexer
                             case '=':
                                 // Delimiter set
                                 if (!preg_match('/^=(\S+)\s+(\S+)=$/', $tagData, $matches)) {
-                                    throw new Exception\InvalidDelimiterException('Did not find delimiters!');
+                                    throw new Phly_Mustache_Exception_InvalidDelimiterException('Did not find delimiters!');
                                 }
                                 $this->patterns[self::DS] = $delimStart = $matches[1];
                                 $this->patterns[self::DE] = $delimEnd   = $matches[2];
@@ -276,13 +274,13 @@ class Lexer
                                 if (!strstr($data, '=')) {
                                     // No options
                                     if (!preg_match('/^(?P<pragma>' . $this->patterns['pragma'] . ')$/', $data, $matches)) {
-                                        throw new Exception\InvalidPragmaNameException();
+                                        throw new Phly_Mustache_Exception_InvalidPragmaNameException();
                                     }
                                     $pragma = $matches['pragma'];
                                 } else {
                                     list($pragma, $options) = explode(' ', $data, 2);
                                     if (!preg_match('/^' . $this->patterns['pragma'] . '$/', $pragma)) {
-                                        throw new Exception\InvalidPragmaNameException();
+                                        throw new Phly_Mustache_Exception_InvalidPragmaNameException();
                                     }
                                     $pairs = explode(' ', $options);
                                     $options = array();
@@ -305,7 +303,7 @@ class Lexer
                             default:
                                 // We have a simple variable replacement
                                 if (!preg_match($this->patterns[self::VARNAME], $tagData)) {
-                                    throw new Exception\InvalidVariableNameException('Invalid variable name provided (' . $tagData . ')');
+                                    throw new Phly_Mustache_Exception_InvalidVariableNameException('Invalid variable name provided (' . $tagData . ')');
                                 }
 
                                 // Create token
@@ -362,7 +360,7 @@ class Lexer
                     ++$i;
                     break;
                 default:
-                    throw new Exception\InvalidStateException('Invalid state invoked ("' . var_export($state, 1) . '")?');
+                    throw new Phly_Mustache_Exception_InvalidStateException('Invalid state invoked ("' . var_export($state, 1) . '")?');
             }
         }
 
@@ -374,10 +372,10 @@ class Lexer
                 break;
             case self::STATE_TAG:
                 // Un-closed content
-                throw new Exception\UnbalancedTagException();
+                throw new Phly_Mustache_Exception_UnbalancedTagException();
             case self::STATE_SECTION:
                 // Un-closed section
-                throw new Exception\UnbalancedSectionException('Unbalanced section in template');
+                throw new Phly_Mustache_Exception_UnbalancedSectionException('Unbalanced section in template');
         }
 
         // Tokenize any sections discovered, strip whitespaces as necessary

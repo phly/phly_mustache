@@ -9,12 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace Phly\Mustache\Pragma;
-
-use Phly\Mustache\Exception\InvalidTemplateException,
-    InvalidArgumentException;
-
 /**
  * Sub-view description
  *
@@ -25,7 +19,7 @@ use Phly\Mustache\Exception\InvalidTemplateException,
  * @package    phly_mustache
  * @subpackage Pragma
  */
-class SubView
+class Phly_Mustache_Pragma_SubView
 {
     /** @var string */
     protected $template;
@@ -43,7 +37,7 @@ class SubView
     public function __construct($template, $view = null)
     {
         if (!is_string($template)) {
-            throw new InvalidTemplateException();
+            throw new Phly_Mustache_Exception_InvalidTemplateException();
         }
         if (null !== $view && !is_array($view) && !is_object($view)) {
             throw new InvalidArgumentException('View must be an array or object');

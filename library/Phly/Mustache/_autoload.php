@@ -1,30 +1,34 @@
 <?php
-namespace Mustache;
-$_map = array (
-  'Phly\\Mustache\\Lexer' => __DIR__ . DIRECTORY_SEPARATOR . 'Lexer.php',
-  'Phly\\Mustache\\Exception\\InvalidVariableNameException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/InvalidVariableNameException.php',
-  'Phly\\Mustache\\Exception\\InvalidPragmaNameException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/InvalidPragmaNameException.php',
-  'Phly\\Mustache\\Exception\\UnregisteredPragmaException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/UnregisteredPragmaException.php',
-  'Phly\\Mustache\\Exception\\InvalidStateException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/InvalidStateException.php',
-  'Phly\\Mustache\\Exception\\InvalidTemplatePathException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/InvalidTemplatePathException.php',
-  'Phly\\Mustache\\Exception\\TemplateNotFoundException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/TemplateNotFoundException.php',
-  'Phly\\Mustache\\Exception\\InvalidTemplateException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/InvalidTemplateException.php',
-  'Phly\\Mustache\\Exception\\UnbalancedTagException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/UnbalancedTagException.php',
-  'Phly\\Mustache\\Exception\\InvalidDelimiterException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/InvalidDelimiterException.php',
-  'Phly\\Mustache\\Exception\\InvalidPartialsException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/InvalidPartialsException.php',
-  'Phly\\Mustache\\Exception\\InvalidEscaperException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/InvalidEscaperException.php',
-  'Phly\\Mustache\\Exception\\UnbalancedSectionException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/UnbalancedSectionException.php',
-  'Phly\\Mustache\\Mustache' => __DIR__ . DIRECTORY_SEPARATOR . 'Mustache.php',
-  'Phly\\Mustache\\Renderer' => __DIR__ . DIRECTORY_SEPARATOR . 'Renderer.php',
-  'Phly\\Mustache\\Exception' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception.php',
-  'Phly\\Mustache\\Pragma\\AbstractPragma' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/AbstractPragma.php',
-  'Phly\\Mustache\\Pragma\\ImplicitIterator' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/ImplicitIterator.php',
-  'Phly\\Mustache\\Pragma\\SubView' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/SubView.php',
-  'Phly\\Mustache\\Pragma\\SubViews' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/SubViews.php',
-  'Phly\\Mustache\\Pragma' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma.php',
-);
-spl_autoload_register(function($class) use ($_map) {
-    if (array_key_exists($class, $_map)) {
-        require_once $_map[$class];
+function Phly_Mustache_autoload($class) 
+{
+    static $map = null;
+    if (null === $map) {
+        $map = array (
+            'Phly_Mustache_Lexer' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Lexer.php',
+            'Phly_Mustache_Exception_InvalidVariableNameException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/InvalidVariableNameException.php',
+            'Phly_Mustache_Exception_InvalidPragmaNameException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/InvalidPragmaNameException.php',
+            'Phly_Mustache_Exception_UnregisteredPragmaException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/UnregisteredPragmaException.php',
+            'Phly_Mustache_Exception_InvalidStateException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/InvalidStateException.php',
+            'Phly_Mustache_Exception_InvalidTemplatePathException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/InvalidTemplatePathException.php',
+            'Phly_Mustache_Exception_TemplateNotFoundException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/TemplateNotFoundException.php',
+            'Phly_Mustache_Exception_InvalidTemplateException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/InvalidTemplateException.php',
+            'Phly_Mustache_Exception_UnbalancedTagException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/UnbalancedTagException.php',
+            'Phly_Mustache_Exception_InvalidDelimiterException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/InvalidDelimiterException.php',
+            'Phly_Mustache_Exception_InvalidPartialsException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/InvalidPartialsException.php',
+            'Phly_Mustache_Exception_InvalidEscaperException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/InvalidEscaperException.php',
+            'Phly_Mustache_Exception_UnbalancedSectionException' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception/UnbalancedSectionException.php',
+            'Phly_Mustache_Mustache' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Mustache.php',
+            'Phly_Mustache_Renderer' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Renderer.php',
+            'Phly_Mustache_Exception' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception.php',
+            'Phly_Mustache_Pragma_AbstractPragma' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Pragma/AbstractPragma.php',
+            'Phly_Mustache_Pragma_ImplicitIterator' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Pragma/ImplicitIterator.php',
+            'Phly_Mustache_Pragma_SubView' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Pragma/SubView.php',
+            'Phly_Mustache_Pragma_SubViews' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Pragma/SubViews.php',
+            'Phly_Mustache_Pragma' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Pragma.php',
+        );
     }
-});
+    if (array_key_exists($class, $map)) {
+        require_once $map[$class];
+    }
+}
+spl_autoload_register('Phly_Mustache_autoload');

@@ -9,13 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace Phly\Mustache\Pragma;
-
-use Phly\Mustache\Pragma,
-    Phly\Mustache\Renderer,
-    Phly\Mustache\Lexer;
-
 /**
  * Abstract pragma implementation
  *
@@ -23,7 +16,7 @@ use Phly\Mustache\Pragma,
  * @package    phly_mustache
  * @subpackage Pragma
  */
-abstract class AbstractPragma implements Pragma
+abstract class Phly_Mustache_Pragma_AbstractPragma implements Phly_Mustache_Pragma
 {
     /**
      * @var string Pragma name
@@ -35,7 +28,7 @@ abstract class AbstractPragma implements Pragma
      */
     protected $tokensHandled = array();
 
-    /** @var Renderer */
+    /** @var Phly_Mustache_Renderer */
     protected $renderer;
 
     /**
@@ -51,10 +44,10 @@ abstract class AbstractPragma implements Pragma
     /**
      * Set the renderer instance
      * 
-     * @param  Renderer $renderer 
+     * @param  Phly_Mustache_Renderer $renderer 
      * @return void
      */
-    public function setRenderer(Renderer $renderer)
+    public function setRenderer(Phly_Mustache_Renderer $renderer)
     {
         $this->renderer = $renderer;
     }
@@ -62,7 +55,7 @@ abstract class AbstractPragma implements Pragma
     /**
      * Retrieve renderer
      * 
-     * @return Renderer
+     * @return Phly_Mustache_Renderer
      */
     public function getRenderer()
     {

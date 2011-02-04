@@ -9,9 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace PhlyTest\Mustache\TestAsset;
-
 /**
  * View intended to be included as part of a partial
  *
@@ -19,7 +16,7 @@ namespace PhlyTest\Mustache\TestAsset;
  * @package    phly_mustache
  * @subpackage UnitTests
  */
-class PartialView
+class PhlyTest_Mustache_TestAsset_PartialView
 {
     public $value = 1000;
     public function taxed_value() 

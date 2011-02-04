@@ -8,15 +8,12 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace Phly\Mustache;
-
 /**
  * Base exception interface
  *
  * @category   Phly
  * @package    phly_mustache
  */
-interface Exception
+interface Phly_Mustache_Exception
 {
 }

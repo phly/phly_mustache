@@ -9,9 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
-namespace PhlyTest\Mustache\TestAsset;
-
 /**
  * View with a nested object
  *
@@ -19,16 +16,16 @@ namespace PhlyTest\Mustache\TestAsset;
  * @package    phly_mustache
  * @subpackage UnitTests
  */
-class NestedObject
+class PhlyTest_Mustache_TestAsset_NestedObject
 {
     public $title = 'this is an object';
     public $description = 'one of its attributes is a list';
 
     public function __construct()
     {
-        $item1 = new \stdClass;
+        $item1 = new stdClass;
         $item1->label = 'listitem1';
-        $item2 = new \stdClass;
+        $item2 = new stdClass;
         $item2->label = 'listitem2';
         $this->list = array(
             $item1,
