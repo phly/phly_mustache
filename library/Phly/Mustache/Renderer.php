@@ -108,7 +108,16 @@ class Renderer
                     break;
                 case Lexer::TOKEN_VARIABLE:
                     $value = $this->getValue($data, $view);
-                    $value = ('' === $value) ? '' : $this->escape($value);
+                    if (is_scalar($value)) {
+                        $value = ('' === $value) ? '' : $this->escape($value);
+                    } else {
+                        $pragmaView = array_merge($view, array($data => $value));
+                        if ($test = $this->handlePragmas($type, $data, $pragmaView)) {
+                            $value = $test;
+                        } else {
+                            $value = (string) $value;
+                        }
+                    }
                     $rendered .= $value;
                     break;
                 case Lexer::TOKEN_VARIABLE_RAW:

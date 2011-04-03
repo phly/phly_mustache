@@ -60,6 +60,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      partial-with-section.mustache
      renders-file-templates.mustache
      sub-view-containing-sub-views.mustache
+     sub-view-from-closure.mustache
      sub-view-sidebar.mustache
      sub-view-template.mustache
      template-with-aliased-partial.mustache

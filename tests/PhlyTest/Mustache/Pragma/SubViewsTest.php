@@ -74,4 +74,19 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
         $test = $this->mustache->render('sub-view-containing-sub-views', $view);
         $this->assertRegexp('/Shabaz, bat.*?bat sidebar/s', $test, $test);
     }
+
+    /**
+     * @group closure
+     */
+    public function testShouldRenderSubViewReturnedByClosure()
+    {
+        $view = array('closure' => function() { 
+            return new SubView('sub-view-template', array(
+                'greeting' => 'Shalom',
+                'name'     => 'Ishmael',
+            ));
+        });
+        $test = $this->mustache->render('sub-view-from-closure', $view);
+        $this->assertContains('Shalom, Ishmael', $test);
+    }
 }
