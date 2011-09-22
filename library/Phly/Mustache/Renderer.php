@@ -364,14 +364,15 @@ class Renderer
         }
         if (is_object($view)) {
             if (isset($view->$key)) {
-                if (is_callable($view->$key)) {
+                if (is_callable($view->$key) && $this->isValidCallback($view->$key)) {
                     return call_user_func($view->$key);
                 }
+                return $view->$key;
             }
             return '';
         }
         if (isset($view[$key])) {
-            if (is_callable($view[$key])) {
+            if (is_callable($view[$key]) && $this->isValidCallback($view[$key])) {
                 return call_user_func($view[$key]);
             }
             return $view[$key];
@@ -456,5 +457,31 @@ class Renderer
                 }
             }
         }
+    }
+
+    /**
+     * Is the callback provided valid?
+     * 
+     * @param  callback $callback 
+     * @return bool
+     */
+    protected function isValidCallback($callback)
+    {
+        if (is_string($callback)) {
+            if (strstr($callback, '::')) {
+                // Referencing a static method call
+                return true;
+            }
+            if (strstr($callback, '\\')) {
+                // Referencing a namespaced function
+                return true;
+            }
+
+            // For security purposes, we don't want to call global functions
+            return false;
+        }
+
+        // Object or array callback -- always okay
+        return true;
     }
 }

@@ -79,6 +79,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      template-with-pragma-and-partial.mustache
      template-with-sections-and-delim-set.mustache
      template-with-sub-view.mustache
+     template-referencing-php-function.mustache
     }
    }
   }

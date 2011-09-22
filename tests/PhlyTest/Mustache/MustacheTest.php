@@ -552,4 +552,25 @@ EOT;
             ),
         );
     }
+
+    /**
+     * @group injection-issues
+     */
+    public function testArrayValuesThatReferToPHPBuiltInsShouldNotCallThem()
+    {
+        $test = $this->mustache->render('template-referencing-php-function', array(
+            'message' => 'time',
+        ));
+        $this->assertEquals('time', trim($test));
+    }
+
+    /**
+     * @group injection-issues
+     */
+    public function testObjectPropertiesThatReferToPHPBuiltInsShouldNotCallThem()
+    {
+        $model = (object) array('message' => 'time');
+        $test  = $this->mustache->render('template-referencing-php-function', $model);
+        $this->assertEquals('time', trim($test));
+    }
 }
