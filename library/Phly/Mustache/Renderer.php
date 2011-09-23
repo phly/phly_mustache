@@ -73,19 +73,6 @@ class Renderer
         $renderer = $this;
         $inLoop   = false;
 
-        if (is_object($view)) {
-            // If we have an object, get a list of properties and methods, 
-            // giving methods precedence.
-            $props = get_object_vars($view);
-            foreach (get_class_methods($view) as $method) {
-                if ('__' == substr($method, 0, 2)) {
-                    // Omit magic methods
-                    continue;
-                }
-                $props[$method] = array($view, $method);
-            }
-            $view = $props;
-        }
         if (is_scalar($view)) {
             // Iteration over lists will sometimes involve scalars
             $inLoop = true;
@@ -111,7 +98,7 @@ class Renderer
                     if (is_scalar($value)) {
                         $value = ('' === $value) ? '' : $this->escape($value);
                     } else {
-                        $pragmaView = array_merge($view, array($data => $value));
+                        $pragmaView = array($data => $value);
                         if ($test = $this->handlePragmas($type, $data, $pragmaView)) {
                             $value = $test;
                         } else {
@@ -363,10 +350,9 @@ class Renderer
             return '';
         }
         if (is_object($view)) {
-            if (isset($view->$key)) {
-                if (is_callable($view->$key) && $this->isValidCallback($view->$key)) {
-                    return call_user_func($view->$key);
-                }
+            if (method_exists($view, $key)) {
+                return call_user_func(array($view, $key));
+            } else if (isset($view->$key)) {
                 return $view->$key;
             }
             return '';
@@ -467,21 +453,13 @@ class Renderer
      */
     protected function isValidCallback($callback)
     {
-        if (is_string($callback)) {
-            if (strstr($callback, '::')) {
-                // Referencing a static method call
-                return true;
-            }
-            if (strstr($callback, '\\')) {
-                // Referencing a namespaced function
-                return true;
-            }
-
-            // For security purposes, we don't want to call global functions
+        if (is_string($callback) || is_array($callback)) {
+            // For security purposes, we don't want to call anything that isn't
+            // an object callback
             return false;
         }
 
-        // Object or array callback -- always okay
+        // Object callback -- always okay
         return true;
     }
 }

@@ -12,6 +12,8 @@
 /** @namespace */
 namespace PhlyTest\Mustache;
 
+use Phly\Mustache\Pragma\ImplicitIterator;
+
 use Phly\Mustache\Mustache,
     Phly\Mustache\Pragma;
 
@@ -572,5 +574,26 @@ EOT;
         $model = (object) array('message' => 'time');
         $test  = $this->mustache->render('template-referencing-php-function', $model);
         $this->assertEquals('time', trim($test));
+    }
+
+    /**
+     * @group injection-issues
+     */
+    public function testArrayValuesThatReferToStaticMethodsShouldNotCallThem()
+    {
+        $model = array('message' => 'DateTime::createFromFormat');
+        $test = $this->mustache->render('template-referencing-php-function', $model);
+        $this->assertEquals('DateTime::createFromFormat', trim($test));
+    }
+
+    /**
+     * @group injection-issues
+     */
+    public function testArrayValuesThatReferToStaticMethodsInArraySyntaxShouldNotCallThem()
+    {
+        $model = array('section' => array('DateTime', 'createFromFormat'));
+        $this->mustache->getRenderer()->addPragma(new ImplicitIterator());
+        $test = $this->mustache->render('template-referencing-static-function', $model);
+        $this->assertEquals("DateTime\ncreateFromFormat", trim($test));
     }
 }
