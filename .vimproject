@@ -34,7 +34,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
    }
   }
  }
- tests=tests {
+ tests=tests CD=. {
   bootstrap.php
   phpunit.xml
   PhlyTest=PhlyTest {

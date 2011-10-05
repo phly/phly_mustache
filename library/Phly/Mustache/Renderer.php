@@ -453,10 +453,17 @@ class Renderer
      */
     protected function isValidCallback($callback)
     {
-        if (is_string($callback) || is_array($callback)) {
-            // For security purposes, we don't want to call anything that isn't
-            // an object callback
+        // For security purposes, we don't want to call anything that isn't
+        // an object callback
+        if (is_string($callback)) {
             return false;
+        }
+
+        if (is_array($callback)) {
+            $target = array_shift($callback);
+            if (!is_object($target)) {
+                return false;
+            }
         }
 
         // Object callback -- always okay
