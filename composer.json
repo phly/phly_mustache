@@ -4,14 +4,14 @@
     "keywords": ["mustache"],
     "homepage": "http://wiki.github.com/weierophinney/phly_mustache/",
     "type": "library",
-    "license": "https://raw.github.com/CHH/phly_mustache/master/LICENSE",
+    "license": "https://raw.github.com/weierophinney/phly_mustache/master/LICENSE",
     "authors": [
         {
             "name": "Matthew Weier O'Phinney"
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.3"
     },
     "autoload": {
         "psr-0": {
