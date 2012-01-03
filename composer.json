@@ -7,7 +7,9 @@
     "license": "https://raw.github.com/weierophinney/phly_mustache/master/LICENSE",
     "authors": [
         {
-            "name": "Matthew Weier O'Phinney"
+            "name": "Matthew Weier O'Phinney",
+            "email": "me@mwop.net",
+            "homepage": "http://mwop.net/"
         }
     ],
     "require": {
