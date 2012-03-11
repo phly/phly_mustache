@@ -589,6 +589,17 @@ EOT;
     /**
      * @group injection-issues
      */
+    public function testStringValuesThatReferToFunctionsShouldNotCallThem()
+    {
+        $model = array('message' => 'time');
+        $this->mustache->getRenderer()->addPragma(new ImplicitIterator());
+        $test = $this->mustache->render('template-referencing-static-function-notempty', $model);
+        $this->assertEquals('time', trim($test));
+    }
+
+    /**
+     * @group injection-issues
+     */
     public function testArrayValuesThatReferToStaticMethodsInArraySyntaxShouldNotCallThem()
     {
         $model = array('section' => array('DateTime', 'createFromFormat'));

@@ -141,7 +141,7 @@ class Renderer
                             $rendered .= $renderedSection;
                             break;
                         }
-                    } elseif (is_callable($section)) {
+                    } elseif (is_callable($section) && $this->isValidCallback($section)) {
                         // Higher order section
                         // Execute the callback, passing it the section's template 
                         // string, as well as a renderer lambda.
