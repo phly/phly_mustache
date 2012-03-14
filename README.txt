@@ -149,7 +149,7 @@ standard syntax:
 However, you may optionally pass a list of partials when rendering. When you do
 so, the list should be a set of alias/template pairs:
 
-    $mustache->render($template, array(
+    $mustache->render($template, array(), array(
         'winnings' => 'user-winnings',
     ));
 
