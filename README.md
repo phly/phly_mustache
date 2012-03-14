@@ -5,45 +5,46 @@ for PHP 5.3+. It conforms to the principles of mustache, and allows for
 extension of the format via pragmas.
 
 At this time, it has support for the following:
- - Renders string templates
- - Renders file templates
- - Can use object properties for substitutions
- - Can use method return value for substitutions
- - Template may use conditionals
- - Conditional is skipped if value is false
- - Conditional is skipped if value is empty
- - Template iterates arrays
- - Template iterates traversable objects
- - Higher order sections render inside out
- - Template will dereference nested arrays
- - Template will dereference nested objects
- - Inverted sections render on empty values
- - Renders partials
- - Allows aliasing partials
- - Escapes standard characters
- - Triple mustaches prevent escaping
- - Honors implicit iterator pragma
- - Allows setting alternate template suffix
- - Strips comments from rendered output
- - Allows specifying alternate delimiters
- - Alternate delimiters set in section only apply to that section
- - Alternate delimiters apply to child sections
- - Alternate delimiters do not carry to partials
- - Pragmas are section specific
- - Pragmas do not extend to partials
- - Handles recursive partials
- - Lexer strips unwanted whitespace from tokens
+
+- Renders string templates
+- Renders file templates
+- Can use object properties for substitutions
+- Can use method return value for substitutions
+- Template may use conditionals
+- Conditional is skipped if value is false
+- Conditional is skipped if value is empty
+- Template iterates arrays
+- Template iterates traversable objects
+- Higher order sections render inside out
+- Template will dereference nested arrays
+- Template will dereference nested objects
+- Inverted sections render on empty values
+- Renders partials
+- Allows aliasing partials
+- Escapes standard characters
+- Triple mustaches prevent escaping
+- Honors implicit iterator pragma
+- Allows setting alternate template suffix
+- Strips comments from rendered output
+- Allows specifying alternate delimiters
+- Alternate delimiters set in section only apply to that section
+- Alternate delimiters apply to child sections
+- Alternate delimiters do not carry to partials
+- Pragmas are section specific
+- Pragmas do not extend to partials
+- Handles recursive partials
+- Lexer strips unwanted whitespace from tokens
 
 Architecture
 ============
 Phly\Mustache consists of four primary classes:
 
- - Lexer: tokenizes a template
- - Renderer: renders a list of tokens, using substitions provided via a view
- - Pragma: interface for pragmas, which may modify how tokens are handled
- - Mustache: facade/gateway class. Tokenizes and renders templates, caches
-   tokens, provides partial aliasing, and acts as primary interface for
-   end-users.
+- Lexer: tokenizes a template
+- Renderer: renders a list of tokens, using substitions provided via a view
+- Pragma: interface for pragmas, which may modify how tokens are handled
+- Mustache: facade/gateway class. Tokenizes and renders templates, caches
+  tokens, provides partial aliasing, and acts as primary interface for
+  end-users.
 
 Usage
 =====
@@ -107,7 +108,7 @@ Autoloading
 ===========
 phly_mustache follows the PSR-0 standard for class naming conventions, meaning
 any PSR-0-compliant class loader will work. To simplify things out of the box,
-the component contains an "_autoload.php" file which will register an autoloader
+the component contains an "\_autoload.php" file which will register an autoloader
 for the phly_mustache component with spl_autoload. You can simply include that
 file, and start using phly_mustache.
 

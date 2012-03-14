@@ -1,6 +1,6 @@
 mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" {
  LICENSE
- README.txt
+ README.md
  TODO
  library=library {
   Phly=Phly {
