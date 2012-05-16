@@ -80,7 +80,7 @@ class Lexer
      * @param  null|bool $flag Null indicates retrieving; boolean value sets
      * @return bool|Lexer
      */
-    protected function disableStripWhitespace($flag = null)
+    public function disableStripWhitespace($flag = null)
     {
         if (null === $flag) {
             return !$this->stripWhitespaceFlag;
