@@ -204,7 +204,7 @@ class Renderer
                                 $partialTokens = $manager->tokenize($data['partial']);
                                 $rendered .= $this->render($partialTokens, $view);
                             } else {
-                                throw new Exception\InvalidPartialException('Unable to resolve partial "' . $data['partial'] . '"');
+                                throw new Exception\InvalidPartialsException('Unable to resolve partial "' . $data['partial'] . '"');
                             }
                         }
                         $this->registerPragmas($pragmas);
