@@ -9,11 +9,10 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
 namespace Phly\Mustache\Pragma;
 
-use Phly\Mustache\Exception\InvalidTemplateException,
-    InvalidArgumentException;
+use Phly\Mustache\Exception\InvalidTemplateException;
+use InvalidArgumentException;
 
 /**
  * Sub-view description
@@ -27,10 +26,16 @@ use Phly\Mustache\Exception\InvalidTemplateException,
  */
 class SubView
 {
-    /** @var string */
+    /**
+     * Template name/path
+     * @var string 
+     */
     protected $template;
 
-    /** @var null|array|object */
+    /**
+     * View
+     * @var null|array|object
+     */
     protected $view;
 
     /**

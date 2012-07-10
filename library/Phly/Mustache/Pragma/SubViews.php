@@ -9,11 +9,10 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
 namespace Phly\Mustache\Pragma;
 
-use Phly\Mustache\Mustache,
-    Phly\Mustache\Lexer;
+use Phly\Mustache\Mustache;
+use Phly\Mustache\Lexer;
 
 /**
  * SUB-VIEWS pragma
@@ -79,13 +78,24 @@ use Phly\Mustache\Mustache,
  */
 class SubViews extends AbstractPragma
 {
+    /**
+     * Name of this pragma
+     * @var string
+     */
     protected $name = 'SUB-VIEWS';
 
+    /**
+     * Tokens this pragma handles
+     * @var array
+     */
     protected $tokensHandled = array(
         Lexer::TOKEN_VARIABLE,
     );
 
-    /** @var Mustache */
+    /** 
+     * Mustache manager
+     * @var Mustache
+     */
     protected $manager;
 
     /**

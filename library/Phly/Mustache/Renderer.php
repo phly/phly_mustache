@@ -8,7 +8,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
 namespace Phly\Mustache;
 
 /**
@@ -23,17 +22,27 @@ namespace Phly\Mustache;
 class Renderer
 {
     /**
+     * The Mustache manager
      * @var Mustache
      */
     protected $manager;
 
-    /** @var array Array of registered pragmas */
+    /** 
+     * Array of registered pragmas
+     * @var array
+     */
     protected $pragmas = array();
 
-    /** @var Closure Callback for escaping variable content */
+    /** 
+     * Callback for escaping variable content
+     * @var Closure
+     */
     protected $escaper;
 
-    /** @var array List of pragmas invoked by current template */
+    /** 
+     * List of pragmas invoked by current template
+     * @var array
+     */
     protected $invokedPragmas = array();
 
     /**
@@ -65,6 +74,7 @@ class Renderer
      * 
      * @param  array $tokens 
      * @param  mixed $view 
+     * @param  array|null $partials
      * @return string
      */
     public function render(array $tokens, $view, array $partials = null)

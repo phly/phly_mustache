@@ -9,7 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
 namespace Phly\Mustache\Pragma;
 
 use Phly\Mustache\Lexer;
@@ -36,8 +35,16 @@ use Phly\Mustache\Lexer;
  */
 class ImplicitIterator extends AbstractPragma
 {
+    /**
+     * Pragma name
+     * @var string
+     */
     protected $name = 'IMPLICIT-ITERATOR';
 
+    /**
+     * Tokens handled by this pragma
+     * @var array
+     */
     protected $tokensHandled = array(
         Lexer::TOKEN_VARIABLE,
         Lexer::TOKEN_VARIABLE_RAW,

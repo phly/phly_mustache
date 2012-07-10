@@ -9,7 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
 namespace Phly\Mustache\Exception;
 
 use Phly\Mustache\Exception;
@@ -22,8 +21,6 @@ use Phly\Mustache\Exception;
  * @package    phly_mustache
  * @subpackage Exception
  */
-class UnregisteredPragmaException 
-    extends \Exception 
-    implements Exception
+class UnregisteredPragmaException extends \Exception implements Exception
 {
 }

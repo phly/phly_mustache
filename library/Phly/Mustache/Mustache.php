@@ -7,11 +7,11 @@
  * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
-/** @namespace */
+
 namespace Phly\Mustache;
 
-use ArrayObject,
-    SplStack;
+use ArrayObject;
+use SplStack;
 
 /**
  * Mustache implementation
@@ -22,19 +22,34 @@ use ArrayObject,
  */
 class Mustache
 {
-    /** @var array Cached file-based templates; contains template name/token pairs */
+    /** 
+     * Cached file-based templates; contains template name/token pairs
+     * @var array 
+     */
     protected $cachedTemplates = array();
 
-    /** @var SplStack Stack of template paths to search */
+    /**
+     * Stack of template paths to search
+     * @var SplStack 
+     */
     protected $templatePath;
 
-    /** @var Lexer */
+    /**
+     * Lexer
+     * @var Lexer
+     */
     protected $lexer;
 
-    /** @var Renderer */
+    /**
+     * Renderer
+     * @var Renderer
+     */
     protected $renderer;
 
-    /** @var string Suffix used when resolving templates */
+    /**
+     * Suffix used when resolving templates
+     * @var string 
+     */
     protected $suffix = '.mustache';
 
     /**

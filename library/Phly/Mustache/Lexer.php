@@ -7,7 +7,7 @@
  * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
-/** @namespace */
+
 namespace Phly\Mustache;
 
 /**
@@ -67,11 +67,15 @@ class Lexer
     );
 
     /**
+     * The Mustache manager
      * @var Mustache
      */
     protected $manager;
 
-    /** @var spool whether or not to strip whitespace */
+    /**
+     * Whether or not to strip whitespace
+     * @var bool
+     */
     protected $stripWhitespaceFlag = true;
 
     /**
@@ -118,6 +122,7 @@ class Lexer
      * 
      * @todo   Store full matched text with each token?
      * @param  string $string 
+     * @param  null|string $templateName Template to use in the case of a partial
      * @return array
      * @throws Exception
      */

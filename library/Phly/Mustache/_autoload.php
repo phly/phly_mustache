@@ -1,5 +1,15 @@
 <?php
+/**
+ * phly_mustache
+ *
+ * @category   Phly
+ * @package    phly_mustache
+ * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
+
 namespace Mustache;
+
 $_map = array (
   'Phly\\Mustache\\Lexer' => __DIR__ . DIRECTORY_SEPARATOR . 'Lexer.php',
   'Phly\\Mustache\\Exception\\InvalidVariableNameException' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception/InvalidVariableNameException.php',

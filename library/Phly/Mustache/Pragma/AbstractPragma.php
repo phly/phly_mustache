@@ -9,12 +9,11 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
 namespace Phly\Mustache\Pragma;
 
-use Phly\Mustache\Pragma,
-    Phly\Mustache\Renderer,
-    Phly\Mustache\Lexer;
+use Phly\Mustache\Pragma;
+use Phly\Mustache\Renderer;
+use Phly\Mustache\Lexer;
 
 /**
  * Abstract pragma implementation
@@ -26,16 +25,21 @@ use Phly\Mustache\Pragma,
 abstract class AbstractPragma implements Pragma
 {
     /**
-     * @var string Pragma name
+     * Pragma name
+     * @var string
      */
     protected $name;
 
     /**
-     * @var array Tokens this pragma handles
+     * Tokens this pragma handles
+     * @var array 
      */
     protected $tokensHandled = array();
 
-    /** @var Renderer */
+    /**
+     * Renderer
+     * @var Renderer 
+     */
     protected $renderer;
 
     /**
