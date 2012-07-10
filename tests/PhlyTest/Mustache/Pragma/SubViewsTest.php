@@ -9,12 +9,12 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
 namespace PhlyTest\Mustache\Pragma;
 
-use Phly\Mustache\Mustache,
-    Phly\Mustache\Pragma\SubViews,
-    Phly\Mustache\Pragma\SubView;
+use Phly\Mustache\Mustache;
+use Phly\Mustache\Pragma\SubView;
+use Phly\Mustache\Pragma\SubViews;
+use stdClass;
 
 /**
  * Unit tests for Sub-Views pragma
@@ -88,5 +88,20 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
         });
         $test = $this->mustache->render('sub-view-from-closure', $view);
         $this->assertContains('Shalom, Ishmael', $test);
+    }
+
+    /**
+     * @group issue-5
+     */
+    public function testStdClassComposingSubViewShouldNotRaiseError()
+    {
+        $view    = new stdClass;
+        $content = new SubView('sub-view-template', array(
+            'greeting' => 'Hello',
+            'name'     => 'World',
+        ));
+        $view->content = $content;
+        $test = $this->mustache->render('issue-5-subview', $view);
+        $this->assertEquals('Hello, World!', trim($test));
     }
 }

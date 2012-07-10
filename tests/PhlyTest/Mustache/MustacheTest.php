@@ -9,13 +9,12 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-/** @namespace */
 namespace PhlyTest\Mustache;
 
+use Phly\Mustache\Mustache;
+use Phly\Mustache\Pragma;
 use Phly\Mustache\Pragma\ImplicitIterator;
-
-use Phly\Mustache\Mustache,
-    Phly\Mustache\Pragma;
+use stdClass;
 
 /**
  * Unit tests for Mustache implementation
@@ -606,5 +605,16 @@ EOT;
         $this->mustache->getRenderer()->addPragma(new ImplicitIterator());
         $test = $this->mustache->render('template-referencing-static-function', $model);
         $this->assertEquals("DateTime\ncreateFromFormat", trim($test));
+    }
+
+    /**
+     * @group issue-5
+     */
+    public function testStdClassAsViewShouldNotRaiseError()
+    {
+        $view = new stdClass;
+        $view->content = 'This is the content';
+        $test = $this->mustache->render('issue-5', $view);
+        $this->assertEquals('This is the content', trim($test));
     }
 }
