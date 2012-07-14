@@ -28,6 +28,7 @@ $_map = array (
   'Phly\\Mustache\\Renderer' => __DIR__ . DIRECTORY_SEPARATOR . 'Renderer.php',
   'Phly\\Mustache\\Exception' => __DIR__ . DIRECTORY_SEPARATOR . 'Exception.php',
   'Phly\\Mustache\\Pragma\\AbstractPragma' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/AbstractPragma.php',
+  'Phly\\Mustache\\Pragma\\Hierarchical' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/Hierarchical.php',
   'Phly\\Mustache\\Pragma\\ImplicitIterator' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/ImplicitIterator.php',
   'Phly\\Mustache\\Pragma\\SubView' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/SubView.php',
   'Phly\\Mustache\\Pragma\\SubViews' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/SubViews.php',

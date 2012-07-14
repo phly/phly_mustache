@@ -27,6 +27,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
     }
     Pragma=Pragma {
      AbstractPragma.php
+     Hierarchical.php
      ImplicitIterator.php
      SubView.php
      SubViews.php
@@ -41,6 +42,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
    Mustache=Mustache {
     MustacheTest.php
     Pragma=Pragma {
+     HierarchicalTest.php
      SubViewsTest.php
     }
     TestAsset=TestAsset {
