@@ -68,6 +68,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      sub-view-sidebar.mustache
      sub-view-template.mustache
      sub.mustache
+     sub-incomplete.mustache
      super.mustache
      template-referencing-php-function.mustache
      template-referencing-static-function-notempty.mustache
