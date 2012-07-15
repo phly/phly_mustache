@@ -34,6 +34,20 @@ At this time, it has support for the following:
 - Pragmas do not extend to partials
 - Handles recursive partials
 - Lexer strips unwanted whitespace from tokens
+- Array values that refer to p h p built ins should not call them
+- Object properties that refer to p h p built ins should not call them
+- Array values that refer to static methods should not call them
+- String values that refer to functions should not call them
+- Array values that refer to static methods in array syntax should not call them
+- Std class as view should not raise error
+- Understands hierarchical templates
+- Placeholders are rendered as unnamed sections
+- Only placeholders with replacements receive substitutions
+- Sub view content is captured in parent
+- Renders nested sub views
+- Sub view uses parent view when no view provided
+- Should render sub view returned by closure
+- Std class composing sub view should not raise error
 
 Architecture
 ============
@@ -172,6 +186,72 @@ A few things to remember when using partials:
 
 Basically, partials render in their own scope. If you remember that one rule,
 you should have no problems.
+
+Hierarchical Views and Placeholders
+===================================
+
+(Available in versions 1.1.0 and up).
+
+Placeholders are basically unnamed sections, and are denoted by the combination
+of `{{$name}}` and `{{/name}}`. When encountered by the renderer, any mustache
+content within will be rendered as normal mustache content.
+
+Placeholders are primarily of use with the concept of hierarchical views. These
+are denoted by the combination of `{{<name}}` and `{{/name}}`. When encountered,
+the template denoted by `name` will be tokenized, and any placeholders that are
+defined in the content will be used to replace those found in the parent
+template.
+
+As an example, consider the following parent template, "super.mustache":
+
+    <html>
+    <head><title>{{$title}}Default title{{/title}}</title></head>
+    <body>
+    <div class="content">
+    {{$content}}Default content of the page{{/content}}
+    </div>
+    </body>
+    </html>
+
+If rendered by itself, it will result in the following:
+
+    <html>
+    <head><title>Default title</title></head>
+    <body>
+    <div class="content">
+    Default content of the page
+    </div>
+    </body>
+    </html>
+
+Now, consider the following child template, "sub.mustache":
+
+    {{<super}}
+    {{$title}}Profile of {{username}}{{/title}}
+    {{$content}}
+    Here is {{username}}'s profile page
+    {{/content}}
+    {{/super}}
+
+If we have a view that defines "username" as "Matthew" and render
+"sub.mustache", we'll get the following:
+
+    <html>
+    <head><title>Profile of Matthew</title></head>
+    <body>
+    <div class="content">
+    Here is Matthew's profile page
+    </div>
+    </body>
+    </html>
+
+Notice how the child retains the view context of the parent, and that all
+mustache tokens defined in it are rendered as if they were simply another
+mustache template.
+
+Hierarchical templates may be nested arbitrarily deep.
+
+(This feature was inspired by https://gist.github.com/1854699)
 
 Whitespace Stripping
 ====================
