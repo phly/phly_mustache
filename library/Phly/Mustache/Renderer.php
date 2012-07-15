@@ -196,6 +196,13 @@ class Renderer
                     $rendered .= $this->render($data['content'], $view);
                     $this->registerPragmas($pragmas);
                     break;
+                case Lexer::TOKEN_PLACEHOLDER:
+                    if ($inLoop) {
+                        // In a loop, with scalar values; skip
+                        break;
+                    }
+                    $rendered .= $this->render($data['content'], $view);
+                    break;
                 case Lexer::TOKEN_PARTIAL:
                     if ($inLoop) {
                         // In a loop, with scalar values; skip

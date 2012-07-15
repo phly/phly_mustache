@@ -617,4 +617,18 @@ EOT;
         $test = $this->mustache->render('issue-5', $view);
         $this->assertEquals('This is the content', trim($test));
     }
+
+    /**
+     * @group issue-6
+     */
+    public function testUnderstandsHierarchicalTemplates()
+    {
+        $view = new stdClass;
+        $view->username = 'Matthew';
+        $test = $this->mustache->render('sub', $view);
+        $this->assertContains('<title>Profile of Matthew | Twitter</title>', $test);
+        $this->assertRegexp('/div class="content">\s+Here is Matthew\'s profile page\s+<\/div>/s', $test);
+        $this->assertNotContains('Default title', $test);
+        $this->assertNotContains('Default content of the page', $test);
+    }
 }

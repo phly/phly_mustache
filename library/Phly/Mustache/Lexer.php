@@ -35,9 +35,9 @@ class Lexer
      * Constants referencing lexing states
      * @var int
      */
-    const STATE_CONTENT = 0;
-    const STATE_TAG     = 1;
-    const STATE_SECTION = 2;
+    const STATE_CONTENT     = 0;
+    const STATE_TAG         = 1;
+    const STATE_SECTION     = 2;
     /**@-*/
 
     /**@+
@@ -53,6 +53,8 @@ class Lexer
     const TOKEN_PARTIAL         = 106;
     const TOKEN_DELIM_SET       = 107;
     const TOKEN_PRAGMA          = 108;
+    const TOKEN_PLACEHOLDER     = 109;
+    const TOKEN_CHILD           = 110;
     /**@-*/
 
     /**
@@ -165,21 +167,36 @@ class Lexer
                         switch ($tagData[0]) {
                             case '#':
                                 // Section start
-                                $tagData = ltrim($tagData, '#');
-                                $section = trim($tagData);
+                                $tagData     = ltrim($tagData, '#');
+                                $section     = trim($tagData);
                                 $sectionData = '';
                                 $tokenType   = self::TOKEN_SECTION;
-                                $state = self::STATE_SECTION;
-                                ++$i;
+                                $state       = self::STATE_SECTION;
+                                $i          += 1;
+                                break;
+                            case '$':
+                                // Placeholder start
+                                //
+                                // Placeholders are captured as a set of tokens. They are
+                                // essentially a type of section.
+                                //
+                                // In a child template, any placeholders defined are then
+                                // replaced with the tokens they contain.
+                                $tagData     = ltrim($tagData, '$');
+                                $section     = trim($tagData);
+                                $sectionData = '';
+                                $tokenType   = self::TOKEN_PLACEHOLDER;
+                                $state       = self::STATE_SECTION;
+                                $i          += 1;
                                 break;
                             case '^':
                                 // Inverted section start
-                                $tagData = ltrim($tagData, '^');
-                                $section = trim($tagData);
+                                $tagData     = ltrim($tagData, '^');
+                                $section     = trim($tagData);
                                 $sectionData = '';
                                 $tokenType   = self::TOKEN_SECTION_INVERT;
-                                $state = self::STATE_SECTION;
-                                ++$i;
+                                $state       = self::STATE_SECTION;
+                                $i          += 1;
                                 break;
                             case '{':
                                 // Raw value start (triple mustaches)
@@ -188,23 +205,23 @@ class Lexer
                                 if ($i + 1 >= $len) {
                                     // We've already reached the end of the string
                                     $tagData .= $this->patterns[self::DE];
-                                    ++$i;
+                                    $i       += 1;
                                     break;
                                 }
                                 if ('}' !== $string[$i + 1]) {
                                     // We don't have triple mustaches yet
                                     $tagData .= $this->patterns[self::DE];
-                                    ++$i;
+                                    $i       += 1;
                                     break;
                                 }
 
                                 // Advance position by one
-                                ++$i;
+                                $i += 1;
 
                                 // Create token
                                 $tokens[] = array(self::TOKEN_VARIABLE_RAW, ltrim($tagData, '{'));
-                                $state = self::STATE_CONTENT;
-                                ++$i;
+                                $state    = self::STATE_CONTENT;
+                                $i       += 1;
                                 break;
                             case '&':
                                 // Raw value start
@@ -213,15 +230,15 @@ class Lexer
 
                                 // Create token
                                 $tokens[] = array(self::TOKEN_VARIABLE_RAW, $tagData);
-                                $state = self::STATE_CONTENT;
-                                ++$i;
+                                $state    = self::STATE_CONTENT;
+                                $i       += 1;
                                 break;
                             case '!':
                                 // Comment
                                 // Create token
                                 $tokens[] = array(self::TOKEN_COMMENT, ltrim($tagData, '!'));
-                                $state = self::STATE_CONTENT;
-                                ++$i;
+                                $state    = self::STATE_CONTENT;
+                                $i       += 1;
                                 break;
                             case '>':
                                 // Partial
@@ -254,9 +271,26 @@ class Lexer
                                     $token[1]['tokens'] = $partialTokens;
                                 }
                                 $tokens[] = $token;
-
-                                $state = self::STATE_CONTENT;
-                                ++$i;
+                                $state    = self::STATE_CONTENT;
+                                $i       += 1;
+                                break;
+                            case '<':
+                                // Template inheritance
+                                //
+                                // Indicates that the content provides placeholders for
+                                // the inherited template. The parent template is parsed,
+                                // and then the content is parsed for placeholders. Any
+                                // placeholders found are then used to replace placeholders
+                                // of the same name in the parent template. The content
+                                // is then replaced with the parent tokens.
+                                //
+                                // For purposes of first-pass lexing, it's a type of section.
+                                $tagData     = ltrim($tagData, '<');
+                                $section     = trim($tagData);
+                                $sectionData = '';
+                                $tokenType   = self::TOKEN_CHILD;
+                                $state       = self::STATE_SECTION;
+                                $i          += 1;
                                 break;
                             case '=':
                                 // Delimiter set
@@ -364,8 +398,9 @@ class Lexer
                     }
 
                     // Increment pointer
-                    ++$i;
+                    $i += 1;
                     break;
+
                 default:
                     throw new Exception\InvalidStateException('Invalid state invoked ("' . var_export($state, 1) . '")?');
             }
@@ -382,19 +417,83 @@ class Lexer
                 throw new Exception\UnbalancedTagException();
             case self::STATE_SECTION:
                 // Un-closed section
-                throw new Exception\UnbalancedSectionException('Unbalanced section in template');
+                throw new Exception\UnbalancedSectionException('Unbalanced section, placeholder, or inheritance in template');
         }
 
-        // Tokenize any sections discovered, strip whitespaces as necessary
+        // Tokenize any sections, placeholders, or child templates discovered, 
+        // strip whitespaces as necessary
+        $replaceKeys = array();
         foreach ($tokens as $key => $token) {
             $type = $token[0];
             switch ($type) {
+                case self::TOKEN_CHILD:
+                    // Need to grab the manager, compile the parent template 
+                    // (using tokenize()) referenced by the token['name']. 
+                    // If we have no manager, then we omit this section.
+                    if (null === ($manager = $this->getManager())) {
+                        $token[1]['content'] = '';
+                        $tokens[$key] = $token;
+                        break;
+                    }
+
+                    $parent = $manager->tokenize($token[1]['name']);
+
+                    // Then, we need to compile the content (compile($token['template'])).
+                    // Once done, we determine what placeholders were in the content,
+                    // and iterate over the tokens in the parent; any tokens of 
+                    // type placeholder with a matching name will be replaced 
+                    // with these tokens.
+                    $delimStart = $this->patterns[self::DS];
+                    $delimEnd   = $this->patterns[self::DE];
+
+                    $child      = $this->compile($token[1]['template'], $templateName);
+
+                    // Reset delimiters to retain scope
+                    $this->patterns[self::DS] = $delimStart;
+                    $this->patterns[self::DE] = $delimEnd;
+
+                    // Get placeholders from child
+                    $placeholders = array();
+                    foreach ($child as $childToken) {
+                        $childType = $childToken[0];
+                        if ($childType !== self::TOKEN_PLACEHOLDER) {
+                            continue;
+                        }
+                        $placeholders[$childToken[1]['name']] = $childToken[1]['content'];
+                    }
+
+                    // Replace placeholders in parent with child
+                    foreach ($parent as $p => $parentToken) {
+                        $parentType = $parentToken[0];
+                        if ($parentType !== self::TOKEN_PLACEHOLDER) {
+                            continue;
+                        }
+
+                        $placeholderName = $parentToken[1]['name'];
+                        if (!isset($placeholders[$placeholderName])) {
+                            continue;
+                        }
+
+                        $parentToken[1]['content'] = $placeholders[$placeholderName];
+                        $parent[$p] = $parentToken;
+                    }
+
+                    // At this point, we hint that we need to remove the 
+                    // previous token, and inject the tokens of the parent in 
+                    // sequence.
+                    $replaceKeys[$key] = $parent;
+                    break;
+
+                case self::TOKEN_PLACEHOLDER:
                 case self::TOKEN_SECTION:
                 case self::TOKEN_SECTION_INVERT:
                     $delimStart = $this->patterns[self::DS];
                     $delimEnd   = $this->patterns[self::DE];
 
-                    $token[1]['content'] = $this->compile($token[1]['template'], $templateName);
+                    $token[1]['content'] = $this->compile(
+                        $token[1]['template'], 
+                        $templateName
+                    );
                     $tokens[$key] = $token;
 
                     // Reset delimiters to retain scope
@@ -415,6 +514,11 @@ class Lexer
                     // do nothing
             }
         }
+
+        if (count($replaceKeys)) {
+            $tokens = $this->replaceTokens($tokens, $replaceKeys);
+        }
+
         return $tokens;
     }
 
@@ -428,6 +532,7 @@ class Lexer
     protected function stripWhitespace(&$tokens, $position)
     {
         switch ($tokens[$position][0]) {
+            case self::TOKEN_PLACEHOLDER:
             case self::TOKEN_SECTION:
             case self::TOKEN_SECTION_INVERT:
                 // Analyze first token of section, and strip leading newlines
@@ -483,5 +588,28 @@ class Lexer
                 $tokens[$position + 1] = $next;
             }
         }
+    }
+
+    /**
+     * Inject replacements from template inheritance
+     * 
+     * @param  array $originalTokens 
+     * @param  array $replacements 
+     * @return array
+     */
+    protected function replaceTokens(array $originalTokens, array $replacements)
+    {
+        $tokens = array();
+        foreach ($originalTokens as $key => $token) {
+            if (!array_key_exists($key, $replacements)) {
+                $tokens[] = $token;
+                continue;
+            }
+
+            foreach ($replacements[$key] as $replacementToken) {
+                $tokens[] = $replacementToken;
+            }
+        }
+        return $tokens;
     }
 }

@@ -27,7 +27,6 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
     }
     Pragma=Pragma {
      AbstractPragma.php
-     Hierarchical.php
      ImplicitIterator.php
      SubView.php
      SubViews.php
@@ -42,7 +41,6 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
    Mustache=Mustache {
     MustacheTest.php
     Pragma=Pragma {
-     HierarchicalTest.php
      SubViewsTest.php
     }
     TestAsset=TestAsset {
@@ -57,8 +55,10 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
     }
     templates=templates filter="*.mustache" {
      crazy_recursive.mustache
-     issue-5.mustache
+     footer.mustache;
      issue-5-subview.mustache
+     issue-5.mustache
+     navigation.mustache
      node.mustache
      partial-template.mustache
      partial-with-section.mustache
@@ -67,6 +67,11 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      sub-view-from-closure.mustache
      sub-view-sidebar.mustache
      sub-view-template.mustache
+     sub.mustache
+     super.mustache
+     template-referencing-php-function.mustache
+     template-referencing-static-function-notempty.mustache
+     template-referencing-static-function.mustache
      template-with-aliased-partial.mustache
      template-with-comments.mustache
      template-with-conditional.mustache
@@ -79,11 +84,10 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      template-with-method-substitution.mustache
      template-with-partial.mustache
      template-with-partials-and-delim-set.mustache
-     template-with-pragma-in-section.mustache
      template-with-pragma-and-partial.mustache
+     template-with-pragma-in-section.mustache
      template-with-sections-and-delim-set.mustache
      template-with-sub-view.mustache
-     template-referencing-php-function.mustache
     }
    }
   }
