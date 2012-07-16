@@ -43,11 +43,14 @@ At this time, it has support for the following:
 - Understands hierarchical templates
 - Placeholders are rendered as unnamed sections
 - Only placeholders with replacements receive substitutions
+- Dot notation is exanded to sub property of view
+- With dot notation if subproperty does not exist empty string is rendered
 - Sub view content is captured in parent
 - Renders nested sub views
 - Sub view uses parent view when no view provided
 - Should render sub view returned by closure
 - Std class composing sub view should not raise error
+
 
 Architecture
 ============
