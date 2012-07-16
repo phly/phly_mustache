@@ -655,4 +655,30 @@ EOT;
         $this->assertRegexp('/div class="content">\s+Here is Matthew\'s profile page\s+<\/div>/s', $test);
         $this->assertNotContains('Default content of the page', $test);
     }
+
+    /**
+     * @group issue-8
+     */
+    public function testDotNotationIsExandedToSubPropertyOfView()
+    {
+        $view = array(
+            'foo' => array(
+                'bar' => 'baz',
+            ),
+        );
+        $test = $this->mustache->render('dot-notation', $view);
+        $this->assertEquals('baz', trim($test));
+    }
+
+    /**
+     * @group issue-8
+     */
+    public function testWithDotNotationIfSubpropertyDoesNotExistEmptyStringIsRendered()
+    {
+        $view = array(
+            'foo' => 'bar',
+        );
+        $test = $this->mustache->render('dot-notation', $view);
+        $this->assertEquals('', trim($test));
+    }
 }

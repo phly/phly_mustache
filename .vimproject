@@ -55,6 +55,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
     }
     templates=templates filter="*.mustache" {
      crazy_recursive.mustache
+     dot-notation.mustache
      footer.mustache;
      issue-5-subview.mustache
      issue-5.mustache

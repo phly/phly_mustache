@@ -366,10 +366,15 @@ class Renderer
         if (is_scalar($view)) {
             return '';
         }
+
+        if (strpos($key, '.')) {
+            return $this->getDotValue($key, $view);
+        }
+
         if (is_object($view)) {
             if (method_exists($view, $key)) {
                 return call_user_func(array($view, $key));
-            } else if (isset($view->$key)) {
+            } elseif (isset($view->$key)) {
                 return $view->$key;
             }
             return '';
@@ -381,6 +386,29 @@ class Renderer
             return $view[$key];
         } 
         return '';
+    }
+
+    /**
+     * De-reference a "dot value"
+     *
+     * A dot value indicates a variable nested in a data structure
+     * in the view object.
+     * 
+     * @param  string $key 
+     * @param  mixed $view 
+     * @return mixed
+     */
+    protected function getDotValue($key, $view)
+    {
+        list($first, $second) = explode('.', $key, 2);
+
+        $value = $this->getValue($first, $view);
+        if (is_scalar($value)) {
+            // To de-reference, we need a data set, not scalar data
+            return '';
+        }
+
+        return $this->getValue($second, $value);
     }
 
     /**
