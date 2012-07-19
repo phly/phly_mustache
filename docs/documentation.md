@@ -6,7 +6,11 @@ extension of the format via pragmas.
 
 Autoloading
 ===========
-phly_mustache follows the PSR-0 standard for class naming conventions, meaning any PSR-0-compliant class loader will work. To simplify things out of the box, the component contains an "_autoload.php" file which will register an autoloader for the phly_mustache component with spl_autoload. You can simply include that file, and start using phly_mustache.
+phly_mustache follows the PSR-0 standard for class naming conventions, meaning any 
+PSR-0-compliant class loader will work. ( Eg https://github.com/auraphp/Aura.Autoload, Zend etc). 
+To simplify things out of the box, the component contains an "_autoload.php" file which will 
+register an autoloader for the phly_mustache component with spl_autoload. You can simply 
+include that file, and start using phly_mustache.
 
 Instantiation
 =============
@@ -16,14 +20,16 @@ Usage is fairly straightforward:
 .. code-block:: php
 
     include '/path/to/library/Phly/Mustache/_autoload.php';
-    // or use one of the PSR-0 autoloaders like (Aura.Autoload)[https://github.com/auraphp/Aura.Autoload] or Zend
+    // or use one of the PSR-0 autoloaders like Aura.Autoload or Zend
     use Phly\Mustache\Mustache;
 
     $mustache = new Mustache();
     echo $mustache->render('some-template', $view);
 
 
-By default, phly_mustache will look under the current directory for templates ending with '.mustache'; you can create a stack of directories to search by using the setTemplatePath() method:
+By default, phly_mustache will look under the current directory for templates 
+ending with '.mustache'; you can create a stack of directories to search by using 
+the setTemplatePath() method:
 
 .. code-block:: php
 
@@ -48,6 +54,7 @@ Rendering String Templates
         'Hello {{planet}}',
         array('planet' => 'World')
     );
+    echo $test;
 
 which outputs as 
 
@@ -55,10 +62,15 @@ which outputs as
 
     Hello World
 
+In the coming examples I will skip the ``echo`` statement to make the codes look small. 
+We are also not using the opening php tags.
+
 Rendering File Templates
 ========================
 
-Let the template be `renders-file-templates.mustache` is your `templates` folder. From here onwards we assume you have your template in `templates` folder. Comments inside templates are marked between `{{!` and `}}`. Please not the character `!`.
+Let the template be `renders-file-templates.mustache` is your `templates` folder. 
+From here onwards we assume you have your template in `templates` folder. 
+Comments inside templates are marked between `{{!` and `}}`. Please not the character `!`.
 
 .. code-block:: html
 
@@ -185,8 +197,20 @@ Rendering Conditions
 
 .. code-block:: php
 
-    $chris = new TestAsset\ViewWithMethod;
-    $test = $this->mustache->render(
+    class ViewWithMethod
+    {
+        public $name  = 'Chris';
+        public $value = 1000000;
+        public $in_ca = true;
+
+        public function taxed_value()
+        {
+            return $this->value - ($this->value * 0.4);
+        }
+    }
+
+    $chris = new ViewWithMethod;
+    $test = $mustache->render(
         'template-with-conditional',
         $chris
     );
@@ -206,7 +230,7 @@ Skipping the conditions with false/empty value
 
     $chris = new ViewWithMethod;
     $chris->in_ca = false;
-    $test = $this->mustache->render(
+    $test = $mustache->render(
         'template-with-conditional',
         $chris
     );
@@ -394,7 +418,9 @@ Output :
 Partials
 ========
 
-Partials are a basic form of inclusion within Mustache; anytime you find you have re-usable bits of templates, move them into a partial, and refer to the partial from the parent template.
+Partials are a basic form of inclusion within Mustache; anytime you find you have 
+re-usable bits of templates, move them into a partial, and refer to the partial 
+from the parent template.
 
 Typically, you will only reference partials within your templates, using standard syntax:
 
@@ -402,7 +428,8 @@ Typically, you will only reference partials within your templates, using standar
 
     {{>partial-name}}
 
-However, you may optionally pass a list of partials when rendering. When you do so, the list should be a set of alias/template pairs:
+However, you may optionally pass a list of partials when rendering. When you do so, 
+the list should be a set of alias/template pairs:
 
 .. code-block:: php
 
@@ -410,7 +437,8 @@ However, you may optionally pass a list of partials when rendering. When you do 
         'winnings' => 'user-winnings',
     ));
     
-In the above example, 'winnings' refers to the template "user-winnings.mustache". Thus, within the $template being rendered, you may refer to the following partial:
+In the above example, 'winnings' refers to the template "user-winnings.mustache". Thus, 
+within the $template being rendered, you may refer to the following partial:
 
 .. code-block:: html
 
@@ -421,9 +449,12 @@ and it will resolve to the appropriate aliased template.
 
 A few things to remember when using partials:
 
-The parent template may change tag delimiters, but if you want to use the same delimiters in your partial, you will need to make the same declaration.
-The parent template may utilize one or more pragmas, but those declarations will not perist to the partial; if you want those pragmas, you must reference them in your partial.
-Basically, partials render in their own scope. If you remember that one rule, you should have no problems.
+The parent template may change tag delimiters, but if you want to use the same delimiters 
+in your partial, you will need to make the same declaration. The parent template may 
+utilize one or more pragmas, but those declarations will not perist to the partial; 
+if you want those pragmas, you must reference them in your partial.
+Basically, partials render in their own scope. If you remember that one rule, you 
+should have no problems.
   
 .. code-block:: html
 
@@ -513,7 +544,7 @@ You can prevent escaping characters by using triple brackets `{{{`
 .. code-block:: php
 
     $view = array('foo' => 't&h\\e"s<e>');
-    $test = $this->mustache->render(
+    $test = $mustache->render(
         '{{{foo}}}',
         $view
     );
@@ -541,7 +572,7 @@ Pragma Implicit Iterator
     
     $mustache->getRenderer()->addPragma(new Phly\Mustache\Pragma\ImplicitIterator());
     $view = array('foo' => array(1, 2, 3, 4, 5, 'french'));
-    $test = $this->mustache->render(
+    $test = $mustache->render(
         'template-with-implicit-iterator',
         $view
     );
@@ -560,7 +591,8 @@ Output :
 Template Suffix
 ===============
 
-You would have noticed we have not added the suffix when we pass the template name. By default the suffix is mustache.
+You would have noticed we have not added the suffix when we pass the template name. 
+By default the suffix is mustache.
 But you can change the suffix of your likes. For eg to `html`.
 
 .. code-block:: php
@@ -573,7 +605,8 @@ So we assume `alternate-suffix.html` is your template in templates folder.
 Alternate Delimiters
 ====================
 
-You can specify alternate delimiters other than `{{` and `}}` . This is possible via adding new deliminiter inside `{{=<% %>=}}`
+You can specify alternate delimiters other than `{{` and `}}` . This is possible via 
+adding new deliminiter inside `{{=<% %>=}}`
 Assuming the `<%` and `%>` is new delimiter.
 
 .. code-block:: html
@@ -595,7 +628,8 @@ Outout :
 Alternate Delimiters in selected areas only
 ===========================================
 
-Sometimes you may want alternative delimiter in selected areas. Its also possible adding it inside `{{#section}}` and `{{/section}}`
+Sometimes you may want alternative delimiter in selected areas. Its also possible 
+adding it inside `{{#section}}` and `{{/section}}`
 
 .. code-block:: html
 
@@ -830,7 +864,7 @@ Try yourself to see the rendering :)
 PHP functions will not work inside templates
 ============================================
 
-.. code-block:: mustache
+.. code-block:: html
 
     {{!template-referencing-php-function.mustache}}
     {{message}}
@@ -865,9 +899,14 @@ Hierarchieal / Template Inheritance
 
 Hierarchical Views and Placeholders (Available in versions 1.1.0 and up).
 
-Placeholders are basically unnamed sections, and are denoted by the combination of {{$name}} and {{/name}}. When encountered by the renderer, any mustache content within will be rendered as normal mustache content.
+Placeholders are basically unnamed sections, and are denoted by the combination of 
+{{$name}} and {{/name}}. When encountered by the renderer, any mustache content 
+within will be rendered as normal mustache content.
 
-Placeholders are primarily of use with the concept of hierarchical views. These are denoted by the combination of {{<name}} and {{/name}}. When encountered, the template denoted by name will be tokenized, and any placeholders that are defined in the content will be used to replace those found in the parent template.
+Placeholders are primarily of use with the concept of hierarchical views. These 
+are denoted by the combination of {{<name}} and {{/name}}. When encountered, the 
+template denoted by name will be tokenized, and any placeholders that are defined 
+in the content will be used to replace those found in the parent template.
 
 As an example, consider the following parent template, "super.mustache":
 
@@ -948,6 +987,7 @@ we'll get the following:
     </body>
     </html>
 
-Notice how the child retains the view context of the parent, and that all mustache tokens defined in it are rendered as if they were simply another mustache template.
+Notice how the child retains the view context of the parent, and that all mustache 
+tokens defined in it are rendered as if they were simply another mustache template.
 
 Hierarchical templates may be nested arbitrarily deep.
