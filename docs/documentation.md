@@ -14,44 +14,55 @@ Instantiation
 Usage is fairly straightforward:
 
 ``
+
     include '/path/to/library/Phly/Mustache/_autoload.php';
     // or use one of the PSR-0 autoloaders like (Aura.Autoload)[https://github.com/auraphp/Aura.Autoload] or Zend
     use Phly\Mustache\Mustache;
 
     $mustache = new Mustache();
     echo $mustache->render('some-template', $view);
+
 ``
 
 By default, phly_mustache will look under the current directory for templates ending with '.mustache'; you can create a stack of directories to search by using the setTemplatePath() method:
 
 ``
+
     $mustache->setTemplatePath($path1)
              ->setTemplatePath($path2);
+
 ``
+
 
 In the above, it will search first $path2, then $path1 to resolve the template.
 
 You may also change the suffix it will use to resolve templates:
 
 ``
+
     $mustache = new Mustache();
     $mustache->setTemplatePath(__DIR__ . '/templates');
+
 ``
 
 Rendering String Templates
 ==========================
 
 ``
+
     $test = $mustache->render(
         'Hello {{planet}}',
         array('planet' => 'World')
     );
+
 ``
 
 which outputs as 
 
 ``
+
     Hello World
+
 ``
 
 Rendering File Templates
@@ -60,22 +71,28 @@ Rendering File Templates
 Let the template be `renders-file-templates.mustache` is your `templates` folder. From here onwards we assume you have your template in `templates` folder. Comments inside templates are marked between `{{!` and `}}`. Please not the character `!`.
 
 ``
+
     {{!renders-file-templates.mustache}}
     Hello {{planet}}
+
 ``
 
 Now you can render it 
 
 ``
+
     $test = $mustache->render('renders-file-templates', array(
         'planet' => 'World',
     ));
+
 ``
 
 Outputs : 
 
 ``
+
     Hello World
+
 ``
 
 Rendering Object Properties
@@ -84,6 +101,7 @@ Rendering Object Properties
 You can also render object properties like 
 
 ``
+
     $view = new \stdClass;
     $view->planet = 'World';
     $test = $mustache->render(
@@ -97,6 +115,7 @@ You can also render object properties like
     $view = new stdClass;
     $view->content = 'This is the content';
     $test = $mustache->render('render-object-properties', $view);
+
 ``
 
 Render methods which return value
@@ -105,6 +124,7 @@ Render methods which return value
 Lets assume you have a class `ViewWithMethod`. You can render the method return value
 
 ``
+
     class ViewWithMethod
     {
         public $name  = 'Chris';
@@ -126,13 +146,16 @@ Lets assume you have a class `ViewWithMethod`. You can render the method return 
         'template-with-method-substitution',
         $chris
     );
+
 ``
 
 Output : 
 
 ``
+
     Hello Chris
     You have just won $600000!
+
 ``
 
 Comments
@@ -141,6 +164,7 @@ Comments
 Every one need to comment on something. You can comment inside `{{! }}`. Notice the `!` .
 
 ``
+
     {{!template-with-comments.mustache}}
     First line {{! this is a comment}}
     Second line
@@ -149,27 +173,33 @@ Every one need to comment on something. You can comment inside `{{! }}`. Notice 
     multiline
     comment}}
     Third line
+
 ``
 
 When called 
 
 ``
+
     $test = $mustache->render('template-with-comments', array());
+
 ``
 
 Will render as :
 
 ``
+
     First line 
     Second line
 
     Third line
+
 ``
 
 Rendering Conditions
 ====================
 
 ``
+
     {{!template-with-conditional.mustache}}
     Hello {{name}}
     You have just won ${{value}}!
@@ -182,33 +212,40 @@ Rendering Conditions
         'template-with-conditional',
         $chris
     );
+
 ``
 
 Output : 
 
 ``
+
     Hello Chris
     You have just won $1000000!
     Well, $600000, after taxes.
+
 ``
 
 Skipping the conditions with false/empty value
 ==============================================
 
 ``
+
     $chris = new ViewWithMethod;
     $chris->in_ca = false;
     $test = $this->mustache->render(
         'template-with-conditional',
         $chris
     );
+
 ``
 
 Ouput :
 
 ``
+
     Hello Chris
     You have just won $1000000!
+
 ``
 
 If `$chris->in_ca = null` then also you get the same output
@@ -217,6 +254,7 @@ Iterating through array
 =======================
 
 ``
+
     {{!template-with-enumerable.mustache}}
     {{name}}:
     <ul>
@@ -239,22 +277,26 @@ Iterating through array
         'template-with-enumerable',
         $view
     );
+
 ``
     
 Output : 
 
 ``
+
     Joe's shopping card:
     <ul>
         <li>bananas</li>
         <li>apples</li>
     </ul>
+
 ``
 
 Iterating via Traversable Object
 ================================
 
 ``
+
     class ViewWithTraversableObject
     {
         public $name = "Joe's shopping card";
@@ -274,22 +316,26 @@ Iterating via Traversable Object
         'template-with-enumerable',
         $view
     );
+
 ``
 
 Output :
 
 ``
+
     Joe's shopping card:
     <ul>
         <li>bananas</li>
         <li>apples</li>
     </ul>
+
 ``
 
 Higher Order Sections Render Inside Out
 =======================================
 
 ``
+
     class ViewWithHigherOrderSection
     {
         public $name = 'Tater';
@@ -307,18 +353,22 @@ Higher Order Sections Render Inside Out
         '{{#bolder}}Hi {{name}}.{{/bolder}}',
         $view
     );
+
 ``
 
 Output : 
 
 ``
+
     <b>Hi Tater.</b>
+
 ``
 
 Rendering Nested Array
 ======================
 
 ``
+
     {{!template-with-dereferencing.mustache}}
     {{#a}}
         <h1>{{title}}</h1>
@@ -344,17 +394,20 @@ Rendering Nested Array
         'template-with-dereferencing',
         $view
     );
+
 ``
-  
+
 Output : 
 
 ``
+
     <h1>this is an object</h1>
     <p>one of its attributes is a list</p>
     <ul>
         <li>listitem1</li>
                 <li>listitem2</li>
             </ul>
+
 ``
 
 There is whitespace issue as seen in the `ul` , `li` when rendering.
@@ -363,6 +416,7 @@ Inverted Sections Render On Empty Values
 ========================================
 
 ``
+
     {{!template-with-inverted-section.mustache}}
     {{#repo}}<b>{{name}}</b>{{/repo}}
     {{^repo}}No repos{{/repo}}
@@ -372,12 +426,15 @@ Inverted Sections Render On Empty Values
         'template-with-inverted-section',
         $view
     );
+
 ``
         
 Output : 
 
 ``
+
     No repos
+
 ``
 
 Partials
@@ -388,21 +445,27 @@ Partials are a basic form of inclusion within Mustache; anytime you find you hav
 Typically, you will only reference partials within your templates, using standard syntax:
 
 ``
+
     {{>partial-name}}
+
 ``
 
 However, you may optionally pass a list of partials when rendering. When you do so, the list should be a set of alias/template pairs:
 
 ``
+
     $mustache->render($template, array(), array(
         'winnings' => 'user-winnings',
     ));
+
 ``
     
 In the above example, 'winnings' refers to the template "user-winnings.mustache". Thus, within the $template being rendered, you may refer to the following partial:
 
 ``
+
     {{>winnings}}
+
 ``
     
 and it will resolve to the appropriate aliased template.
@@ -414,6 +477,7 @@ The parent template may utilize one or more pragmas, but those declarations will
 Basically, partials render in their own scope. If you remember that one rule, you should have no problems.
   
 ``
+
     {{!template-with-partial.mustache}}
     Welcome, {{name}}! {{>partial-template}}
     
@@ -436,18 +500,22 @@ Basically, partials render in their own scope. If you remember that one rule, yo
         'template-with-partial',
         $view
     );
+
 ``
 
 Output : 
 
 ``
+
     Welcome, Joe! You just won $1000 (which is $600 after tax)
+
 ``
 
 Aliasing Partials
 =================
 
 ``
+
     {{!partial-template.mustache}}
     You just won ${{value}} (which is ${{taxed_value}} after tax)
     
@@ -460,12 +528,15 @@ Aliasing Partials
         $view,
         array('winnings' => 'partial-template')
     );
+
 ``
 
 Output: 
 
 ``
+
 Welcome, Joe! You just won $1000 (which is $600 after tax)
+
 ``
 
 Escaping
@@ -474,11 +545,13 @@ Escaping
 By default all characters assigned to view are escaped. 
 
 ``
+
     $view = array('foo' => 't&h\\e"s<e>');
     $test = $mustache->render(
         '{{foo}}',
         $view
     );
+
 ``
         
 You will get characters escpaed as below
@@ -486,7 +559,9 @@ You will get characters escpaed as below
 Output : 
 
 ``
+
     t&amp;h\\e&quot;s&lt;e&gt;
+
 ``
 
 Prevent Escaping
@@ -495,11 +570,13 @@ Prevent Escaping
 You can prevent escaping characters by using triple brackets `{{{`
 
 ``
+
     $view = array('foo' => 't&h\\e"s<e>');
     $test = $this->mustache->render(
         '{{{foo}}}',
         $view
     );
+
 ``
 
 This will output the same value you have given 
@@ -507,13 +584,16 @@ This will output the same value you have given
 Output : 
 
 ``
+
     t&h\\e"s<e>
+
 ``
 
 Pragma Implicit Iterator
 ========================
 
 ``
+
     {{!template-with-implicit-iterator.mustache}}
     {{%IMPLICIT-ITERATOR iterator=bob}}
     {{#foo}}
@@ -526,19 +606,22 @@ Pragma Implicit Iterator
         'template-with-implicit-iterator',
         $view
     );
+
 ``
 
 Output : 
 
 ``
+
     1
     2
     3
     4
     5
     french
+
 ``
-    
+ 
 Template Suffix
 ===============
 
@@ -546,8 +629,10 @@ You would have noticed we have not added the suffix when we pass the template na
 But you can change the suffix of your likes. For eg to `html`.
 
 ``
+
     $mustache->setSuffix('html');
     $test = $mustache->render('alternate-suffix', array());
+
 ``
 
 So we assume `alternate-suffix.html` is your template in templates folder.
@@ -559,17 +644,21 @@ You can specify alternate delimiters other than `{{` and `}}` . This is possible
 Assuming the `<%` and `%>` is new delimiter.
 
 ``
+
     {{!template-with-delim-set.mustache}}
     {{=<% %>=}}
     This is content, <%substitution%>, from new delimiters.
     
     $test = $mustache->render('template-with-delim-set', array('substitution' => 'working'));
+
 ``
 
 Outout : 
 
 ``
+
     This is content, working, from new delimiters.
+
 ``
 
 Alternate Delimiters in selected areas only
@@ -578,6 +667,7 @@ Alternate Delimiters in selected areas only
 Sometimes you may want alternative delimiter in selected areas. Its also possible adding it inside `{{#section}}` and `{{/section}}`
 
 ``
+
     {{!template-with-delim-set-in-section.mustache}}
     Some text with {{content}}
     {{#section}}
@@ -593,14 +683,17 @@ Sometimes you may want alternative delimiter in selected areas. Its also possibl
         ),
         'postcontent' => 'P.S. Done',
     ));
+
 ``
 
 Output : 
 
 ``
+
     Some text with style
         -World
     P.S. Done
+
 ``
 
 Alternate Delimiters Apply To Child Sections
@@ -609,6 +702,7 @@ Alternate Delimiters Apply To Child Sections
 You can apply alternate delimiters to child via substitution
 
 ``
+
     {{!template-with-sections-and-delim-set.mustache}}
     {{=<% %>=}}
     Some text with <%content%>
@@ -619,18 +713,22 @@ You can apply alternate delimiters to child via substitution
     $test = $mustache->render('template-with-sections-and-delim-set', 
         array('content' => 'style', 'substitution' => array('name' => '-World'))
     );
+
 ``
 
 Output : 
 
 ``
+
     Some text with style
         -World
+
 ``
 
 Partials don't have any effect on alternative delimiters. 
 
 ``
+
     {{!partial-template.mustache}}
     You just won ${{value}} (which is ${{taxed_value}} after tax)
 
@@ -644,13 +742,16 @@ Partials don't have any effect on alternative delimiters.
         'value'        => 1000000,
         'taxed_value'  =>  400000,
     ));
+
 ``
 
 Output :
 
 ``
+
     This is content, style, from new delimiters.
     You just won $1000000 (which is $400000 after tax)
+
 ``
 
 Pragmas Are Section Specific
@@ -659,6 +760,7 @@ Pragmas Are Section Specific
 Lets take the Implicit Iterator defined in one section.
 
 ``
+
     {{!template-with-pragma-in-section.mustache}}
     Some content, with {{type}}
     {{#section1}}
@@ -672,11 +774,13 @@ Lets take the Implicit Iterator defined in one section.
             {{.}}
         {{/subsection}}
     {{/section2}}
+
 ``
 
 You can see its only in section1.
 
 ``
+
     $mustache->getRenderer()->addPragma(new Phly\Mustache\Pragma\ImplicitIterator());
     $test = $mustache->render('template-with-pragma-in-section', array(
         'type' => 'style',
@@ -687,6 +791,7 @@ You can see its only in section1.
             'subsection' => array(4, 5, 6),
         ),
     ));
+
 ``
     
 The contents of `section1.subsection` will be iterated. But not that of `section2.subsection`.
@@ -694,17 +799,20 @@ The contents of `section1.subsection` will be iterated. But not that of `section
 Output : 
 
 ``
+
     Some content, with style
 
             1
                 2
                 3
+
 ``
                 
 Pragmas Do Not Extend To Partials
 =================================
 
 ``
+
     {{!partial-with-section.mustache}}
     This is from the partial
     {{#section}}
@@ -725,14 +833,17 @@ Pragmas Do Not Extend To Partials
             'subsection' => array(1, 2, 3),
         ),
     ));
+
 ``
 
 Output : 
 
 ``
+
     Some content, with style
 
     This is from the partial
+
 ``
 
 Recursive Partials
@@ -741,6 +852,7 @@ Recursive Partials
 Partials can be used recursively 
 
 ``
+
     {{!crazy_recursive.mustache}}
     <html>
     <body>
@@ -793,14 +905,16 @@ Partials can be used recursively
         ),
     );
     $test = $mustache->render('crazy_recursive', $view);
+
 ``
 
 Try yourself to see the rendering :)
 
 PHP functions will not work inside templates
 ============================================
-  
+
 ``
+
     {{!template-referencing-php-function.mustache}}
     {{message}}
     
@@ -826,6 +940,7 @@ PHP functions will not work inside templates
     $model = array('section' => array('DateTime', 'createFromFormat'));
     $mustache->getRenderer()->addPragma(new ImplicitIterator());
     $test = $mustache->render('template-referencing-static-function', $model);
+
 ``
 
 Hierarchieal / Template Inheritance
@@ -840,6 +955,7 @@ Placeholders are primarily of use with the concept of hierarchical views. These 
 As an example, consider the following parent template, "super.mustache":
 
 ``
+
     {{!super.mustache}}
     <html>
     <head><title>{{$title}}Default title{{/title}}</title></head>
@@ -859,9 +975,11 @@ As an example, consider the following parent template, "super.mustache":
     <footer>
     End of page
     </footer>
+
 ``
     
 If rendered by itself, it will result in the following:
+
 
 ``
     <html>
@@ -876,11 +994,13 @@ If rendered by itself, it will result in the following:
     </footer>
     </body>
     </html>
+
 ``
 
 Now, consider the following child template, "sub.mustache":
 
 ``
+
     {{!sub.mustache}}
     {{<super}}
     {{$title}}Profile of {{username}} | Twitter{{/title}}
@@ -888,19 +1008,23 @@ Now, consider the following child template, "sub.mustache":
     Here is {{username}}'s profile page
     {{/content}}
     {{/super}}
+
 ``
 
 If we have a view that defines "username" as "Matthew" and render "sub.mustache", 
 
 ``
+
     $view = new stdClass;
     $view->username = 'Matthew';
     $test = $mustache->render('sub', $view);
+
 ``
 
 we'll get the following:
 
 ``
+
     <html>
     <head><title>Profile of Matthew</title></head>
     <body>
@@ -913,6 +1037,7 @@ we'll get the following:
     </footer>
     </body>
     </html>
+
 ``
 
 Notice how the child retains the view context of the parent, and that all mustache tokens defined in it are rendered as if they were simply another mustache template.
