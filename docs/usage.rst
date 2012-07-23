@@ -3,7 +3,7 @@ Usage
 
 Autoloading
 -----------
-``phly_mustache`` follows the `PSR-0 <https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md>` 
+``phly_mustache`` follows the `PSR-0 <https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md>`_
 standard for class naming conventions, meaning any PSR-0-compliant class
 loader will work.  To simplify things out of the box, the component
 contains an ``_autoload.php`` file which will register an autoloader for
