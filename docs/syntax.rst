@@ -519,7 +519,7 @@ Output:
 
 .. code-block:: html
 
-Welcome, Joe! You just won $1000 (which is $600 after tax)
+    Welcome, Joe! You just won $1000 (which is $600 after tax)
 
 Alternate Delimiters
 --------------------
@@ -539,7 +539,7 @@ Assuming the `<%` and `%>` is new delimiter.
     <?php
     $test = $mustache->render('template-with-delim-set', array('substitution' => 'working'));
 
-Outout : 
+Output : 
 
 .. code-block:: html
 
