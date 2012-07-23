@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Mustache Implementation in PHP 5.3's documentation!
-==============================================================
+Welcome to Phly\Mustache!
+=========================
 
 Contents:
 
@@ -12,6 +12,10 @@ Contents:
    :maxdepth: 2
    
    documentation
+   usage
+   rendering
+   syntax
+   pragmas
 
 Indices and tables
 ==================

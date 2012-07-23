@@ -1,161 +1,61 @@
-Phly\Mustache
-=============
-Phly\Mustache is a Mustache (http://mustache.github.com) implementation written
-for PHP 5.3+. It conforms to the principles of mustache, and allows for
-extension of the format via pragmas.
+.. _syntax:
 
-Autoloading
-===========
-phly_mustache follows the PSR-0 standard for class naming conventions, meaning any 
-PSR-0-compliant class loader will work. ( Eg https://github.com/auraphp/Aura.Autoload, Zend etc). 
-To simplify things out of the box, the component contains an "_autoload.php" file which will 
-register an autoloader for the phly_mustache component with spl_autoload. You can simply 
-include that file, and start using phly_mustache.
+Syntax
+======
 
-Instantiation
-=============
+The following syntax is supported by ``phly_mustache``. 
 
-Usage is fairly straightforward:
+.. _syntax-escaping:
+
+Escaping
+--------
+
+By default all variables assigned to a view are escaped. 
 
 .. code-block:: php
 
-    include '/path/to/library/Phly/Mustache/_autoload.php';
-    // or use one of the PSR-0 autoloaders like Aura.Autoload or Zend
-    use Phly\Mustache\Mustache;
-
-    $mustache = new Mustache();
-    echo $mustache->render('some-template', $view);
-
-
-By default, phly_mustache will look under the current directory for templates 
-ending with '.mustache'; you can create a stack of directories to search by using 
-the setTemplatePath() method:
-
-.. code-block:: php
-
-    $mustache->setTemplatePath($path1)
-             ->setTemplatePath($path2);
-
-In the above, it will search first $path2, then $path1 to resolve the template.
-
-You may also change the suffix it will use to resolve templates:
-
-.. code-block:: php
-
-    $mustache = new Mustache();
-    $mustache->setTemplatePath(__DIR__ . '/templates');
-
-Rendering String Templates
-==========================
-
-.. code-block:: php
-
+    $view = array('foo' => 't&h\\e"s<e>');
     $test = $mustache->render(
-        'Hello {{planet}}',
-        array('planet' => 'World')
+        '{{foo}}',
+        $view
     );
-    echo $test;
-
-which outputs as 
-
-.. code-block:: html
-
-    Hello World
-
-In the coming examples I will skip the ``echo`` statement to make the codes look small. 
-We are also not using the opening php tags.
-
-Rendering File Templates
-========================
-
-Let the template be `renders-file-templates.mustache` is your `templates` folder. 
-From here onwards we assume you have your template in `templates` folder. 
-Comments inside templates are marked between `{{!` and `}}`. Please not the character `!`.
+        
+You will get characters escaped as below:
 
 .. code-block:: html
 
-    {{!renders-file-templates.mustache}}
-    Hello {{planet}}
+    t&amp;h\\e&quot;s&lt;e&gt;
 
-Now you can render it 
+.. _syntax-prevent-escaping:
+
+Prevent Escaping
+----------------
+
+You can prevent escaping characters by using triple brackets `{{{`
 
 .. code-block:: php
 
-    $test = $mustache->render('renders-file-templates', array(
-        'planet' => 'World',
-    ));
-
-Outputs : 
-
-.. code-block:: html
-
-    Hello World
-
-Rendering Object Properties
-===========================
-
-You can also render object properties like 
-
-.. code-block:: php
-
-    $view = new \stdClass;
-    $view->planet = 'World';
+    $view = array('foo' => 't&h\\e"s<e>');
     $test = $mustache->render(
-        'Hello {{planet}}',
+        '{{{foo}}}',
         $view
     );
 
-    {{!render-object-properties.mustache}}
-    {{content}}
-
-    $view = new stdClass;
-    $view->content = 'This is the content';
-    $test = $mustache->render('render-object-properties', $view);
-
-Render methods which return value
-=================================
-
-Lets assume you have a class `ViewWithMethod`. You can render the method return value
-
-.. code-block:: php
-
-    class ViewWithMethod
-    {
-        public $name  = 'Chris';
-        public $value = 1000000;
-        public $in_ca = true;
-
-        public function taxed_value()
-        {
-            return $this->value - ($this->value * 0.4);
-        }
-    }
-
-.. code-block:: html
-
-    {{!template-with-method-substitution.mustache}}
-    Hello {{name}}
-    You have just won ${{taxed_value}}!
-
-.. code-block:: php
-
-    $chris = new ViewWithMethod();
-    $test = $mustache->render(
-        'template-with-method-substitution',
-        $chris
-    );
+This will output the same value you have given 
 
 Output : 
 
 .. code-block:: html
 
-    Hello Chris
-    You have just won $600000!
+    t&h\\e"s<e>
+
+.. _syntax-comments:
 
 Comments
-========
+--------
 
-Every one need to comment on something. You can comment inside `{{! }}`. Notice the `!` .
+Everyone needs to comment at some point or another. You can comment
+inside the delimeters `{{! }}`. Notice the `!` .
 
 .. code-block:: html
 
@@ -168,13 +68,13 @@ Every one need to comment on something. You can comment inside `{{! }}`. Notice 
     comment}}
     Third line
 
-When called 
+When called:
 
 .. code-block:: php
 
     $test = $mustache->render('template-with-comments', array());
 
-Will render as :
+It will render as:
 
 .. code-block:: html
 
@@ -183,8 +83,18 @@ Will render as :
 
     Third line
 
-Rendering Conditions
-====================
+.. _syntax-conditionals:
+
+Conditionals
+------------
+
+Mustache tends to eschew logic within templates themselves. That said,
+simple conditionals are often necessary. These can be accomplished using
+the ``{{#}}``/``{{/}}`` pair. Both tags will reference a variable in the
+view. If that variable is present and a truthy value, the content
+between the pair will be rendered; otherwise, it will be omitted. The
+content may contain arbitrary mustache markup, including references to
+variables.
 
 .. code-block:: html
 
@@ -197,7 +107,7 @@ Rendering Conditions
 
 .. code-block:: php
 
-    class ViewWithMethod
+    class Customer
     {
         public $name  = 'Chris';
         public $value = 1000000;
@@ -209,13 +119,13 @@ Rendering Conditions
         }
     }
 
-    $chris = new ViewWithMethod;
+    $chris = new Customer;
     $test = $mustache->render(
         'template-with-conditional',
         $chris
     );
 
-Output : 
+Output: 
 
 .. code-block:: html
 
@@ -223,29 +133,51 @@ Output :
     You have just won $1000000!
     Well, $600000, after taxes.
 
-Skipping the conditions with false/empty value
-==============================================
+With the following view object, we'll get a different result:
 
 .. code-block:: php
 
-    $chris = new ViewWithMethod;
-    $chris->in_ca = false;
+    class NonCalifornian extends Customer
+    {
+        public $in_ca = false;
+    }
+
+    $matthew = new NonCalifornian;
+    $matthew->name = 'Matthew';
     $test = $mustache->render(
         'template-with-conditional',
-        $chris
+        $matthew
     );
 
-Ouput :
+The above will result in:
 
 .. code-block:: html
 
-    Hello Chris
+    Hello Matthew
     You have just won $1000000!
 
-If ``$chris->in_ca = null`` then also you get the same output
+This occurs because the ``$in_ca`` value is a non-truthy value; any
+value that would evalue to a boolean ``false`` (e.g., a ``null`` value,
+a zero integer or float, and empty string) when used in a conditional
+will be treated as if the value is not present, essentially skipping the
+conditional.
 
-Iterating through array
-=======================
+.. _syntax-iteration:
+
+Iteration
+---------
+
+While mustache tends to eschew logic, just as with conditionals, we may
+occasionally have repetitive data we need to render. Mustache provides
+functionality for iteration as well, using the concept of "sections".
+
+A section begins with a ``{{#}}`` token, and ends with a ``{{/}}`` token,
+and each references the variable within the view. The view variable is
+assumed to be iterable, with each item being another view (i.e., an
+associative array or an object).  The tokens surround mustache content.
+Unlike conditionals, the assumption is that variables will dereference
+based on the current item in the iteration. This may be better
+understood with an example. Given the following template:
 
 .. code-block:: html
 
@@ -256,6 +188,8 @@ Iterating through array
         <li>{{item}}</li>
     {{/items}}
     </ul>
+
+We then have the following view:
 
 .. code-block:: php
 
@@ -274,7 +208,7 @@ Iterating through array
         $view
     );
     
-Output : 
+This results in: 
 
 .. code-block:: html
 
@@ -284,8 +218,8 @@ Output :
         <li>apples</li>
     </ul>
 
-Iterating via Traversable Object
-================================
+As noted, the ``$items`` only needs to be iterable; it doesn't have to
+be an array, it can be any ``Traversable`` object.
 
 .. code-block:: php
 
@@ -296,7 +230,7 @@ Iterating via Traversable Object
 
         public function __construct()
         {
-            $this->items = new \ArrayObject(array(
+            $this->items = new ArrayObject(array(
                 array('item' => 'bananas'),
                 array('item' => 'apples'),
             ));
@@ -309,18 +243,61 @@ Iterating via Traversable Object
         $view
     );
 
-Output :
+The above will result in the exact same output as with the array
+example.
 
-.. code-block:: html
+To take it a step further, each "item" could be an object:
 
-    Joe's shopping card:
-    <ul>
-        <li>bananas</li>
-        <li>apples</li>
-    </ul>
+.. code-block:: php
+
+    class Item
+    {
+        public $item;
+
+        public function __construct($item)
+        {
+            $this->item = $item;
+        }
+    }
+
+    class ViewWithTraversableObject
+    {
+        public $name = "Joe's shopping card";
+        public $items;
+
+        public function __construct()
+        {
+            $this->items = new ArrayObject(array(
+                new Item('bananas'),
+                new Item('apples'),
+            ));
+        }
+    }
+
+    $view = new ViewWithTraversableObject;
+    $test = $mustache->render(
+        'template-with-enumerable',
+        $view
+    );
+
+
+.. _syntax-higher-order-sections:
 
 Higher Order Sections Render Inside Out
-=======================================
+---------------------------------------
+
+Mustache has a concept of "higher order sections." 
+
+In the previous section on :ref:`iteration <syntax-iteration>`, we
+indicated that the ``{{#}}``/``{{/}}`` syntax indicates a *section*.
+While sections can be used for iteration, this is not their only use.
+
+A higher order section is a variable that refers to a callable. In such
+a case, the mustache content for the section is passed, as well as a
+reference to the mustache renderer, allowing the callable to return
+arbitrary content, and, if desired, render additional mustache content.
+
+This is best illustrated with the following example.
 
 .. code-block:: php
 
@@ -348,8 +325,23 @@ Output :
 
     <b>Hi Tater.</b>
 
-Rendering Nested Array
-======================
+.. _syntax-nested-sections:
+
+Rendering Nested Sections
+-------------------------
+
+In the previous sections on :ref:`iteration <syntax-iteration>` and
+:ref:`higher order sections <syntax-higher-order-sections>`, we
+indicated that the ``{{#}}``/``{{/}}`` syntax indicates a *section*.
+
+Another use for sections is for rendering hierarchical or nested data
+structures. When used in this way, the default scope within a section
+assumes that we are now within the scope of the dereference variable; as
+we go deeper in the nesting, we get into gradually more specific scope.
+Any given variable may contain another section, iterable content, higher
+order sections, or simply scalar output.
+
+Let's look at the following template:
 
 .. code-block:: html
 
@@ -364,13 +356,15 @@ Rendering Nested Array
         </ul>
     {{/a}}
 
+And here's a view that might be used with it:
+
 .. code-block:: php
 
     $view = array(
         'a' => array(
-            'title' => 'this is an object',
+            'title'       => 'this is an object',
             'description' => 'one of its attributes is a list',
-            'list' => array(
+            'list'        => array(
                 array('label' => 'listitem1'),
                 array('label' => 'listitem2'),
             ),
@@ -381,7 +375,7 @@ Rendering Nested Array
         $view
     );
 
-Output : 
+The generated output will resemble the following: 
 
 .. code-block:: html
 
@@ -389,13 +383,11 @@ Output :
     <p>one of its attributes is a list</p>
     <ul>
         <li>listitem1</li>
-                <li>listitem2</li>
-            </ul>
-
-There is whitespace issue as seen in the `ul` , `li` when rendering.
+        <li>listitem2</li>
+    </ul>
 
 Inverted Sections Render On Empty Values
-========================================
+----------------------------------------
 
 .. code-block:: html
 
@@ -416,7 +408,7 @@ Output :
     No repos
 
 Partials
-========
+--------
 
 Partials are a basic form of inclusion within Mustache; anytime you find you have 
 re-usable bits of templates, move them into a partial, and refer to the partial 
@@ -451,7 +443,7 @@ A few things to remember when using partials:
 
 The parent template may change tag delimiters, but if you want to use the same delimiters 
 in your partial, you will need to make the same declaration. The parent template may 
-utilize one or more pragmas, but those declarations will not perist to the partial; 
+utilize one or more :ref:`pragmas <pragmas>`, but those declarations will not perist to the partial; 
 if you want those pragmas, you must reference them in your partial.
 Basically, partials render in their own scope. If you remember that one rule, you 
 should have no problems.
@@ -490,7 +482,7 @@ Output :
     Welcome, Joe! You just won $1000 (which is $600 after tax)
 
 Aliasing Partials
-=================
+-----------------
 
 .. code-block:: html
 
@@ -515,95 +507,8 @@ Output:
 
 Welcome, Joe! You just won $1000 (which is $600 after tax)
 
-Escaping
-========
-
-By default all characters assigned to view are escaped. 
-
-.. code-block:: php
-
-    $view = array('foo' => 't&h\\e"s<e>');
-    $test = $mustache->render(
-        '{{foo}}',
-        $view
-    );
-        
-You will get characters escpaed as below
-
-Output : 
-
-.. code-block:: html
-
-    t&amp;h\\e&quot;s&lt;e&gt;
-
-Prevent Escaping
-================
-
-You can prevent escaping characters by using triple brackets `{{{`
-
-.. code-block:: php
-
-    $view = array('foo' => 't&h\\e"s<e>');
-    $test = $mustache->render(
-        '{{{foo}}}',
-        $view
-    );
-
-This will output the same value you have given 
-
-Output : 
-
-.. code-block:: html
-
-    t&h\\e"s<e>
-
-Pragma Implicit Iterator
-========================
-
-.. code-block:: html
-
-    {{!template-with-implicit-iterator.mustache}}
-    {{%IMPLICIT-ITERATOR iterator=bob}}
-    {{#foo}}
-        {{bob}}
-    {{/foo}}
-    
-.. code-block:: php
-    
-    $mustache->getRenderer()->addPragma(new Phly\Mustache\Pragma\ImplicitIterator());
-    $view = array('foo' => array(1, 2, 3, 4, 5, 'french'));
-    $test = $mustache->render(
-        'template-with-implicit-iterator',
-        $view
-    );
-
-Output : 
-
-.. code-block:: html
-
-    1
-    2
-    3
-    4
-    5
-    french
- 
-Template Suffix
-===============
-
-You would have noticed we have not added the suffix when we pass the template name. 
-By default the suffix is mustache.
-But you can change the suffix of your likes. For eg to `html`.
-
-.. code-block:: php
-
-    $mustache->setSuffix('html');
-    $test = $mustache->render('alternate-suffix', array());
-
-So we assume `alternate-suffix.html` is your template in templates folder.
-
 Alternate Delimiters
-====================
+--------------------
 
 You can specify alternate delimiters other than `{{` and `}}` . This is possible via 
 adding new deliminiter inside `{{=<% %>=}}`
@@ -626,7 +531,7 @@ Outout :
     This is content, working, from new delimiters.
 
 Alternate Delimiters in selected areas only
-===========================================
+-------------------------------------------
 
 Sometimes you may want alternative delimiter in selected areas. Its also possible 
 adding it inside `{{#section}}` and `{{/section}}`
@@ -660,7 +565,7 @@ Output :
     P.S. Done
 
 Alternate Delimiters Apply To Child Sections
-============================================
+--------------------------------------------
 
 You can apply alternate delimiters to child via substitution
 
@@ -713,92 +618,8 @@ Output :
     This is content, style, from new delimiters.
     You just won $1000000 (which is $400000 after tax)
 
-Pragmas Are Section Specific
-============================
-
-Lets take the Implicit Iterator defined in one section.
-
-.. code-block:: html
-
-    {{!template-with-pragma-in-section.mustache}}
-    Some content, with {{type}}
-    {{#section1}}
-    {{%IMPLICIT-ITERATOR}}
-        {{#subsection}}
-            {{.}}
-        {{/subsection}}
-    {{/section1}}
-    {{#section2}}
-        {{#subsection}}
-            {{.}}
-        {{/subsection}}
-    {{/section2}}
-
-You can see its only in section1.
-
-.. code-block:: php
-
-    $mustache->getRenderer()->addPragma(new Phly\Mustache\Pragma\ImplicitIterator());
-    $test = $mustache->render('template-with-pragma-in-section', array(
-        'type' => 'style',
-        'section1' => array(
-            'subsection' => array(1, 2, 3),
-        ),
-        'section2' => array(
-            'subsection' => array(4, 5, 6),
-        ),
-    ));
-    
-The contents of `section1.subsection` will be iterated. But not that of `section2.subsection`.
-
-Output : 
-
-.. code-block:: html
-
-    Some content, with style
-
-            1
-                2
-                3
-                
-Pragmas Do Not Extend To Partials
-=================================
-
-.. code-block:: html
-
-    {{!partial-with-section.mustache}}
-    This is from the partial
-    {{#section}}
-        {{#subsection}}
-            {{.}}
-        {{/subsection}}
-    {{/section}}
-
-    {{!template-with-pragma-and-partial.mustache}}
-    {{%IMPLICIT-ITERATOR}}
-    Some content, with {{type}}
-    {{>partial-with-section}}
-    
-.. code-block:: php
-
-    $mustache->getRenderer()->addPragma(new Phly\Mustache\Pragma\ImplicitIterator());
-    $test = $mustache->render('template-with-pragma-and-partial', array(
-        'type' => 'style',
-        'section' => array(
-            'subsection' => array(1, 2, 3),
-        ),
-    ));
-
-Output : 
-
-.. code-block:: html
-
-    Some content, with style
-
-    This is from the partial
-
 Recursive Partials
-==================
+------------------
 
 Partials can be used recursively 
 
@@ -862,7 +683,7 @@ Partials can be used recursively
 Try yourself to see the rendering :)
 
 PHP functions will not work inside templates
-============================================
+--------------------------------------------
 
 .. code-block:: html
 
@@ -895,7 +716,7 @@ PHP functions will not work inside templates
     $test = $mustache->render('template-referencing-static-function', $model);
 
 Hierarchieal / Template Inheritance
-===================================
+-----------------------------------
 
 Hierarchical Views and Placeholders (Available in versions 1.1.0 and up).
 
@@ -991,3 +812,4 @@ Notice how the child retains the view context of the parent, and that all mustac
 tokens defined in it are rendered as if they were simply another mustache template.
 
 Hierarchical templates may be nested arbitrarily deep.
+
