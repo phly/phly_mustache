@@ -35,6 +35,7 @@ You can see its only in section1.
 
 .. code-block:: php
 
+    <?php
     $mustache->getRenderer()->addPragma(new Phly\Mustache\Pragma\ImplicitIterator());
     $test = $mustache->render('template-with-pragma-in-section', array(
         'type' => 'style',
@@ -80,6 +81,7 @@ Pragmas Do Not Extend To Partials
     
 .. code-block:: php
 
+    <?php
     $mustache->getRenderer()->addPragma(new Phly\Mustache\Pragma\ImplicitIterator());
     $test = $mustache->render('template-with-pragma-and-partial', array(
         'type' => 'style',
@@ -111,6 +113,7 @@ Implicit Iterator
     
 .. code-block:: php
     
+    <?php
     $mustache->getRenderer()->addPragma(new Phly\Mustache\Pragma\ImplicitIterator());
     $view = array('foo' => array(1, 2, 3, 4, 5, 'french'));
     $test = $mustache->render(
