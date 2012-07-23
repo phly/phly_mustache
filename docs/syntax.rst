@@ -14,6 +14,7 @@ By default all variables assigned to a view are escaped.
 
 .. code-block:: php
 
+    <?php
     $view = array('foo' => 't&h\\e"s<e>');
     $test = $mustache->render(
         '{{foo}}',
@@ -35,6 +36,7 @@ You can prevent escaping characters by using triple brackets `{{{`
 
 .. code-block:: php
 
+    <?php
     $view = array('foo' => 't&h\\e"s<e>');
     $test = $mustache->render(
         '{{{foo}}}',
@@ -72,6 +74,7 @@ When called:
 
 .. code-block:: php
 
+    <?php
     $test = $mustache->render('template-with-comments', array());
 
 It will render as:
@@ -107,6 +110,7 @@ variables.
 
 .. code-block:: php
 
+    <?php
     class Customer
     {
         public $name  = 'Chris';
@@ -137,6 +141,7 @@ With the following view object, we'll get a different result:
 
 .. code-block:: php
 
+    <?php
     class NonCalifornian extends Customer
     {
         public $in_ca = false;
@@ -193,6 +198,7 @@ We then have the following view:
 
 .. code-block:: php
 
+    <?php
     class ViewWithArrayEnumerable
     {
         public $name = "Joe's shopping card";
@@ -223,6 +229,7 @@ be an array, it can be any ``Traversable`` object.
 
 .. code-block:: php
 
+    <?php
     class ViewWithTraversableObject
     {
         public $name = "Joe's shopping card";
@@ -250,6 +257,7 @@ To take it a step further, each "item" could be an object:
 
 .. code-block:: php
 
+    <?php
     class Item
     {
         public $item;
@@ -301,6 +309,7 @@ This is best illustrated with the following example.
 
 .. code-block:: php
 
+    <?php
     class ViewWithHigherOrderSection
     {
         public $name = 'Tater';
@@ -360,6 +369,7 @@ And here's a view that might be used with it:
 
 .. code-block:: php
 
+    <?php
     $view = array(
         'a' => array(
             'title'       => 'this is an object',
@@ -397,6 +407,7 @@ Inverted Sections Render On Empty Values
 
 .. code-block:: php
 
+    <?php
     $view = array('repo' => array());
     $test = $mustache->render(
         'template-with-inverted-section',
@@ -425,6 +436,7 @@ the list should be a set of alias/template pairs:
 
 .. code-block:: php
 
+    <?php
     $mustache->render($template, array(), array(
         'winnings' => 'user-winnings',
     ));
@@ -458,6 +470,7 @@ should have no problems.
 
 .. code-block:: php
 
+    <?php
     class ViewWithObjectForPartial
     {
         public $name = 'Joe';
@@ -494,6 +507,7 @@ Aliasing Partials
 
 .. code-block:: php
 
+    <?php
     $view = ViewWithObjectForPartial();
     $test = $mustache->render(
         'template-with-aliased-partial',
@@ -522,6 +536,7 @@ Assuming the `<%` and `%>` is new delimiter.
     
 .. code-block:: php
 
+    <?php
     $test = $mustache->render('template-with-delim-set', array('substitution' => 'working'));
 
 Outout : 
@@ -548,6 +563,7 @@ adding it inside `{{#section}}` and `{{/section}}`
 
 .. code-block:: php
 
+    <?php
     $test = $mustache->render('template-with-delim-set-in-section', array(
         'content' => 'style',
         'section' => array(
@@ -580,6 +596,7 @@ You can apply alternate delimiters to child via substitution
 
 .. code-block:: php
 
+    <?php
     $test = $mustache->render('template-with-sections-and-delim-set', 
         array('content' => 'style', 'substitution' => array('name' => '-World'))
     );
@@ -605,6 +622,7 @@ Partials don't have any effect on alternative delimiters.
 
 .. code-block:: php
 
+    <?php
     $test = $mustache->render('template-with-partials-and-delim-set', array(
         'substitution' => 'style',
         'value'        => 1000000,
@@ -648,6 +666,7 @@ Partials can be used recursively
     
 .. code-block:: php
 
+    <?php
     $view = array(
         'top_nodes' => array(
             'contents' => '1',
@@ -697,6 +716,7 @@ PHP functions will not work inside templates
 
 .. code-block:: php
 
+    <?php
     $test = $mustache->render('template-referencing-php-function', array(
         'message' => 'time',
     ));
@@ -787,6 +807,7 @@ If we have a view that defines "username" as "Matthew" and render "sub.mustache"
 
 .. code-block:: php
 
+    <?php
     $view = new stdClass;
     $view->username = 'Matthew';
     $test = $mustache->render('sub', $view);

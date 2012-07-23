@@ -17,6 +17,7 @@ Usage is fairly straightforward:
 
 .. code-block:: php
 
+    <?php
     include '/path/to/library/Phly/Mustache/_autoload.php';
     // or use any PSR-0-compliant autoloader
     use Phly\Mustache\Mustache;
@@ -31,6 +32,7 @@ directories to search by using the setTemplatePath() method:
 
 .. code-block:: php
 
+    <?php
     $mustache->setTemplatePath($path1)
              ->setTemplatePath($path2);
 
@@ -40,6 +42,7 @@ You may also change the suffix it will use to resolve templates:
 
 .. code-block:: php
 
+    <?php
     $mustache = new Mustache();
     $mustache->setSuffix('mst'); // now looks for files ending in ".mst"
 
