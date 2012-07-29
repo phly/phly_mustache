@@ -43,7 +43,6 @@ The following are equivalent views:
 
 .. code-block:: php
 
-    <?php
     $view = array(
         'name'    => 'Matthew',
         'twitter' => 'weierophinney',
@@ -70,7 +69,6 @@ Sometimes, you may want to create nested structures:
 
 .. code-block:: php
 
-    <?php
     $view = array(
         'name' => 'Matthew',
         'contact' => array(
@@ -104,7 +102,6 @@ Rendering String Templates
 
 .. code-block:: php
 
-    <?php
     $test = $mustache->render(
         'Hello {{planet}}',
         array('planet' => 'World')
@@ -139,7 +136,6 @@ Now you can render it
 
 .. code-block:: php
 
-    <?php
     $test = $mustache->render('renders-file-templates', array(
         'planet' => 'World',
     ));
@@ -162,7 +158,6 @@ use ".html".
 
 .. code-block:: php
 
-    <?php
     $mustache->setSuffix('html');
     $test = $mustache->render('alternate-suffix', array());
 
@@ -179,7 +174,6 @@ use objects, and ``phly_mustache`` will render object properties.
 
 .. code-block:: php
 
-    <?php
     $view         = new stdClass;
     $view->planet = 'World';
 
@@ -206,7 +200,6 @@ template, the return value of that method will be used.
 
 .. code-block:: php
 
-    <?php
     class ViewWithMethod
     {
         public $name  = 'Chris';
@@ -227,7 +220,6 @@ template, the return value of that method will be used.
 
 .. code-block:: php
 
-    <?php
     $chris = new ViewWithMethod();
     $test = $mustache->render(
         'template-with-method-substitution',

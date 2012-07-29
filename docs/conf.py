@@ -214,3 +214,9 @@ man_pages = [
     ('index', 'phly_mustache', u'Phly\\Mustache - Mustache Implementation in PHP 5.3 Documentation',
      [u'Matthew Weier O\'Phinney'], 1)
 ]
+
+
+# Hack to render the php source code without the <?php tag
+from sphinx.highlighting import lexers
+from pygments.lexers.web import PhpLexer
+lexers['php'] = PhpLexer(startinline=True)
