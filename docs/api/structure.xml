@@ -1,0 +1,1582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0a8" title="phly_mustache">
+  <file path="Exception/InvalidTemplateException.php" hash="5144eb4c0182f345e83cdb0b54ce181a" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="23" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>InvalidTemplateException</name>
+      <full_name>\Phly\Mustache\Exception\InvalidTemplateException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when the template provided to the lexer is not a string]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/TemplateNotFoundException.php" hash="892c3b14b18ae84cd7d1a43e2981462d" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="23" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>TemplateNotFoundException</name>
+      <full_name>\Phly\Mustache\Exception\TemplateNotFoundException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when a matching template file may not be found]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/UnbalancedTagException.php" hash="b32475e5e6fbd3a467729f6b620d52c4" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="23" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>UnbalancedTagException</name>
+      <full_name>\Phly\Mustache\Exception\UnbalancedTagException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when an unclosed tag is encountered by the lexer]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/InvalidTemplatePathException.php" hash="e2eb62ca2148d86c7e51a54a7488c420" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="23" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>InvalidTemplatePathException</name>
+      <full_name>\Phly\Mustache\Exception\InvalidTemplatePathException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when an invalid template path is provided]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/InvalidPragmaNameException.php" hash="a1e61ed6e17368b55585cae392fd61ba" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="23" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>InvalidPragmaNameException</name>
+      <full_name>\Phly\Mustache\Exception\InvalidPragmaNameException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when the name provided in a pragma tag is malformed]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/InvalidStateException.php" hash="d500f8e6552bb6c7496b70abc9d5d6af" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="23" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>InvalidStateException</name>
+      <full_name>\Phly\Mustache\Exception\InvalidStateException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when an invalid/unknown state is reached in the lexer]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/InvalidVariableNameException.php" hash="ad406c9b2f38e687041c98385bd5641f" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="24" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>InvalidVariableNameException</name>
+      <full_name>\Phly\Mustache\Exception\InvalidVariableNameException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when a malformed variable name is encountered in a template
+by the lexer]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/UnregisteredPragmaException.php" hash="8e70946c45ef416746d9a04c655e7089" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="24" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>UnregisteredPragmaException</name>
+      <full_name>\Phly\Mustache\Exception\UnregisteredPragmaException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when the renderer encounters a pragma for which a handler
+has not yet been registered]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/UnbalancedSectionException.php" hash="d50c4019cbbb078fe222b14bcf992b4e" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="23" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>UnbalancedSectionException</name>
+      <full_name>\Phly\Mustache\Exception\UnbalancedSectionException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when an unclosed section is encountered by the lexer]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/InvalidDelimiterException.php" hash="c151439016bf4304ff2b38a1448de0a6" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="23" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>InvalidDelimiterException</name>
+      <full_name>\Phly\Mustache\Exception\InvalidDelimiterException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when a delimiter tag is malformed.]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/InvalidPartialsException.php" hash="f0860caacbd97fd9d64a92a9a9ffdae7" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="24" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>InvalidPartialsException</name>
+      <full_name>\Phly\Mustache\Exception\InvalidPartialsException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when an invalid argument is passed describing available
+partials]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception/InvalidEscaperException.php" hash="27157c42ab5d8ada5c4c8ef4b0086b23" package="phly\mustache\Exception">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Exception"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Exception">Phly\Mustache\Exception</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Exception" line="24" package="phly\mustache\Exception">
+      <extends>\Exception</extends>
+      <implements>\Phly\Mustache\Exception</implements>
+      <name>InvalidEscaperException</name>
+      <full_name>\Phly\Mustache\Exception\InvalidEscaperException</full_name>
+      <docblock line="16">
+        <description><![CDATA[Exception raised when an invalid callback is registered for escaping
+variables]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Exception"/>
+      </docblock>
+    </class>
+  </file>
+  <file path="Exception.php" hash="2d98b4ab5167b2ef6051a2cd042a8989" package="phly\mustache">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <interface namespace="Phly\Mustache" line="19" package="phly\mustache">
+      <name>Exception</name>
+      <full_name>\Phly\Mustache\Exception</full_name>
+      <docblock line="13">
+        <description><![CDATA[Base exception interface]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="13" name="category" description="Phly"/>
+        <tag line="13" name="package" description="phly_mustache"/>
+      </docblock>
+    </interface>
+  </file>
+  <file path="Renderer.php" hash="1bfb280e69a7f540e2f981c0f5e9eea7" package="phly\mustache">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Phly\Mustache" line="22" package="phly\mustache">
+      <extends/>
+      <name>Renderer</name>
+      <full_name>\Phly\Mustache\Renderer</full_name>
+      <docblock line="13">
+        <description><![CDATA[Mustache renderer]]></description>
+        <long-description><![CDATA[<p>Loops through tokens, performing substitutions from the view, branching
+based on token type and/or view values.</p>]]></long-description>
+        <tag line="13" name="category" description="Phly"/>
+        <tag line="13" name="package" description="phly_mustache"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="56" package="phly\mustache">
+        <name>setManager</name>
+        <full_name>setManager</full_name>
+        <docblock line="48">
+          <description><![CDATA[Set mustache manager]]></description>
+          <long-description><![CDATA[<p>Used internally to resolve and tokenize partials</p>]]></long-description>
+          <tag line="48" name="param" description="" type="\Phly\Mustache\Mustache" variable="$manager">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+          <tag line="48" name="return" description="" type="\Phly\Mustache\Lexer">
+            <type by_reference="false">\Phly\Mustache\Lexer</type>
+          </tag>
+        </docblock>
+        <argument line="56">
+          <name>$manager</name>
+          <default><![CDATA[]]></default>
+          <type>\Phly\Mustache\Mustache</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="67" package="phly\mustache">
+        <name>getManager</name>
+        <full_name>getManager</full_name>
+        <docblock line="62">
+          <description><![CDATA[Retrieve the mustache manager]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="62" name="return" description="" type="null|\Phly\Mustache\Mustache">
+            <type by_reference="false">null</type>
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="80" package="phly\mustache">
+        <name>render</name>
+        <full_name>render</full_name>
+        <docblock line="72">
+          <description><![CDATA[Render a set of tokens with view substitutions]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="72" name="param" description="" type="array" variable="$tokens">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="72" name="param" description="" type="mixed" variable="$view">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="72" name="param" description="" type="array|null" variable="$partials">
+            <type by_reference="false">array</type>
+            <type by_reference="false">null</type>
+          </tag>
+          <tag line="72" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="80">
+          <name>$tokens</name>
+          <default><![CDATA[]]></default>
+          <type>array</type>
+        </argument>
+        <argument line="80">
+          <name>$view</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="80">
+          <name>$partials</name>
+          <default><![CDATA[null]]></default>
+          <type>array</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="253" package="phly\mustache">
+        <name>escape</name>
+        <full_name>escape</full_name>
+        <docblock line="246">
+          <description><![CDATA[escape]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="246" name="todo" description="allow using a callback for escaping"/>
+          <tag line="246" name="param" description="" type="string" variable="$value">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="246" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="253">
+          <name>$value</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="265" package="phly\mustache">
+        <name>setEscaper</name>
+        <full_name>setEscaper</full_name>
+        <docblock line="259">
+          <description><![CDATA[Set escaping mechanism]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="259" name="param" description="" type="callback" variable="$callback">
+            <type by_reference="false">callback</type>
+          </tag>
+          <tag line="259" name="return" description="" type="\Phly\Mustache\Renderer">
+            <type by_reference="false">\Phly\Mustache\Renderer</type>
+          </tag>
+        </docblock>
+        <argument line="265">
+          <name>$callback</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="279" package="phly\mustache">
+        <name>getEscaper</name>
+        <full_name>getEscaper</full_name>
+        <docblock line="274">
+          <description><![CDATA[Get escaping mechanism]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="274" name="return" description="" type="callback">
+            <type by_reference="false">callback</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="297" package="phly\mustache">
+        <name>addPragma</name>
+        <full_name>addPragma</full_name>
+        <docblock line="289">
+          <description><![CDATA[Add a pragma]]></description>
+          <long-description><![CDATA[<p>Pragmas allow extension of mustache capabilities.</p>]]></long-description>
+          <tag line="289" name="param" description="" type="\Phly\Mustache\Pragma" variable="$pragma">
+            <type by_reference="false">\Phly\Mustache\Pragma</type>
+          </tag>
+          <tag line="289" name="return" description="" type="\Phly\Mustache\Renderer">
+            <type by_reference="false">\Phly\Mustache\Renderer</type>
+          </tag>
+        </docblock>
+        <argument line="297">
+          <name>$pragma</name>
+          <default><![CDATA[]]></default>
+          <type>\Phly\Mustache\Pragma</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="309" package="phly\mustache">
+        <name>getPragmas</name>
+        <full_name>getPragmas</full_name>
+        <docblock line="304">
+          <description><![CDATA[Retrieve all registered pragmas]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="304" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="320" package="phly\mustache">
+        <name>hasPragma</name>
+        <full_name>hasPragma</full_name>
+        <docblock line="314">
+          <description><![CDATA[Do we have a pragma by a specified name?]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="314" name="param" description="" type="string" variable="$name">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="314" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+        <argument line="320">
+          <name>$name</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="331" package="phly\mustache">
+        <name>getPragma</name>
+        <full_name>getPragma</full_name>
+        <docblock line="325">
+          <description><![CDATA[Get a registered pragma by name]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="325" name="param" description="" type="string" variable="$name">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="325" name="return" description="" type="null|\Phly\Mustache\Pragma">
+            <type by_reference="false">null</type>
+            <type by_reference="false">\Phly\Mustache\Pragma</type>
+          </tag>
+        </docblock>
+        <argument line="331">
+          <name>$name</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="346" package="phly\mustache">
+        <name>removePragma</name>
+        <full_name>removePragma</full_name>
+        <docblock line="340">
+          <description><![CDATA[Remove a given pragma]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="340" name="param" description="" type="string" variable="$name">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="340" name="return" description="Returns true if found and removed; false otherwise" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+        <argument line="346">
+          <name>$name</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="364" package="phly\mustache">
+        <name>getValue</name>
+        <full_name>getValue</full_name>
+        <docblock line="355">
+          <description><![CDATA[Get a named value from the view]]></description>
+          <long-description><![CDATA[<p>Returns an empty string if no matching value found.</p>]]></long-description>
+          <tag line="355" name="param" description="" type="string" variable="$key">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="355" name="param" description="" type="mixed" variable="$view">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="355" name="return" description="" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="364">
+          <name>$key</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="364">
+          <name>$view</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="Pragma.php" hash="984ec4ea365776e4793c984a4590b322" package="phly\mustache">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <interface namespace="Phly\Mustache" line="28" package="phly\mustache">
+      <name>Pragma</name>
+      <full_name>\Phly\Mustache\Pragma</full_name>
+      <docblock line="13">
+        <description><![CDATA[Pragma interface]]></description>
+        <long-description><![CDATA[<p>Pragmas may be used to extend the capabilities of the renderer. Typically,
+this will involve parsing tokens slightly differently (implicit-iterator
+allows specifying what "variable" token name can be used), or allowing
+alternate subsitution strategies (for instance, allowing scalar views, or
+replacing contents with a string representation of an object).</p>
+
+<p>In most cases, you will want to extend {@link Phly\Mustache\Pragma\AbstractPragma},
+as it provides some convenience features.</p>]]></long-description>
+        <tag line="13" name="category" description="Phly"/>
+        <tag line="13" name="package" description="phly_mustache"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="35" package="phly\mustache">
+        <name>getName</name>
+        <full_name>getName</full_name>
+        <docblock line="30">
+          <description><![CDATA[Retrieve the name of the pragma]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="30" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="43" package="phly\mustache">
+        <name>setRenderer</name>
+        <full_name>setRenderer</full_name>
+        <docblock line="37">
+          <description><![CDATA[Set the renderer instance]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="37" name="param" description="" type="\Phly\Mustache\Renderer" variable="$renderer">
+            <type by_reference="false">\Phly\Mustache\Renderer</type>
+          </tag>
+          <tag line="37" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="43">
+          <name>$renderer</name>
+          <default><![CDATA[]]></default>
+          <type>\Phly\Mustache\Renderer</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="51" package="phly\mustache">
+        <name>handlesToken</name>
+        <full_name>handlesToken</full_name>
+        <docblock line="45">
+          <description><![CDATA[Whether or not this pragma can handle the given token]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="45" name="param" description="" type="int" variable="$token">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="45" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+        <argument line="51">
+          <name>$token</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="64" package="phly\mustache">
+        <name>handle</name>
+        <full_name>handle</full_name>
+        <docblock line="53">
+          <description><![CDATA[Handle a given token]]></description>
+          <long-description><![CDATA[<p>Returning an empty value returns control to the renderer.</p>]]></long-description>
+          <tag line="53" name="param" description="" type="int" variable="$token">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="53" name="param" description="" type="mixed" variable="$data">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="53" name="param" description="" type="mixed" variable="$view">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="53" name="param" description="" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="53" name="return" description="" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="64">
+          <name>$token</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="64">
+          <name>$data</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="64">
+          <name>$view</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="64">
+          <name>$options</name>
+          <default><![CDATA[]]></default>
+          <type>array</type>
+        </argument>
+      </method>
+    </interface>
+  </file>
+  <file path="Lexer.php" hash="0b854f3700c8a74d097544a27fe07adb" package="phly\mustache">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="Phly\Mustache" line="21" package="phly\mustache">
+      <extends/>
+      <name>Lexer</name>
+      <full_name>\Phly\Mustache\Lexer</full_name>
+      <docblock line="13">
+        <description><![CDATA[Mustache Lexer]]></description>
+        <long-description><![CDATA[<p>Compiles mustache templates into a list of tokens.</p>]]></long-description>
+        <tag line="13" name="category" description="Phly"/>
+        <tag line="13" name="package" description="phly_mustache"/>
+      </docblock>
+      <constant namespace="Phly\Mustache" line="27" package="phly\mustache">
+        <name>DS</name>
+        <full_name>DS</full_name>
+        <value><![CDATA['delim_start']]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="28" package="phly\mustache">
+        <name>DE</name>
+        <full_name>DE</full_name>
+        <value><![CDATA['delim_end']]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="29" package="phly\mustache">
+        <name>VARNAME</name>
+        <full_name>VARNAME</full_name>
+        <value><![CDATA['varname']]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="30" package="phly\mustache">
+        <name>DEFAULT_DELIM_START</name>
+        <full_name>DEFAULT_DELIM_START</full_name>
+        <value><![CDATA['{{']]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="31" package="phly\mustache">
+        <name>DEFAULT_DELIM_END</name>
+        <full_name>DEFAULT_DELIM_END</full_name>
+        <value><![CDATA['}}']]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="38" package="phly\mustache">
+        <name>STATE_CONTENT</name>
+        <full_name>STATE_CONTENT</full_name>
+        <value><![CDATA[0]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="39" package="phly\mustache">
+        <name>STATE_TAG</name>
+        <full_name>STATE_TAG</full_name>
+        <value><![CDATA[1]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="40" package="phly\mustache">
+        <name>STATE_SECTION</name>
+        <full_name>STATE_SECTION</full_name>
+        <value><![CDATA[2]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="47" package="phly\mustache">
+        <name>TOKEN_CONTENT</name>
+        <full_name>TOKEN_CONTENT</full_name>
+        <value><![CDATA[100]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="48" package="phly\mustache">
+        <name>TOKEN_VARIABLE</name>
+        <full_name>TOKEN_VARIABLE</full_name>
+        <value><![CDATA[101]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="49" package="phly\mustache">
+        <name>TOKEN_VARIABLE_RAW</name>
+        <full_name>TOKEN_VARIABLE_RAW</full_name>
+        <value><![CDATA[102]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="50" package="phly\mustache">
+        <name>TOKEN_COMMENT</name>
+        <full_name>TOKEN_COMMENT</full_name>
+        <value><![CDATA[103]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="51" package="phly\mustache">
+        <name>TOKEN_SECTION</name>
+        <full_name>TOKEN_SECTION</full_name>
+        <value><![CDATA[104]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="52" package="phly\mustache">
+        <name>TOKEN_SECTION_INVERT</name>
+        <full_name>TOKEN_SECTION_INVERT</full_name>
+        <value><![CDATA[105]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="53" package="phly\mustache">
+        <name>TOKEN_PARTIAL</name>
+        <full_name>TOKEN_PARTIAL</full_name>
+        <value><![CDATA[106]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="54" package="phly\mustache">
+        <name>TOKEN_DELIM_SET</name>
+        <full_name>TOKEN_DELIM_SET</full_name>
+        <value><![CDATA[107]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="55" package="phly\mustache">
+        <name>TOKEN_PRAGMA</name>
+        <full_name>TOKEN_PRAGMA</full_name>
+        <value><![CDATA[108]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="56" package="phly\mustache">
+        <name>TOKEN_PLACEHOLDER</name>
+        <full_name>TOKEN_PLACEHOLDER</full_name>
+        <value><![CDATA[109]]></value>
+      </constant>
+      <constant namespace="Phly\Mustache" line="57" package="phly\mustache">
+        <name>TOKEN_CHILD</name>
+        <full_name>TOKEN_CHILD</full_name>
+        <value><![CDATA[110]]></value>
+      </constant>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="89" package="phly\mustache">
+        <name>disableStripWhitespace</name>
+        <full_name>disableStripWhitespace</full_name>
+        <docblock line="83">
+          <description><![CDATA[Set or get the flag indicating whether or not to strip whitespace]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="83" name="param" description="Null indicates retrieving; boolean value sets" type="null|bool" variable="$flag">
+            <type by_reference="false">null</type>
+            <type by_reference="false">bool</type>
+          </tag>
+          <tag line="83" name="return" description="" type="bool|\Phly\Mustache\Lexer">
+            <type by_reference="false">bool</type>
+            <type by_reference="false">\Phly\Mustache\Lexer</type>
+          </tag>
+        </docblock>
+        <argument line="89">
+          <name>$flag</name>
+          <default><![CDATA[null]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="106" package="phly\mustache">
+        <name>setManager</name>
+        <full_name>setManager</full_name>
+        <docblock line="98">
+          <description><![CDATA[Set mustache manager]]></description>
+          <long-description><![CDATA[<p>Used internally to resolve and tokenize partials</p>]]></long-description>
+          <tag line="98" name="param" description="" type="\Phly\Mustache\Mustache" variable="$manager">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+          <tag line="98" name="return" description="" type="\Phly\Mustache\Lexer">
+            <type by_reference="false">\Phly\Mustache\Lexer</type>
+          </tag>
+        </docblock>
+        <argument line="106">
+          <name>$manager</name>
+          <default><![CDATA[]]></default>
+          <type>\Phly\Mustache\Mustache</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="117" package="phly\mustache">
+        <name>getManager</name>
+        <full_name>getManager</full_name>
+        <docblock line="112">
+          <description><![CDATA[Retrieve the mustache manager]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="112" name="return" description="" type="null|\Phly\Mustache\Mustache">
+            <type by_reference="false">null</type>
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="131" package="phly\mustache">
+        <name>compile</name>
+        <full_name>compile</full_name>
+        <docblock line="122">
+          <description><![CDATA[Compile a string into a set of tokens]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="122" name="todo" description="Store full matched text with each token?"/>
+          <tag line="122" name="param" description="" type="string" variable="$string">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="122" name="param" description="Template to use in the case of a partial" type="null|string" variable="$templateName">
+            <type by_reference="false">null</type>
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="122" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="122" name="throws" description="" type="\Phly\Mustache\Exception">
+            <type by_reference="false">\Phly\Mustache\Exception</type>
+          </tag>
+        </docblock>
+        <argument line="131">
+          <name>$string</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="131">
+          <name>$templateName</name>
+          <default><![CDATA[null]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="Pragma/AbstractPragma.php" hash="0d2c136124190bd30719d76f86a27335" package="phly\mustache\Pragma">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Pragma"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Pragma">Phly\Mustache\Pragma</namespace-alias>
+    <namespace-alias name="Renderer">Phly\Mustache\Renderer</namespace-alias>
+    <namespace-alias name="Lexer">Phly\Mustache\Lexer</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Pragma" line="25" package="phly\mustache\Pragma">
+      <extends/>
+      <implements>\Phly\Mustache\Pragma</implements>
+      <name>AbstractPragma</name>
+      <full_name>\Phly\Mustache\Pragma\AbstractPragma</full_name>
+      <docblock line="18">
+        <description><![CDATA[Abstract pragma implementation]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="18" name="category" description="Phly"/>
+        <tag line="18" name="package" description="phly_mustache"/>
+        <tag line="18" name="subpackage" description="Pragma"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="50" package="phly\mustache\Pragma">
+        <name>getName</name>
+        <full_name>getName</full_name>
+        <docblock line="45">
+          <description><![CDATA[Retrieve the name of the pragma]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="45" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="61" package="phly\mustache\Pragma">
+        <name>setRenderer</name>
+        <full_name>setRenderer</full_name>
+        <docblock line="55">
+          <description><![CDATA[Set the renderer instance]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="55" name="param" description="" type="\Phly\Mustache\Renderer" variable="$renderer">
+            <type by_reference="false">\Phly\Mustache\Renderer</type>
+          </tag>
+          <tag line="55" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="61">
+          <name>$renderer</name>
+          <default><![CDATA[]]></default>
+          <type>\Phly\Mustache\Renderer</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="71" package="phly\mustache\Pragma">
+        <name>getRenderer</name>
+        <full_name>getRenderer</full_name>
+        <docblock line="66">
+          <description><![CDATA[Retrieve renderer]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="66" name="return" description="" type="\Phly\Mustache\Renderer">
+            <type by_reference="false">\Phly\Mustache\Renderer</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="82" package="phly\mustache\Pragma">
+        <name>handlesToken</name>
+        <full_name>handlesToken</full_name>
+        <docblock line="76">
+          <description><![CDATA[Whether or not this pragma can handle the given token]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="76" name="param" description="" type="int" variable="$token">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="76" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+        <argument line="82">
+          <name>$token</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="Pragma/ImplicitIterator.php" hash="9560197dc118d191b5cbf12e70696407" package="phly\mustache\Pragma">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Pragma"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Lexer">Phly\Mustache\Lexer</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Pragma" line="36" package="phly\mustache\Pragma">
+      <extends>\Phly\Mustache\Pragma\AbstractPragma</extends>
+      <name>ImplicitIterator</name>
+      <full_name>\Phly\Mustache\Pragma\ImplicitIterator</full_name>
+      <docblock line="16">
+        <description><![CDATA[IMPLICIT-ITERATOR pragma]]></description>
+        <long-description><![CDATA[<p>When enabled, allows passing an indexed array or Traversable object to a
+section within a view, instead of an array of associative arrays or array of
+objects. By default, the tag {{.}} will render the current item in the array;
+you may specify an alternate tag name using the "iterator" option of the
+pragma:</p>
+
+<pre><code>{{%IMPLICIT-ITERATOR iterator=foo}}
+{{#section}}
+    {{foo}}
+{{/section}}
+</code></pre>]]></long-description>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+        <tag line="16" name="subpackage" description="Pragma"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="64" package="phly\mustache\Pragma">
+        <name>handle</name>
+        <full_name>handle</full_name>
+        <docblock line="53">
+          <description><![CDATA[Handle a given token]]></description>
+          <long-description><![CDATA[<p>Returning an empty value returns control to the renderer.</p>]]></long-description>
+          <tag line="53" name="param" description="" type="int" variable="$token">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="53" name="param" description="" type="mixed" variable="$data">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="53" name="param" description="" type="mixed" variable="$view">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="53" name="param" description="" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="53" name="return" description="" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="64">
+          <name>$token</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="64">
+          <name>$data</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="64">
+          <name>$view</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="64">
+          <name>$options</name>
+          <default><![CDATA[]]></default>
+          <type>array</type>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="Pragma/SubViews.php" hash="df8ac8fd021ce2d3648324da08c58bdd" package="phly\mustache\Pragma">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Pragma"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="Mustache">Phly\Mustache\Mustache</namespace-alias>
+    <namespace-alias name="Lexer">Phly\Mustache\Lexer</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Pragma" line="79" package="phly\mustache\Pragma">
+      <extends>\Phly\Mustache\Pragma\AbstractPragma</extends>
+      <name>SubViews</name>
+      <full_name>\Phly\Mustache\Pragma\SubViews</full_name>
+      <docblock line="17">
+        <description><![CDATA[SUB-VIEWS pragma]]></description>
+        <long-description><![CDATA[<p>When enabled, allows passing "sub-views". A sub view is an object
+implementing SubView, which contains the following methods:
+- getTemplate()
+- getView()
+When detected as the value of a variable, the pragma will render the given
+template using the view provided, and return that value as the value of the
+variable.</p>
+
+<p>Consider the following template:</p>
+
+<pre><code>{{%SUB-VIEWS}}
+<html>
+<head>
+{{>header}}
+</head>
+<body>
+    {{content}}
+</body>
+</html>
+</code></pre>
+
+<p>And the following partials:</p>
+
+<pre><code>{{!header}}
+    <title>{{title}}</title>
+
+{{!controller/action}}
+{{greeting}}, {{name}}!
+</code></pre>
+
+<p>Along with the following view:</p>
+
+<pre><code>$content = new SubView('controller/action', array(
+    'name'     => 'Matthew',
+    'greeting' => 'Welcome',
+));
+$view = array(
+    'title'   => 'Greeting Page',
+    'content' => $content,
+);
+</code></pre>
+
+<p>Rendered, this would now be:</p>
+
+<pre><code><html>
+<head>
+    <title>Greeting Page</title>
+</head>
+<body>
+    Welcome, Matthew!
+</body>
+</html>
+</code></pre>]]></long-description>
+        <tag line="17" name="category" description="Phly"/>
+        <tag line="17" name="package" description="phly_mustache"/>
+        <tag line="17" name="subpackage" description="Pragma"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="107" package="phly\mustache\Pragma">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="101">
+          <description><![CDATA[Constructor]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="101" name="param" description="" type="\Phly\Mustache\Mustache" variable="$manager">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+          <tag line="101" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="107">
+          <name>$manager</name>
+          <default><![CDATA[null]]></default>
+          <type>\Phly\Mustache\Mustache</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="122" package="phly\mustache\Pragma">
+        <name>setManager</name>
+        <full_name>setManager</full_name>
+        <docblock line="114">
+          <description><![CDATA[Set manager object]]></description>
+          <long-description><![CDATA[<p>Sets manager object and registers self as a pragma on the renderer.</p>]]></long-description>
+          <tag line="114" name="param" description="" type="\Phly\Mustache\Mustache" variable="$manager">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+          <tag line="114" name="return" description="" type="\Phly\Mustache\Pragma\SubViews">
+            <type by_reference="false">\Phly\Mustache\Pragma\SubViews</type>
+          </tag>
+        </docblock>
+        <argument line="122">
+          <name>$manager</name>
+          <default><![CDATA[]]></default>
+          <type>\Phly\Mustache\Mustache</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="134" package="phly\mustache\Pragma">
+        <name>getManager</name>
+        <full_name>getManager</full_name>
+        <docblock line="129">
+          <description><![CDATA[Retrieve manager object]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="129" name="return" description="" type="\Phly\Mustache\Mustache">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="150" package="phly\mustache\Pragma">
+        <name>handle</name>
+        <full_name>handle</full_name>
+        <docblock line="139">
+          <description><![CDATA[Handle a given token]]></description>
+          <long-description><![CDATA[<p>Returning an empty value returns control to the renderer.</p>]]></long-description>
+          <tag line="139" name="param" description="" type="int" variable="$token">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="139" name="param" description="" type="mixed" variable="$data">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="139" name="param" description="" type="mixed" variable="$view">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="139" name="param" description="" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="139" name="return" description="" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="150">
+          <name>$token</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="150">
+          <name>$data</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="150">
+          <name>$view</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="150">
+          <name>$options</name>
+          <default><![CDATA[]]></default>
+          <type>array</type>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="Pragma/SubView.php" hash="1fda3a26f6aa4030f2ffef396dea77b8" package="phly\mustache\Pragma">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="subpackage" description="Pragma"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="InvalidTemplateException">Phly\Mustache\Exception\InvalidTemplateException</namespace-alias>
+    <namespace-alias name="InvalidArgumentException">InvalidArgumentException</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache\Pragma" line="27" package="phly\mustache\Pragma">
+      <extends/>
+      <name>SubView</name>
+      <full_name>\Phly\Mustache\Pragma\SubView</full_name>
+      <docblock line="17">
+        <description><![CDATA[Sub-view description]]></description>
+        <long-description><![CDATA[<p>Objects extending this may be used to describe sub-views that should be
+rendered as substitutions for template variables.</p>]]></long-description>
+        <tag line="17" name="category" description="Phly"/>
+        <tag line="17" name="package" description="phly_mustache"/>
+        <tag line="17" name="subpackage" description="Pragma"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="48" package="phly\mustache\Pragma">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="41">
+          <description><![CDATA[Constructor]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="41" name="param" description="" type="string" variable="$template">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="41" name="param" description="" type="null|array|object" variable="$view">
+            <type by_reference="false">null</type>
+            <type by_reference="false">array</type>
+            <type by_reference="false">object</type>
+          </tag>
+          <tag line="41" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="48">
+          <name>$template</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="48">
+          <name>$view</name>
+          <default><![CDATA[null]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="65" package="phly\mustache\Pragma">
+        <name>getTemplate</name>
+        <full_name>getTemplate</full_name>
+        <docblock line="60">
+          <description><![CDATA[Retrieve template]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="60" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache\Pragma" line="75" package="phly\mustache\Pragma">
+        <name>getView</name>
+        <full_name>getView</full_name>
+        <docblock line="70">
+          <description><![CDATA[Retrieve view]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="70" name="return" description="" type="array|object">
+            <type by_reference="false">array</type>
+            <type by_reference="false">object</type>
+          </tag>
+        </docblock>
+      </method>
+    </class>
+  </file>
+  <file path="_autoload.php" hash="7255f35b61f2da597cf51be485966769" package="phly\mustache">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <include line="38" type="Require Once" package="Default">
+      <name/>
+    </include>
+  </file>
+  <file path="Mustache.php" hash="9f521d74df9813e7c139209cde70184c" package="phly\mustache">
+    <docblock line="2">
+      <description><![CDATA[phly_mustache]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="category" description="Phly"/>
+      <tag line="2" name="package" description="phly_mustache"/>
+      <tag line="2" name="copyright" description="Copyright (c) 2010 Matthew Weier O'Phinney &lt;mweierophinney@gmail.com&gt;"/>
+      <tag line="2" name="license" description="http://www.opensource.org/licenses/bsd-license.php New BSD License"/>
+    </docblock>
+    <namespace-alias name="ArrayObject">ArrayObject</namespace-alias>
+    <namespace-alias name="SplStack">SplStack</namespace-alias>
+    <class final="false" abstract="false" namespace="Phly\Mustache" line="23" package="phly\mustache">
+      <extends/>
+      <name>Mustache</name>
+      <full_name>\Phly\Mustache\Mustache</full_name>
+      <docblock line="16">
+        <description><![CDATA[Mustache implementation]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="16" name="todo" description="Prevent duplicate paths from being added"/>
+        <tag line="16" name="category" description="Phly"/>
+        <tag line="16" name="package" description="phly_mustache"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="60" package="phly\mustache">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="55">
+          <description><![CDATA[Constructor]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="55" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="71" package="phly\mustache">
+        <name>setLexer</name>
+        <full_name>setLexer</full_name>
+        <docblock line="65">
+          <description><![CDATA[Set lexer to use when tokenizing templates]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="65" name="param" description="" type="\Phly\Mustache\Lexer" variable="$lexer">
+            <type by_reference="false">\Phly\Mustache\Lexer</type>
+          </tag>
+          <tag line="65" name="return" description="" type="\Phly\Mustache\Mustache">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+        </docblock>
+        <argument line="71">
+          <name>$lexer</name>
+          <default><![CDATA[]]></default>
+          <type>\Phly\Mustache\Lexer</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="83" package="phly\mustache">
+        <name>getLexer</name>
+        <full_name>getLexer</full_name>
+        <docblock line="78">
+          <description><![CDATA[Get lexer]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="78" name="return" description="" type="\Phly\Mustache\Lexer">
+            <type by_reference="false">\Phly\Mustache\Lexer</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="97" package="phly\mustache">
+        <name>setRenderer</name>
+        <full_name>setRenderer</full_name>
+        <docblock line="91">
+          <description><![CDATA[Set renderer]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="91" name="param" description="" type="\Phly\Mustache\Renderer" variable="$renderer">
+            <type by_reference="false">\Phly\Mustache\Renderer</type>
+          </tag>
+          <tag line="91" name="return" description="" type="\Phly\Mustache\Mustache">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+        </docblock>
+        <argument line="97">
+          <name>$renderer</name>
+          <default><![CDATA[]]></default>
+          <type>\Phly\Mustache\Renderer</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="109" package="phly\mustache">
+        <name>getRenderer</name>
+        <full_name>getRenderer</full_name>
+        <docblock line="104">
+          <description><![CDATA[Get renderer]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="104" name="return" description="" type="\Phly\Mustache\Renderer">
+            <type by_reference="false">\Phly\Mustache\Renderer</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="124" package="phly\mustache">
+        <name>setTemplatePath</name>
+        <full_name>setTemplatePath</full_name>
+        <docblock line="117">
+          <description><![CDATA[Add a template path to the template path stack]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="117" name="param" description="" type="string" variable="$path">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="117" name="return" description="" type="\Phly\Mustache\Mustache">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+          <tag line="117" name="throws" description="" type="\Phly\Mustache\InvalidTemplatePathException">
+            <type by_reference="false">\Phly\Mustache\InvalidTemplatePathException</type>
+          </tag>
+        </docblock>
+        <argument line="124">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="139" package="phly\mustache">
+        <name>setSuffix</name>
+        <full_name>setSuffix</full_name>
+        <docblock line="133">
+          <description><![CDATA[Set suffix used when resolving templates]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="133" name="param" description="" type="string" variable="$suffix">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="133" name="return" description="" type="\Phly\Mustache\Mustache">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+        </docblock>
+        <argument line="139">
+          <name>$suffix</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="150" package="phly\mustache">
+        <name>getSuffix</name>
+        <full_name>getSuffix</full_name>
+        <docblock line="145">
+          <description><![CDATA[Get template suffix]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="145" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="165" package="phly\mustache">
+        <name>render</name>
+        <full_name>render</full_name>
+        <docblock line="155">
+          <description><![CDATA[Render a template using a view, and optionally a list of partials]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="155" name="todo" description="should partials be passed here? or simply referenced?"/>
+          <tag line="155" name="param" description="Either a template string or a template file in the template path" type="string" variable="$template">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="155" name="param" description="An array or object with items to inject in the template" type="array|object" variable="$view">
+            <type by_reference="false">array</type>
+            <type by_reference="false">object</type>
+          </tag>
+          <tag line="155" name="param" description="A list of partial names/template pairs for rendering as partials" type="array|object" variable="$partials">
+            <type by_reference="false">array</type>
+            <type by_reference="false">object</type>
+          </tag>
+          <tag line="155" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="155" name="throws" description="" type="\Phly\Mustache\InvalidPartialsException">
+            <type by_reference="false">\Phly\Mustache\InvalidPartialsException</type>
+          </tag>
+        </docblock>
+        <argument line="165">
+          <name>$template</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="165">
+          <name>$view</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="165">
+          <name>$partials</name>
+          <default><![CDATA[null]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="198" package="phly\mustache">
+        <name>tokenize</name>
+        <full_name>tokenize</full_name>
+        <docblock line="192">
+          <description><![CDATA[Tokenize a template]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="192" name="param" description="Either a template string or a reference to a template" type="string" variable="$template">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="192" name="return" description="Array of tokens" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="198">
+          <name>$template</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="228" package="phly\mustache">
+        <name>getAllTokens</name>
+        <full_name>getAllTokens</full_name>
+        <docblock line="217">
+          <description><![CDATA[Returns an array of template name/token list pairs]]></description>
+          <long-description><![CDATA[<p>Returns an array of template name/token list pairs for all templates
+which have been rendered by this instance. These can then be cached for
+use with other instances, either in parallel or later.</p>
+
+<p>To seed an instance with these tokens, use {@link restoreTokens()}.</p>]]></long-description>
+          <tag line="217" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Phly\Mustache" line="242" package="phly\mustache">
+        <name>restoreTokens</name>
+        <full_name>restoreTokens</full_name>
+        <docblock line="233">
+          <description><![CDATA[Restore or seed this instance's list of cached template tokens]]></description>
+          <long-description><![CDATA[<p>This list should be in the form of template name/token list pairs,
+ideally as received from {@link getAllTokens()}.</p>]]></long-description>
+          <tag line="233" name="param" description="" type="array" variable="$tokens">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="233" name="return" description="" type="\Phly\Mustache\Mustache">
+            <type by_reference="false">\Phly\Mustache\Mustache</type>
+          </tag>
+        </docblock>
+        <argument line="242">
+          <name>$tokens</name>
+          <default><![CDATA[]]></default>
+          <type>array</type>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <package name="Default" full_name="Default"/>
+  <package name="phly" full_name="phly">
+    <package name="mustache" full_name="phly\mustache">
+      <package name="Exception" full_name="phly\mustache\Exception"/>
+      <package name="Pragma" full_name="phly\mustache\Pragma"/>
+    </package>
+  </package>
+  <namespace name="Phly" full_name="Phly">
+    <namespace name="Mustache" full_name="Phly\Mustache">
+      <namespace name="Exception" full_name="Phly\Mustache\Exception"/>
+      <namespace name="Pragma" full_name="Phly\Mustache\Pragma"/>
+    </namespace>
+  </namespace>
+  <marker count="4">todo</marker>
+  <marker count="0">fixme</marker>
+  <deprecated count="0"/>
+</project>

@@ -1,0 +1,300 @@
+<!DOCTYPE html><html xmlns:date="http://exslt.org/dates-and-times" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phly_mustache » \Phly\Mustache\Renderer</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phly_mustache</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Phly.html"><i class="icon-th"></i> Phly</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/phly.html"><i class="icon-folder-open"></i> phly</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">0</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">4</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods</li>
+<li class="method public "><a href="#addPragma" title="addPragma :: Add a pragma"><span class="description">Add a pragma</span><pre>addPragma()</pre></a></li>
+<li class="method public "><a href="#escape" title="escape :: escape"><span class="description">escape</span><pre>escape()</pre></a></li>
+<li class="method public "><a href="#getEscaper" title="getEscaper :: Get escaping mechanism"><span class="description">Get escaping mechanism</span><pre>getEscaper()</pre></a></li>
+<li class="method public "><a href="#getManager" title="getManager :: Retrieve the mustache manager"><span class="description">Retrieve the mustache manager</span><pre>getManager()</pre></a></li>
+<li class="method public "><a href="#getPragma" title="getPragma :: Get a registered pragma by name"><span class="description">Get a registered pragma by name</span><pre>getPragma()</pre></a></li>
+<li class="method public "><a href="#getPragmas" title="getPragmas :: Retrieve all registered pragmas"><span class="description">Retrieve all registered pragmas</span><pre>getPragmas()</pre></a></li>
+<li class="method public "><a href="#getValue" title="getValue :: Get a named value from the view"><span class="description">Get a named value from the view</span><pre>getValue()</pre></a></li>
+<li class="method public "><a href="#hasPragma" title="hasPragma :: Do we have a pragma by a specified name?"><span class="description">Do we have a pragma by a specified name?</span><pre>hasPragma()</pre></a></li>
+<li class="method public "><a href="#removePragma" title="removePragma :: Remove a given pragma"><span class="description">Remove a given pragma</span><pre>removePragma()</pre></a></li>
+<li class="method public "><a href="#render" title="render :: Render a set of tokens with view substitutions"><span class="description">Render a set of tokens with view substitutions</span><pre>render()</pre></a></li>
+<li class="method public "><a href="#setEscaper" title="setEscaper :: Set escaping mechanism"><span class="description">Set escaping mechanism</span><pre>setEscaper()</pre></a></li>
+<li class="method public "><a href="#setManager" title="setManager :: Set mustache manager"><span class="description">Set mustache manager</span><pre>setManager()</pre></a></li>
+</ul>
+</div>
+<div class="span8">
+<a name="%5CPhly%5CMustache%5CRenderer" id="\Phly\Mustache\Renderer"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/Phly.html">Phly</a></li>
+<span class="divider">\</span><li><a href="../namespaces/Phly.Mustache.html">Mustache</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Phly.Mustache.Renderer.html">Renderer</a>
+</li>
+</ul>
+<div href="../classes/Phly.Mustache.Renderer.html" class="element class">
+<p class="short_description">Mustache renderer</p>
+<div class="details">
+<p class="long_description"><p>Loops through tokens, performing substitutions from the view, branching
+based on token type and/or view values.</p></p>
+<table class="table table-bordered">
+<tr>
+<th>category</th>
+<td>Phly</td>
+</tr>
+<tr>
+<th>package</th>
+<td><a href="../packages/phly.mustache.html">phly_mustache</a></td>
+</tr>
+</table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a name="addPragma" id="addPragma"></a><div class="element clickable method public addPragma" data-toggle="collapse" data-target=".addPragma .collapse">
+<h2>Add a pragma</h2>
+<pre>addPragma(\Phly\Mustache\Pragma $pragma) : <a href="../classes/Phly.Mustache.Renderer.html">\Phly\Mustache\Renderer</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"><p>Pragmas allow extension of mustache capabilities.</p></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pragma</h4>
+<code><a href="../classes/Phly.Mustache.Pragma.html">\Phly\Mustache\Pragma</a></code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Renderer.html">\Phly\Mustache\Renderer</a></code></div>
+</div></div>
+</div>
+<a name="escape" id="escape"></a><div class="element clickable method public escape" data-toggle="collapse" data-target=".escape .collapse">
+<h2>escape</h2>
+<pre>escape(string $value) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>todo</th>
+<td>allow using a callback for escaping</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="getEscaper" id="getEscaper"></a><div class="element clickable method public getEscaper" data-toggle="collapse" data-target=".getEscaper .collapse">
+<h2>Get escaping mechanism</h2>
+<pre>getEscaper() : callback</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code>callback</code></div>
+</div></div>
+</div>
+<a name="getManager" id="getManager"></a><div class="element clickable method public getManager" data-toggle="collapse" data-target=".getManager .collapse">
+<h2>Retrieve the mustache manager</h2>
+<pre>getManager() : null | <a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code>
+</div>
+</div></div>
+</div>
+<a name="getPragma" id="getPragma"></a><div class="element clickable method public getPragma" data-toggle="collapse" data-target=".getPragma .collapse">
+<h2>Get a registered pragma by name</h2>
+<pre>getPragma(string $name) : null | <a href="../classes/Phly.Mustache.Pragma.html">\Phly\Mustache\Pragma</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>null</code><code><a href="../classes/Phly.Mustache.Pragma.html">\Phly\Mustache\Pragma</a></code>
+</div>
+</div></div>
+</div>
+<a name="getPragmas" id="getPragmas"></a><div class="element clickable method public getPragmas" data-toggle="collapse" data-target=".getPragmas .collapse">
+<h2>Retrieve all registered pragmas</h2>
+<pre>getPragmas() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="getValue" id="getValue"></a><div class="element clickable method public getValue" data-toggle="collapse" data-target=".getValue .collapse">
+<h2>Get a named value from the view</h2>
+<pre>getValue(string $key, mixed $view) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"><p>Returns an empty string if no matching value found.</p></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$key</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$view</h4>
+<code>mixed</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a name="hasPragma" id="hasPragma"></a><div class="element clickable method public hasPragma" data-toggle="collapse" data-target=".hasPragma .collapse">
+<h2>Do we have a pragma by a specified name?</h2>
+<pre>hasPragma(string $name) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a name="removePragma" id="removePragma"></a><div class="element clickable method public removePragma" data-toggle="collapse" data-target=".removePragma .collapse">
+<h2>Remove a given pragma</h2>
+<pre>removePragma(string $name) : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code>Returns true if found and removed; false otherwise</div>
+</div></div>
+</div>
+<a name="render" id="render"></a><div class="element clickable method public render" data-toggle="collapse" data-target=".render .collapse">
+<h2>Render a set of tokens with view substitutions</h2>
+<pre>render(array $tokens, mixed $view, array $partials) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code>
+</div>
+<div class="subelement argument">
+<h4>$view</h4>
+<code>mixed</code>
+</div>
+<div class="subelement argument">
+<h4>$partials</h4>
+<code>arraynull</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="setEscaper" id="setEscaper"></a><div class="element clickable method public setEscaper" data-toggle="collapse" data-target=".setEscaper .collapse">
+<h2>Set escaping mechanism</h2>
+<pre>setEscaper(callback $callback) : <a href="../classes/Phly.Mustache.Renderer.html">\Phly\Mustache\Renderer</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$callback</h4>
+<code>callback</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Renderer.html">\Phly\Mustache\Renderer</a></code></div>
+</div></div>
+</div>
+<a name="setManager" id="setManager"></a><div class="element clickable method public setManager" data-toggle="collapse" data-target=".setManager .collapse">
+<h2>Set mustache manager</h2>
+<pre>setManager(\Phly\Mustache\Mustache $manager) : <a href="../classes/Phly.Mustache.Lexer.html">\Phly\Mustache\Lexer</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"><p>Used internally to resolve and tokenize partials</p></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$manager</h4>
+<code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Lexer.html">\Phly\Mustache\Lexer</a></code></div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
+            generated on 2012-07-29T20:01:19-05:00.<br></footer></div>
+</div>
+</body>
+</html>
