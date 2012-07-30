@@ -3,6 +3,16 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
  README.md
  TODO
  .travis.yml
+ docs=docs filter="conf.py *.rst Makefile" {
+  conf.py
+  documentation.rst
+  index.rst
+  pragmas.rst
+  rendering.rst
+  syntax.rst
+  usage.rst
+  Makefile
+ }
  library=library {
   Phly=Phly {
    Mustache=Mustache {
@@ -32,6 +42,10 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      SubView.php
      SubViews.php
     }
+    Resolver=Resolver {
+     DefaultResolver.php
+     ResolverInterface.php
+    }
    }
   }
  }
@@ -41,6 +55,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
   PhlyTest=PhlyTest {
    Mustache=Mustache {
     MustacheTest.php
+    DefaultResolverTest.php
     Pragma=Pragma {
      SubViewsTest.php
     }

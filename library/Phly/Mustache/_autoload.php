@@ -32,6 +32,8 @@ $_map = array (
   'Phly\\Mustache\\Pragma\\SubView' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/SubView.php',
   'Phly\\Mustache\\Pragma\\SubViews' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma/SubViews.php',
   'Phly\\Mustache\\Pragma' => __DIR__ . DIRECTORY_SEPARATOR . 'Pragma.php',
+  'Phly\\Mustache\\Resolver\\ResolverInterface' => __DIR__ . DIRECTORY_SEPARATOR . 'Resolver/ResolverInterface.php',
+  'Phly\\Mustache\\Resolver\\DefaultResolver' => __DIR__ . DIRECTORY_SEPARATOR . 'Resolver/DefaultResolver.php',
 );
 spl_autoload_register(function($class) use ($_map) {
     if (array_key_exists($class, $_map)) {
