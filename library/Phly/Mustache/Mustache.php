@@ -11,28 +11,21 @@
 namespace Phly\Mustache;
 
 use ArrayObject;
-use SplStack;
 
 /**
  * Mustache implementation
- * 
+ *
  * @todo Prevent duplicate paths from being added
  * @category Phly
  * @package  phly_mustache
  */
 class Mustache
 {
-    /** 
+    /**
      * Cached file-based templates; contains template name/token pairs
-     * @var array 
+     * @var array
      */
     protected $cachedTemplates = array();
-
-    /**
-     * Stack of template paths to search
-     * @var SplStack 
-     */
-    protected $templatePath;
 
     /**
      * Lexer
@@ -47,25 +40,21 @@ class Mustache
     protected $renderer;
 
     /**
+     * Template resolver
+     * @var Resolver\ResolverInterface
+     */
+    protected $resolver;
+
+    /**
      * Suffix used when resolving templates
-     * @var string 
+     * @var string
      */
     protected $suffix = '.mustache';
 
     /**
-     * Constructor
-     * 
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->templatePath = new SplStack;
-    }
-
-    /**
      * Set lexer to use when tokenizing templates
-     * 
-     * @param  Lexer $lexer 
+     *
+     * @param  Lexer $lexer
      * @return Mustache
      */
     public function setLexer(Lexer $lexer)
@@ -77,7 +66,7 @@ class Mustache
 
     /**
      * Get lexer
-     * 
+     *
      * @return Lexer
      */
     public function getLexer()
@@ -90,8 +79,8 @@ class Mustache
 
     /**
      * Set renderer
-     * 
-     * @param  Renderer $renderer 
+     *
+     * @param  Renderer $renderer
      * @return Mustache
      */
     public function setRenderer(Renderer $renderer)
@@ -103,7 +92,7 @@ class Mustache
 
     /**
      * Get renderer
-     * 
+     *
      * @return Renderer
      */
     public function getRenderer()
@@ -115,52 +104,73 @@ class Mustache
     }
 
     /**
-     * Add a template path to the template path stack
-     * 
-     * @param  string $path 
+     * Set template resolver
+     *
+     * @param  Resolver\ResolverInterface $resolver
      * @return Mustache
-     * @throws InvalidTemplatePathException
+     */
+    public function setResolver(Resolver\ResolverInterface $resolver)
+    {
+        $this->resolver = $resolver;
+        return $this;
+    }
+
+    /**
+     * Get template resolver
+     *
+     * @return Resolver\ResolverInterface
+     */
+    public function getResolver()
+    {
+        if (!$this->resolver instanceof Resolver\ResolverInterface) {
+            $this->setResolver(new Resolver\DefaultResolver());
+        }
+        return $this->resolver;
+    }
+
+    /**
+     * Add a template path to the template path stack
+     *
+     * @param  string $path
+     * @return Mustache
      */
     public function setTemplatePath($path)
     {
-        if (!is_dir($path)) {
-            throw new Exception\InvalidTemplatePathException();
-        }
-        $this->templatePath->push($path);
+        $this->getResolver()->setTemplatePath($path);
         return $this;
     }
 
     /**
      * Set suffix used when resolving templates
-     * 
-     * @param  string $suffix 
+     *
+     * @param  string $suffix
      * @return Mustache
      */
     public function setSuffix($suffix)
     {
-        $this->suffix = '.' . ltrim($suffix, '.');
+        $this->getResolver()->setSuffix($suffix);
         return $this;
     }
 
     /**
      * Get template suffix
-     * 
+     *
      * @return string
      */
     public function getSuffix()
     {
-        return $this->suffix;
+        return $this->getResolver()->getSuffix();
     }
 
     /**
      * Render a template using a view, and optionally a list of partials
-     * 
+     *
      * @todo   should partials be passed here? or simply referenced?
      * @param  string $template Either a template string or a template file in the template path
      * @param  array|object $view An array or object with items to inject in the template
      * @param  array|object $partials A list of partial names/template pairs for rendering as partials
      * @return string
-     * @throws InvalidPartialsException
+     * @throws Exception\InvalidPartialsException
      */
     public function render($template, $view, $partials = null)
     {
@@ -191,7 +201,7 @@ class Mustache
 
     /**
      * Tokenize a template
-     * 
+     *
      * @param  string $template Either a template string or a reference to a template
      * @return array Array of tokens
      */
@@ -222,7 +232,7 @@ class Mustache
      * use with other instances, either in parallel or later.
      *
      * To seed an instance with these tokens, use {@link restoreTokens()}.
-     * 
+     *
      * @return array
      */
     public function getAllTokens()
@@ -233,10 +243,10 @@ class Mustache
     /**
      * Restore or seed this instance's list of cached template tokens
      *
-     * This list should be in the form of template name/token list pairs, 
-     * ideally as received from {@link getAllTokens()}. 
-     * 
-     * @param  array $tokens 
+     * This list should be in the form of template name/token list pairs,
+     * ideally as received from {@link getAllTokens()}.
+     *
+     * @param  array $tokens
      * @return Mustache
      */
     public function restoreTokens(array $tokens)
@@ -247,21 +257,21 @@ class Mustache
 
     /**
      * Locate and retrieve a template in the template path stack
-     * 
-     * @param  string $template 
+     *
+     * @param  string $template
      * @return string
-     * @throws TemplateNotFoundException
+     * @throws Exception\TemplateNotFoundException
      */
     protected function fetchTemplate($template)
     {
-        foreach ($this->templatePath as $path) {
-            $file = $path . DIRECTORY_SEPARATOR . $template . $this->getSuffix();
-            if (file_exists($file)) {
-                $content = file_get_contents($file);
-                $this->cachedTemplates[$template] = $content;
-                return $content;
-            }
+        $resolver = $this->getResolver();
+        $file     = $resolver->resolve($template);
+        if (!$file) {
+            throw new Exception\TemplateNotFoundException('Template by name "' . $template . '" not found');
         }
-        throw new Exception\TemplateNotFoundException('Template by name "' . $template . '" not found');
+
+        $content = file_get_contents($file);
+        $this->cachedTemplates[$template] = $content;
+        return $content;
     }
 }

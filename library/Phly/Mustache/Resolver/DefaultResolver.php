@@ -11,6 +11,7 @@
 namespace Phly\Mustache\Resolver;
 
 use Phly\Mustache\Exception;
+use SplStack;
 
 /**
  * Default resolver implementation
@@ -105,7 +106,7 @@ class DefaultResolver implements ResolverInterface
         }
 
         $templatePath = rtrim((string) $templatePath, '/\\');
-        $this->templatePath = $templatePath;
+        $this->getTemplatePath()->push($templatePath);
         return $this;
     }
 
@@ -116,27 +117,45 @@ class DefaultResolver implements ResolverInterface
      */
     public function getTemplatePath()
     {
+        if (!$this->templatePath instanceof SplStack) {
+            $this->templatePath = new SplStack;
+        }
         return $this->templatePath;
+    }
+
+    /**
+     * Clear/initialize the template path stack
+     *
+     * @return void
+     */
+    public function clearTemplatePath()
+    {
+        $this->templatePath = new SplStack();
     }
 
     /**
      * Resolve a template to its file
      *
      * @param  string $template
-     * @return string
+     * @return false|string Returns false if unable to resolve the template to a path
      */
     public function resolve($template)
     {
-        $segments = explode($this->getSeparator(), $template);
+        $segments     = explode($this->getSeparator(), $template);
+        $relativePath = implode(DIRECTORY_SEPARATOR, $segments)
+                      . $this->getSuffix();
 
-        $path     = $this->getTemplatePath();
-        if (!empty($path)) {
-            $path .= DIRECTORY_SEPARATOR;
+        foreach ($this->getTemplatePath() as $path) {
+            if (!empty($path)) {
+                $path .= DIRECTORY_SEPARATOR;
+            }
+
+            $filename = $path . $relativePath;
+            if (file_exists($filename)) {
+                return $filename;
+            }
         }
 
-        $filename = $path
-                  . implode(DIRECTORY_SEPARATOR, $segments)
-                  . $this->getSuffix();
-        return $filename;
+        return false;
     }
 }
