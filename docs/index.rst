@@ -6,6 +6,8 @@
 Welcome to Phly\Mustache!
 =========================
 
+Phly\Mustache is a PHP 5.3 implementation of `Mustache <http://mustache.github.com>`_, a lightweight templating specification.
+
 Contents:
 
 .. toctree::
@@ -16,6 +18,12 @@ Contents:
    rendering
    syntax
    pragmas
+
+Api docs:
+---------
+
+`API docs are available. <api>`_
+
 
 Indices and tables
 ==================
