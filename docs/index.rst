@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Phly\Mustache!
-=========================
+Welcome to Phly\\Mustache!
+==========================
 
-Phly\Mustache is a PHP 5.3 implementation of `Mustache <http://mustache.github.com>`_, a lightweight templating specification.
+Phly\\Mustache is a PHP 5.3 implementation of `Mustache <http://mustache.github.com>`_, a lightweight templating specification.
 
 Contents:
 
@@ -22,7 +22,7 @@ Contents:
 Api docs:
 ---------
 
-`API docs are available. <api>`_
+`API docs are available. <_static/phpdoc/index.html>`_
 
 
 Indices and tables

@@ -1,0 +1,293 @@
+<!DOCTYPE html><html xmlns:date="http://exslt.org/dates-and-times" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phly_mustache » \Phly\Mustache\Mustache</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phly_mustache</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Phly.html"><i class="icon-th"></i> Phly</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/phly.html"><i class="icon-folder-open"></i> phly</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">0</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">4</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods</li>
+<li class="method public "><a href="#__construct" title="__construct :: Constructor"><span class="description">Constructor</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#getAllTokens" title="getAllTokens :: Returns an array of template name/token list pairs"><span class="description">Returns an array of template name/token list pairs</span><pre>getAllTokens()</pre></a></li>
+<li class="method public "><a href="#getLexer" title="getLexer :: Get lexer"><span class="description">Get lexer</span><pre>getLexer()</pre></a></li>
+<li class="method public "><a href="#getRenderer" title="getRenderer :: Get renderer"><span class="description">Get renderer</span><pre>getRenderer()</pre></a></li>
+<li class="method public "><a href="#getSuffix" title="getSuffix :: Get template suffix"><span class="description">Get template suffix</span><pre>getSuffix()</pre></a></li>
+<li class="method public "><a href="#render" title="render :: Render a template using a view, and optionally a list of partials"><span class="description">Render a template using a view, and optionally a list of partials</span><pre>render()</pre></a></li>
+<li class="method public "><a href="#restoreTokens" title="restoreTokens :: Restore or seed this instance's list of cached template tokens"><span class="description">Restore or seed this instance's list of cached template tokens</span><pre>restoreTokens()</pre></a></li>
+<li class="method public "><a href="#setLexer" title="setLexer :: Set lexer to use when tokenizing templates"><span class="description">Set lexer to use when tokenizing templates</span><pre>setLexer()</pre></a></li>
+<li class="method public "><a href="#setRenderer" title="setRenderer :: Set renderer"><span class="description">Set renderer</span><pre>setRenderer()</pre></a></li>
+<li class="method public "><a href="#setSuffix" title="setSuffix :: Set suffix used when resolving templates"><span class="description">Set suffix used when resolving templates</span><pre>setSuffix()</pre></a></li>
+<li class="method public "><a href="#setTemplatePath" title="setTemplatePath :: Add a template path to the template path stack"><span class="description">Add a template path to the template path stack</span><pre>setTemplatePath()</pre></a></li>
+<li class="method public "><a href="#tokenize" title="tokenize :: Tokenize a template"><span class="description">Tokenize a template</span><pre>tokenize()</pre></a></li>
+</ul>
+</div>
+<div class="span8">
+<a name="%5CPhly%5CMustache%5CMustache" id="\Phly\Mustache\Mustache"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/Phly.html">Phly</a></li>
+<span class="divider">\</span><li><a href="../namespaces/Phly.Mustache.html">Mustache</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Phly.Mustache.Mustache.html">Mustache</a>
+</li>
+</ul>
+<div href="../classes/Phly.Mustache.Mustache.html" class="element class">
+<p class="short_description">Mustache implementation</p>
+<div class="details">
+<p class="long_description"></p>
+<table class="table table-bordered">
+<tr>
+<th>todo</th>
+<td>Prevent duplicate paths from being added</td>
+</tr>
+<tr>
+<th>category</th>
+<td>Phly</td>
+</tr>
+<tr>
+<th>package</th>
+<td><a href="../packages/phly.mustache.html">phly_mustache</a></td>
+</tr>
+</table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a name="__construct" id="__construct"></a><div class="element clickable method public __construct" data-toggle="collapse" data-target=".__construct .collapse">
+<h2>Constructor</h2>
+<pre>__construct() : void</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+</div>
+<a name="getAllTokens" id="getAllTokens"></a><div class="element clickable method public getAllTokens" data-toggle="collapse" data-target=".getAllTokens .collapse">
+<h2>Returns an array of template name/token list pairs</h2>
+<pre>getAllTokens() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"><p>Returns an array of template name/token list pairs for all templates
+which have been rendered by this instance. These can then be cached for
+use with other instances, either in parallel or later.</p>
+
+<p>To seed an instance with these tokens, use <a href="restoreTokens()">restoreTokens()</a>.</p></p>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="getLexer" id="getLexer"></a><div class="element clickable method public getLexer" data-toggle="collapse" data-target=".getLexer .collapse">
+<h2>Get lexer</h2>
+<pre>getLexer() : <a href="../classes/Phly.Mustache.Lexer.html">\Phly\Mustache\Lexer</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Lexer.html">\Phly\Mustache\Lexer</a></code></div>
+</div></div>
+</div>
+<a name="getRenderer" id="getRenderer"></a><div class="element clickable method public getRenderer" data-toggle="collapse" data-target=".getRenderer .collapse">
+<h2>Get renderer</h2>
+<pre>getRenderer() : <a href="../classes/Phly.Mustache.Renderer.html">\Phly\Mustache\Renderer</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Renderer.html">\Phly\Mustache\Renderer</a></code></div>
+</div></div>
+</div>
+<a name="getSuffix" id="getSuffix"></a><div class="element clickable method public getSuffix" data-toggle="collapse" data-target=".getSuffix .collapse">
+<h2>Get template suffix</h2>
+<pre>getSuffix() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="render" id="render"></a><div class="element clickable method public render" data-toggle="collapse" data-target=".render .collapse">
+<h2>Render a template using a view, and optionally a list of partials</h2>
+<pre>render(string $template, array | object $view, array | object $partials) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>todo</th>
+<td>should partials be passed here? or simply referenced?</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$template</h4>
+<code>string</code><p>Either a template string or a template file in the template path</p></div>
+<div class="subelement argument">
+<h4>$view</h4>
+<code>arrayobject</code><p>An array or object with items to inject in the template</p></div>
+<div class="subelement argument">
+<h4>$partials</h4>
+<code>arrayobject</code><p>A list of partial names/template pairs for rendering as partials</p>
+</div>
+<h3>Exceptions</h3>
+<table class="table table-bordered"><tr>
+<th><code>\Phly\Mustache\InvalidPartialsException</code></th>
+<td></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="restoreTokens" id="restoreTokens"></a><div class="element clickable method public restoreTokens" data-toggle="collapse" data-target=".restoreTokens .collapse">
+<h2>Restore or seed this instance's list of cached template tokens</h2>
+<pre>restoreTokens(array $tokens) : <a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"><p>This list should be in the form of template name/token list pairs,
+ideally as received from <a href="getAllTokens()">getAllTokens()</a>.</p></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code></div>
+</div></div>
+</div>
+<a name="setLexer" id="setLexer"></a><div class="element clickable method public setLexer" data-toggle="collapse" data-target=".setLexer .collapse">
+<h2>Set lexer to use when tokenizing templates</h2>
+<pre>setLexer(\Phly\Mustache\Lexer $lexer) : <a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$lexer</h4>
+<code><a href="../classes/Phly.Mustache.Lexer.html">\Phly\Mustache\Lexer</a></code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code></div>
+</div></div>
+</div>
+<a name="setRenderer" id="setRenderer"></a><div class="element clickable method public setRenderer" data-toggle="collapse" data-target=".setRenderer .collapse">
+<h2>Set renderer</h2>
+<pre>setRenderer(\Phly\Mustache\Renderer $renderer) : <a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$renderer</h4>
+<code><a href="../classes/Phly.Mustache.Renderer.html">\Phly\Mustache\Renderer</a></code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code></div>
+</div></div>
+</div>
+<a name="setSuffix" id="setSuffix"></a><div class="element clickable method public setSuffix" data-toggle="collapse" data-target=".setSuffix .collapse">
+<h2>Set suffix used when resolving templates</h2>
+<pre>setSuffix(string $suffix) : <a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$suffix</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code></div>
+</div></div>
+</div>
+<a name="setTemplatePath" id="setTemplatePath"></a><div class="element clickable method public setTemplatePath" data-toggle="collapse" data-target=".setTemplatePath .collapse">
+<h2>Add a template path to the template path stack</h2>
+<pre>setTemplatePath(string $path) : <a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$path</h4>
+<code>string</code>
+</div>
+<h3>Exceptions</h3>
+<table class="table table-bordered"><tr>
+<th><code>\Phly\Mustache\InvalidTemplatePathException</code></th>
+<td></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code></div>
+</div></div>
+</div>
+<a name="tokenize" id="tokenize"></a><div class="element clickable method public tokenize" data-toggle="collapse" data-target=".tokenize .collapse">
+<h2>Tokenize a template</h2>
+<pre>tokenize(string $template) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$template</h4>
+<code>string</code><p>Either a template string or a reference to a template</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Array of tokens</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
+            generated on 2012-07-29T20:23:07-05:00.<br></footer></div>
+</div>
+</body>
+</html>
