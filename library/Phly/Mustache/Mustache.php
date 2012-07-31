@@ -11,6 +11,7 @@
 namespace Phly\Mustache;
 
 use ArrayObject;
+use Traversable;
 
 /**
  * Mustache implementation
@@ -218,10 +219,25 @@ class Mustache
             return $this->cachedTemplates[$template];
         }
 
-        $templateString = $this->fetchTemplate($template);
-        $tokens = $lexer->compile($templateString, $template);
-        $this->cachedTemplates[$template] = $tokens;
-        return $tokens;
+        $templateOrTokens = $this->fetchTemplate($template);
+
+        if (is_string($templateOrTokens)) {
+            $templateOrTokens = $lexer->compile($templateOrTokens, $template);
+        }
+
+        if ($templateOrTokens instanceof Traversable) {
+            $templateOrTokens = iterator_to_array($templateOrTokens);
+        }
+
+        if (!is_array($templateOrTokens)) {
+            throw new Exception\InvalidTokensException(sprintf(
+                '%s was unable to either retrieve or compile tokens',
+                __METHOD__
+            ));
+        }
+
+        $this->cachedTemplates[$template] = $templateOrTokens;
+        return $templateOrTokens;
     }
 
     /**
@@ -265,13 +281,12 @@ class Mustache
     protected function fetchTemplate($template)
     {
         $resolver = $this->getResolver();
-        $file     = $resolver->resolve($template);
-        if (!$file) {
+        $content  = $resolver->resolve($template);
+
+        if (!$content) {
             throw new Exception\TemplateNotFoundException('Template by name "' . $template . '" not found');
         }
 
-        $content = file_get_contents($file);
-        $this->cachedTemplates[$template] = $content;
         return $content;
     }
 }

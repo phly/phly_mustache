@@ -337,7 +337,7 @@ EOT;
     {
         $test = $this->mustache->render('template-with-comments', array());
         $expected =<<<EOT
-First line 
+First line
 Second line
 
 Third line
@@ -461,7 +461,7 @@ EOT;
         $view = $this->getRecursiveView();
         $test = $this->mustache->render('crazy_recursive', $view);
         foreach(range(1, 6) as $content) {
-            $this->assertEquals(1, substr_count($test, $content));
+            $this->assertEquals(1, substr_count($test, $content), 'Content: ' . $test);
         }
     }
 

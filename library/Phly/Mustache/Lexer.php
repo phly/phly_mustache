@@ -82,7 +82,7 @@ class Lexer
 
     /**
      * Set or get the flag indicating whether or not to strip whitespace
-     * 
+     *
      * @param  null|bool $flag Null indicates retrieving; boolean value sets
      * @return bool|Lexer
      */
@@ -99,8 +99,8 @@ class Lexer
      * Set mustache manager
      *
      * Used internally to resolve and tokenize partials
-     * 
-     * @param  Mustache $manager 
+     *
+     * @param  Mustache $manager
      * @return Lexer
      */
     public function setManager(Mustache $manager)
@@ -111,7 +111,7 @@ class Lexer
 
     /**
      * Retrieve the mustache manager
-     * 
+     *
      * @return null|Mustache
      */
     public function getManager()
@@ -121,9 +121,9 @@ class Lexer
 
     /**
      * Compile a string into a set of tokens
-     * 
+     *
      * @todo   Store full matched text with each token?
-     * @param  string $string 
+     * @param  string $string
      * @param  null|string $templateName Template to use in the case of a partial
      * @return array
      * @throws Exception
@@ -200,7 +200,7 @@ class Lexer
                                 break;
                             case '{':
                                 // Raw value start (triple mustaches)
-                                // Check that next character is a mustache; if 
+                                // Check that next character is a mustache; if
                                 // not, we're basically still in the tag.
                                 if ($i + 1 >= $len) {
                                     // We've already reached the end of the string
@@ -250,26 +250,7 @@ class Lexer
                                 $token = array(self::TOKEN_PARTIAL, array(
                                     'partial' => $partial,
                                 ));
-                                if ($partial !== $templateName
-                                    && null !== ($manager = $this->getManager())
-                                ) {
-                                    // Get the tokens for the partial
 
-                                    // First, reset the delimiters
-                                    $delimStart = $this->patterns[self::DS];
-                                    $delimEnd   = $this->patterns[self::DE];
-                                    $this->patterns[self::DS] = self::DEFAULT_DELIM_START;
-                                    $this->patterns[self::DE] = self::DEFAULT_DELIM_END;
-                                    
-                                    // Tokenize the partial
-                                    $partialTokens = $manager->tokenize($partial);
-
-                                    // Restore the delimiters
-                                    $this->patterns[self::DS] = $delimStart;
-                                    $this->patterns[self::DE] = $delimEnd;
-
-                                    $token[1]['tokens'] = $partialTokens;
-                                }
                                 $tokens[] = $token;
                                 $state    = self::STATE_CONTENT;
                                 $i       += 1;
@@ -367,7 +348,7 @@ class Lexer
                     $pattern      = $ds . '/' . $section . $de;
                     if (preg_match('/' . preg_quote($pattern, '/') . '$/', $sectionData)) {
                         // we have a match. Now, let's make sure we're balanced
-                        $pattern = '/((' 
+                        $pattern = '/(('
                                  . preg_quote($ds . '#' . $section . $de, '/')
                                  . ')|('
                                  . preg_quote($ds . '/' . $section . $de, '/')
@@ -382,7 +363,7 @@ class Lexer
                                 ++$closed;
                             }
                         }
-                        
+
                         if ($closed > $open) {
                             // We're balanced if we have 1 more end tag then start tags
                             $endTag      = $ds . '/' . $section . $de;
@@ -420,15 +401,45 @@ class Lexer
                 throw new Exception\UnbalancedSectionException('Unbalanced section, placeholder, or inheritance in template');
         }
 
-        // Tokenize any sections, placeholders, or child templates discovered, 
-        // strip whitespaces as necessary
+        // Tokenize any partials, sections, placeholders, or child templates
+        // discovered, strip whitespaces as necessary
         $replaceKeys = array();
         foreach ($tokens as $key => $token) {
             $type = $token[0];
             switch ($type) {
+                case self::TOKEN_PARTIAL:
+                    // Need to grab the manager, compile the parent template
+                    // (using tokenize()) referenced by the token['template'].
+                    // If we have no manager, then we provide an empty token set.
+                    // Additionally, if the partial name is the same as the
+                    // template name provided, we should skip processing (prevents
+                    // recursion).
+                    if (null === ($manager = $this->getManager())
+                        || $token[1]['partial'] === $templateName
+                    ) {
+                        break;
+                    }
+
+                    // First, reset the delimiters
+                    $delimStart = $this->patterns[self::DS];
+                    $delimEnd   = $this->patterns[self::DE];
+                    $this->patterns[self::DS] = self::DEFAULT_DELIM_START;
+                    $this->patterns[self::DE] = self::DEFAULT_DELIM_END;
+
+                    // Tokenize the partial
+                    $partial       = $token[1]['partial'];
+                    $partialTokens = $manager->tokenize($partial);
+
+                    // Restore the delimiters
+                    $this->patterns[self::DS] = $delimStart;
+                    $this->patterns[self::DE] = $delimEnd;
+
+                    $token[1]['tokens'] = $partialTokens;
+                    $tokens[$key]       = $token;
+                    break;
                 case self::TOKEN_CHILD:
-                    // Need to grab the manager, compile the parent template 
-                    // (using tokenize()) referenced by the token['name']. 
+                    // Need to grab the manager, compile the parent template
+                    // (using tokenize()) referenced by the token['name'].
                     // If we have no manager, then we omit this section.
                     if (null === ($manager = $this->getManager())) {
                         $token[1]['content'] = '';
@@ -440,8 +451,8 @@ class Lexer
 
                     // Then, we need to compile the content (compile($token['template'])).
                     // Once done, we determine what placeholders were in the content,
-                    // and iterate over the tokens in the parent; any tokens of 
-                    // type placeholder with a matching name will be replaced 
+                    // and iterate over the tokens in the parent; any tokens of
+                    // type placeholder with a matching name will be replaced
                     // with these tokens.
                     $delimStart = $this->patterns[self::DS];
                     $delimEnd   = $this->patterns[self::DE];
@@ -478,8 +489,8 @@ class Lexer
                         $parent[$p] = $parentToken;
                     }
 
-                    // At this point, we hint that we need to remove the 
-                    // previous token, and inject the tokens of the parent in 
+                    // At this point, we hint that we need to remove the
+                    // previous token, and inject the tokens of the parent in
                     // sequence.
                     $replaceKeys[$key] = $parent;
                     break;
@@ -491,7 +502,7 @@ class Lexer
                     $delimEnd   = $this->patterns[self::DE];
 
                     $token[1]['content'] = $this->compile(
-                        $token[1]['template'], 
+                        $token[1]['template'],
                         $templateName
                     );
                     $tokens[$key] = $token;
@@ -524,9 +535,9 @@ class Lexer
 
     /**
      * Strip whitespace in content tokens surrounding a given token
-     * 
+     *
      * @param  ref $tokens Reference to the tokens array
-     * @param  int $position 
+     * @param  int $position
      * @return void
      */
     protected function stripWhitespace(&$tokens, $position)
@@ -557,7 +568,7 @@ class Lexer
                 break;
         }
 
-        // Analyze preceding token; if content token, and ending with a newline 
+        // Analyze preceding token; if content token, and ending with a newline
         // and optionally whitespace, trim the whitespace.
         if (($position - 1) > -1) {
             $previous = $tokens[$position - 1];
@@ -592,9 +603,9 @@ class Lexer
 
     /**
      * Inject replacements from template inheritance
-     * 
-     * @param  array $originalTokens 
-     * @param  array $replacements 
+     *
+     * @param  array $originalTokens
+     * @param  array $replacements
      * @return array
      */
     protected function replaceTokens(array $originalTokens, array $replacements)

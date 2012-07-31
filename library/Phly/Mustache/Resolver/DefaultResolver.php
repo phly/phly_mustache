@@ -152,7 +152,7 @@ class DefaultResolver implements ResolverInterface
 
             $filename = $path . $relativePath;
             if (file_exists($filename)) {
-                return $filename;
+                return file_get_contents($filename);
             }
         }
 
