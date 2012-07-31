@@ -619,44 +619,6 @@ EOT;
     }
 
     /**
-     * @group issue-6
-     */
-    public function testUnderstandsHierarchicalTemplates()
-    {
-        $view = new stdClass;
-        $view->username = 'Matthew';
-        $test = $this->mustache->render('sub', $view);
-        $this->assertContains('<title>Profile of Matthew | Twitter</title>', $test);
-        $this->assertRegexp('/div class="content">\s+Here is Matthew\'s profile page\s+<\/div>/s', $test);
-        $this->assertNotContains('Default title', $test);
-        $this->assertNotContains('Default content of the page', $test);
-    }
-
-    /**
-     * @group issue-6
-     */
-    public function testPlaceholdersAreRenderedAsUnnamedSections()
-    {
-        $view = new stdClass;
-        $test = $this->mustache->render('super', $view);
-        $this->assertContains('<title>Default title</title>', $test);
-        $this->assertRegexp('/div class="content">\s+Default content of the page\s*<\/div>/s', $test);
-    }
-
-    /**
-     * @group issue-6
-     */
-    public function testOnlyPlaceholdersWithReplacementsReceiveSubstitutions()
-    {
-        $view = new stdClass;
-        $view->username = 'Matthew';
-        $test = $this->mustache->render('sub-incomplete', $view);
-        $this->assertContains('<title>Default title</title>', $test);
-        $this->assertRegexp('/div class="content">\s+Here is Matthew\'s profile page\s+<\/div>/s', $test);
-        $this->assertNotContains('Default content of the page', $test);
-    }
-
-    /**
      * @group issue-8
      */
     public function testDotNotationIsExandedToSubPropertyOfView()

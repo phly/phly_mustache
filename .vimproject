@@ -55,6 +55,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
   phpunit.xml
   PhlyTest=PhlyTest {
    Mustache=Mustache {
+    HierarchicalViewsTest.php
     MustacheTest.php
     DefaultResolverTest.php
     Pragma=Pragma {
@@ -76,6 +77,8 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      footer.mustache;
      issue-5-subview.mustache
      issue-5.mustache
+     issue-17-child.mustache
+     issue-17-parent.mustache
      navigation.mustache
      node.mustache
      partial-template.mustache
