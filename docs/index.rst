@@ -18,6 +18,7 @@ Contents:
    rendering
    syntax
    pragmas
+   resolvers
 
 Api docs:
 ---------

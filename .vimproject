@@ -9,6 +9,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
   index.rst
   pragmas.rst
   rendering.rst
+  resolvers.rst
   syntax.rst
   usage.rst
   Makefile
@@ -23,6 +24,7 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
     Pragma.php
     Renderer.php
     Exception=Exception {
+     BadMethodCallException.php
      InvalidDelimiterException.php
      InvalidEscaperException.php
      InvalidPartialsException.php

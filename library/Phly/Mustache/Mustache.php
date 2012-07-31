@@ -137,7 +137,15 @@ class Mustache
      */
     public function setTemplatePath($path)
     {
-        $this->getResolver()->setTemplatePath($path);
+        $resolver = $this->getResolver();
+        if (!method_exists($resolver, 'setTemplatePath')) {
+            throw new Exception\BadMethodCallException(sprintf(
+                'Cannot call %s; resolver of type "%s" does not have a corresponding method',
+                __METHOD__,
+                get_class($resolver)
+            ));
+        }
+        $resolver->setTemplatePath($path);
         return $this;
     }
 
@@ -149,7 +157,15 @@ class Mustache
      */
     public function setSuffix($suffix)
     {
-        $this->getResolver()->setSuffix($suffix);
+        $resolver = $this->getResolver();
+        if (!method_exists($resolver, 'setSuffix')) {
+            throw new Exception\BadMethodCallException(sprintf(
+                'Cannot call %s; resolver of type "%s" does not have a corresponding method',
+                __METHOD__,
+                get_class($resolver)
+            ));
+        }
+        $resolver->setSuffix($suffix);
         return $this;
     }
 
@@ -160,7 +176,15 @@ class Mustache
      */
     public function getSuffix()
     {
-        return $this->getResolver()->getSuffix();
+        $resolver = $this->getResolver();
+        if (!method_exists($resolver, 'getSuffix')) {
+            throw new Exception\BadMethodCallException(sprintf(
+                'Cannot call %s; resolver of type "%s" does not have a corresponding method',
+                __METHOD__,
+                get_class($resolver)
+            ));
+        }
+        return $resolver->getSuffix();
     }
 
     /**
