@@ -76,4 +76,15 @@ class HierarchicalViewsTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<div class="span4">This is the sidebar content</div>', $test);
         $this->assertRegexp('#<div class="span8">\s+This is the primary content\s+</div>#s', $test);
     }
+
+    /**
+     * @group issue-17
+     */
+    public function testCanRenderNestedChildPlaceholders()
+    {
+        $test = $this->mustache->render('issue-17-nested-child', array());
+        $this->fail($test);
+        $this->assertContains('<div class="span4">This is the sidebar content</div>', $test);
+        $this->assertRegexp('#<div class="span8">\s+This is the nested content\s+</div>#s', $test);
+    }
 }
