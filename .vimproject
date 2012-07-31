@@ -80,7 +80,11 @@ mustache=/home/matthew/git/phly_mustache CD=. filter="*.php *.html *.xml *.txt" 
      issue-5-subview.mustache
      issue-5.mustache
      issue-17-child.mustache
+     issue-17-nested-child.mustache
      issue-17-parent.mustache
+     issue-17-nested-child-2.mustache
+     issue-17-child2.mustache
+     issue-17-parent2.mustache
      navigation.mustache
      node.mustache
      partial-template.mustache
