@@ -1,0 +1,508 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>phly_mustache by weierophinney</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/weierophinney/phly_mustache">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/weierophinney/phly_mustache/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/weierophinney/phly_mustache/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>phly_mustache</h1>
+          <p>PHP 5.3 Mustache implementation</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/weierophinney">weierophinney</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <p>Phly\Mustache is a Mustache (<a href="http://mustache.github.com">http://mustache.github.com</a>) implementation written
+for PHP 5.3+. It conforms to the principles of mustache, and allows for
+extension of the format via pragmas.</p>
+
+<p>For full documentation, please visit 
+<a href="http://phly_mustache.readthedocs.org/">ReadTheDocs</a>.</p>
+
+<p>At this time, it has support for the following:</p>
+
+<ul>
+<li>
+<p><code>PhlyTest\Mustache\Mustache</code></p>
+
+<ul>
+<li>Renders string templates</li>
+<li>Renders file templates</li>
+<li>Can use object properties for substitutions</li>
+<li>Can use method return value for substitutions</li>
+<li>Template may use conditionals</li>
+<li>Conditional is skipped if value is false</li>
+<li>Conditional is skipped if value is empty</li>
+<li>Template iterates arrays</li>
+<li>Template iterates traversable objects</li>
+<li>Higher order sections render inside out</li>
+<li>Template will dereference nested arrays</li>
+<li>Template will dereference nested objects</li>
+<li>Inverted sections render on empty values</li>
+<li>Renders partials</li>
+<li>Allows aliasing partials</li>
+<li>Escapes standard characters</li>
+<li>Triple mustaches prevent escaping</li>
+<li>Honors implicit iterator pragma</li>
+<li>Allows setting alternate template suffix</li>
+<li>Strips comments from rendered output</li>
+<li>Allows specifying alternate delimiters</li>
+<li>Alternate delimiters set in section only apply to that section</li>
+<li>Alternate delimiters apply to child sections</li>
+<li>Alternate delimiters do not carry to partials</li>
+<li>Pragmas are section specific</li>
+<li>Pragmas do not extend to partials</li>
+<li>Handles recursive partials</li>
+<li>Lexer strips unwanted whitespace from tokens</li>
+<li>Array values that refer to p h p built ins should not call them</li>
+<li>Object properties that refer to p h p built ins should not call them</li>
+<li>Array values that refer to static methods should not call them</li>
+<li>String values that refer to functions should not call them</li>
+<li>Array values that refer to static methods in array syntax should not call them</li>
+<li>Std class as view should not raise error</li>
+<li>Dot notation is exanded to sub property of view</li>
+<li>With dot notation if subproperty does not exist empty string is rendered</li>
+</ul>
+</li>
+<li>
+<p><code>PhlyTest\Mustache\HierarchicalViews</code></p>
+
+<ul>
+<li>Understands hierarchical templates</li>
+<li>Placeholders are rendered as unnamed sections</li>
+<li>Only placeholders with replacements receive substitutions</li>
+<li>Can render multiple placeholders</li>
+<li>Can render nested child placeholders</li>
+<li>Nested children can render placeholders defined in parent child</li>
+</ul>
+</li>
+<li>
+<p><code>PhlyTest\Mustache\DefaultResolver</code></p>
+
+<ul>
+<li>Resolves using mustache suffix by default</li>
+<li>Resolves using provided suffix</li>
+<li>Resolves using specified directory separator</li>
+<li>Uses path stack internally</li>
+</ul>
+</li>
+<li>
+<p><code>PhlyTest\Mustache\Pragma\SubViews</code></p>
+
+<ul>
+<li>Sub view content is captured in parent</li>
+<li>Renders nested sub views</li>
+<li>Sub view uses parent view when no view provided</li>
+<li>Should render sub view returned by closure</li>
+<li>Std class composing sub view should not raise error</li>
+</ul>
+</li>
+</ul><h1>Architecture</h1>
+
+<p>Phly\Mustache consists of five primary classes:</p>
+
+<ul>
+<li>Lexer: tokenizes mustache syntax.</li>
+<li>Renderer: renders a list of tokens, using substitions provided via a view.</li>
+<li>Pragma: interface for pragmas, which may modify how tokens are handled</li>
+<li>Resolver: resolves a template name to mustache syntax or tokens.</li>
+<li>Mustache: facade/gateway class. Tokenizes and renders templates, caches
+tokens, provides partial aliasing, and acts as primary interface for
+end-users.</li>
+</ul><h1>Usage</h1>
+
+<p>Usage is fairly straightforward:</p>
+
+<pre><code>include '/path/to/library/Phly/Mustache/_autoload.php';
+use Phly\Mustache\Mustache;
+
+$mustache = new Mustache();
+echo $mustache-&gt;render('some-template', $view);
+</code></pre>
+
+<p>By default, phly_mustache will look under the current directory for templates
+ending with '.mustache'; you can create a stack of directories to search by
+using the setTemplatePath() method:</p>
+
+<pre><code>$mustache-&gt;setTemplatePath($path1)
+         -&gt;setTemplatePath($path2);
+</code></pre>
+
+<p>In the above, it will search first $path2, then $path1 to resolve the template.</p>
+
+<p>You may also change the suffix it will use to resolve templates:</p>
+
+<pre><code>$mustache-&gt;setSuffix('html'); // use '.html' as the suffix
+</code></pre>
+
+<p>If your templates use pragmas, you must first add pragma handlers to the
+renderer. This can be done as follows:</p>
+
+<pre><code>use Phly\Mustache\Pragma\ImplicitIterator as ImplicitIteratorPragma;
+$mustache-&gt;getRenderer()-&gt;addPragma(new ImplicitIteratorPragma());
+$mustache-&gt;render('template-with-pragma', $view);
+</code></pre>
+
+<p>Views can be either associative arrays or objects. For objects, any public
+member, either a property or a method, may be referenced in your template. As an
+example:</p>
+
+<pre><code>class View
+{
+    public $first_name = 'Matthew';
+
+    public $last_name  = "Weier O'Phinney";
+
+    public function full_name()
+    {
+        return $this-&gt;first_name . ' ' . $this-&gt;last_name;
+    }
+}
+</code></pre>
+
+<p>Any property (or array key) may also refer to a valid callback; in such cases,
+the return value of the callback will be used.</p>
+
+<pre><code>$view = new \stdClass;
+$view-&gt;first_name = 'Matthew';
+$view-&gt;last_name  = "Weier O'Phinney";
+$view-&gt;full_name  = function() use ($view) {
+    return $view-&gt;first_name . ' ' . $view-&gt;last_name;
+};
+</code></pre>
+
+<p>The following sections detail unique and/or advanced features of phly_mustache.</p>
+
+<h1>Autoloading</h1>
+
+<p>phly_mustache follows the PSR-0 standard for class naming conventions, meaning
+any PSR-0-compliant class loader will work. To simplify things out of the box,
+the component contains an "_autoload.php" file which will register an autoloader
+for the phly_mustache component with spl_autoload. You can simply include that
+file, and start using phly_mustache.</p>
+
+<h1>Higher Order Sections</h1>
+
+<p>"Higher order sections" refer to callbacks that return callbacks. As an example,
+consider the following template:</p>
+
+<pre><code>{{#bolder}}Hi {{name}}.{{/bolder}}
+</code></pre>
+
+<p>and the following view:</p>
+
+<pre><code>$view = new \stdClass;
+$view-&gt;name = 'Tater';
+$view-&gt;bolder = function() {
+    return function($text, $renderer) {
+        return '&lt;b&gt;' . $renderer($text) . '&lt;/b&gt;';
+    };
+};
+</code></pre>
+
+<p>In this case, the contents of the section, "Hi {{name}}." will be passed as the
+first argument to the section, and a callback capable of rendering will be
+passed as the second (this is basically a closure that curries in the current
+Renderer object and calls the appropriate method). This allows you to re-use a
+given "section" in order to create re-usable capabilities; think of them like
+"view helpers" in systems like Zend_View, Solar_View, Savant, etc.</p>
+
+<h1>Partials</h1>
+
+<p>Partials are a basic form of inclusion within Mustache; anytime you find you
+have re-usable bits of templates, move them into a partial, and refer to the
+partial from the parent template.</p>
+
+<p>Typically, you will only reference partials within your templates, using
+standard syntax:</p>
+
+<pre><code>{{&gt;partial-name}}
+</code></pre>
+
+<p>However, you may optionally pass a list of partials when rendering. When you do
+so, the list should be a set of alias/template pairs:</p>
+
+<pre><code>$mustache-&gt;render($template, array(), array(
+    'winnings' =&gt; 'user-winnings',
+));
+</code></pre>
+
+<p>In the above example, 'winnings' refers to the template
+"user-winnings.mustache". Thus, within the $template being rendered, you may
+refer to the following partial:</p>
+
+<pre><code>{{&gt;winnings}}
+</code></pre>
+
+<p>and it will resolve to the appropriate aliased template.</p>
+
+<p>A few things to remember when using partials:</p>
+
+<ul>
+<li>The parent template may change tag delimiters, but if you want to use the
+same delimiters in your partial, you will need to make the same declaration.</li>
+<li>The parent template may utilize one or more pragmas, but those declarations
+will not perist to the partial; if you want those pragmas, you must reference
+them in your partial.</li>
+</ul><p>Basically, partials render in their own scope. If you remember that one rule,
+you should have no problems.</p>
+
+<h1>Hierarchical Views and Placeholders</h1>
+
+<p>(Available in versions 1.1.0 and up).</p>
+
+<p>Placeholders are basically unnamed sections, and are denoted by the combination
+of <code>{{$name}}</code> and <code>{{/name}}</code>. When encountered by the renderer, any mustache
+content within will be rendered as normal mustache content.</p>
+
+<p>Placeholders are primarily of use with the concept of hierarchical views. These
+are denoted by the combination of <code>{{&lt;name}}</code> and <code>{{/name}}</code>. When encountered,
+the template denoted by <code>name</code> will be tokenized, and any placeholders that are
+defined in the content will be used to replace those found in the parent
+template.</p>
+
+<p>As an example, consider the following parent template, "super.mustache":</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;&lt;title&gt;{{$title}}Default title{{/title}}&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="content"&gt;
+{{$content}}Default content of the page{{/content}}
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>If rendered by itself, it will result in the following:</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Default title&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="content"&gt;
+Default content of the page
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Now, consider the following child template, "sub.mustache":</p>
+
+<pre><code>{{&lt;super}}
+{{$title}}Profile of {{username}}{{/title}}
+{{$content}}
+Here is {{username}}'s profile page
+{{/content}}
+{{/super}}
+</code></pre>
+
+<p>If we have a view that defines "username" as "Matthew" and render
+"sub.mustache", we'll get the following:</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Profile of Matthew&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="content"&gt;
+Here is Matthew's profile page
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Notice how the child retains the view context of the parent, and that all
+mustache tokens defined in it are rendered as if they were simply another
+mustache template.</p>
+
+<p>Hierarchical templates may be nested arbitrarily deep.</p>
+
+<p>(This feature was inspired by <a href="https://gist.github.com/1854699">https://gist.github.com/1854699</a>)</p>
+
+<h1>Whitespace Stripping</h1>
+
+<p>Because this is a very literal compiler, whitespace can sometimes be an issue. A
+number of measures have been built in to reduce such issues by stripping
+whitespace (primarily newlines) surrounding certain tokens, but they come at a
+slight performance penalty.</p>
+
+<p>For markup languages like XML, XHTML or HTML5, you likely will not run into
+issues in the final rendered output. As such, you can optionally disable
+whitespace stripping:</p>
+
+<pre><code>$mustache-&gt;getLexer()-&gt;disableStripWhitespace(true);
+</code></pre>
+
+<h1>Caching Tokens</h1>
+
+<p>Tokens from parsed templates may be cached for later usage; alternately, a new
+instance of phly_mustache may be seeded with cached tokens from a previous
+instance. </p>
+
+<p>To get the list of tokens, use the following:</p>
+
+<pre><code>$tokens = $mustache-&gt;getAllTokens();
+</code></pre>
+
+<p>This will return a list of template name/token list pairs, based on the
+templates compiled by this instance. You may then seed another instance using
+the following:</p>
+
+<pre><code>$mustache-&gt;restoreTokens($tokens);
+</code></pre>
+
+<p>This will overwrite any tokens already compiled by that instance.</p>
+
+<p>Since the tokens are template name/token list pairs, you can safely pass them to
+array_merge(), allowing multiple instances of phly_mustache to build up a large
+cache of template tokens. This will greatly improve performance when rendering
+templates on subsequent calls -- particularly if you cache the tokens in a
+memory store such as memcached.</p>
+
+<h1>Pragmas</h1>
+
+<p>Pragmas are tags of the form:</p>
+
+<p>{{%PRAGMA-NAME option=value}}</p>
+
+<p>where options are key/value pairs, and are entirely optional. Pragmas are
+user-defined, and can be used to extend and/or modify the capabilities of the
+renderer.</p>
+
+<p>Pragmas should implement Phly\Mustache\Pragma, which defines methods for
+retrieving the pragma name (used during registration of the pragma, and
+referenced by templates; this is case sensitive currently), determining whether
+or not the pragma can intercept rendering of a specific token type, and handling
+the token. </p>
+
+<p>Pragmas should be registered <em>before</em> rendering any template that references
+them. </p>
+
+<pre><code>$this-&gt;mustache-&gt;getRenderer()-&gt;addPragma($pragmaObject);
+// ...
+$this-&gt;mustache-&gt;render(/*...*/);
+</code></pre>
+
+<p>When declared in a template, they exist for the duration of the current
+scope, which means:</p>
+
+<ul>
+<li>If declared in a section, they apply to that section and any child sections
+<em>only</em>
+</li>
+<li>If declared for a file, they apply to that file and all child sections <em>only</em>
+</li>
+<li>Pragmas are never passed on to partials; each partial is rendered with an
+empty set of pragmas, and must declare any pragmas it requires for
+appropriate rendering.</li>
+</ul><p>For ideas on how you might use or implement pragmas, examine the pragmas shipped
+with phly_mustache.</p>
+
+<h2>Pragmas shipped with phly_mustache</h2>
+
+<p>IMPLICIT-ITERATOR
+This pragma allows iteration of indexed arrays or Traversable objects with
+scalar values, with the option of specifying the iterator "key" to use within
+the template. By default, a variable key "." will be replaced by the current
+value of the iterator.</p>
+
+<p>A sample template:</p>
+
+<pre><code>{{#some_iterable_data}}
+    {{.}}
+{{/some_iterable_data}}
+</code></pre>
+
+<p>To use an explicit iterator key, specify it via the "iterator" option of the
+pragma:</p>
+
+<pre><code>{{%IMPLICIT-ITERATOR iterator=bob}}
+{{#some_iterable_data}}
+    {{bob}}
+{{/some_iterable_data}}
+</code></pre>
+
+<p>SUB-VIEWS
+The Sub-Views pragma allows you to implement the two-step view pattern using
+Mustache. When active, any variable whose value is an instance of
+Phly\Mustache\Pragma\SubView will be substituted by rendering the template and
+view that object encapsulates.</p>
+
+<p>The SubView class takes a template name and a view as a constructor:</p>
+
+<pre><code>use Phly\Mustache\Pragma\SubView;
+$subView = new SubView('some-partial', array('name' =&gt; 'Matthew'));
+</code></pre>
+
+<p>That object is then assigned as a value to a view key:</p>
+
+<pre><code>$view = new \stdClass;
+$view-&gt;content = $subView;
+</code></pre>
+
+<p>The template might look like this:</p>
+
+<pre><code>{{!layout}}
+{{%SUB-VIEWS}}
+&lt;html&gt;
+&lt;body&gt;
+    {{content}}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>and the partial like this:</p>
+
+<pre><code>{{!some-partial}}
+Hello, {{name}}!
+</code></pre>
+
+<p>Rendering the view:</p>
+
+<pre><code>use Phly\Mustache\Mustache,
+    Phly\Mustache\Pragma\SubViews;
+$mustache = new Mustache();
+$subViews = new SubViews($mustache);
+$rendered = $mustache-&gt;render('layout', $view);
+</code></pre>
+
+<p>will result in:</p>
+
+<pre><code>&lt;html&gt;
+&lt;body&gt;
+    Hello, Matthew!
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Sub views may be nested, and re-used.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
