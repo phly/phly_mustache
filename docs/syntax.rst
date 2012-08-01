@@ -715,7 +715,7 @@ PHP functions will not work inside templates
     $mustache->getRenderer()->addPragma(new ImplicitIterator());
     $test = $mustache->render('template-referencing-static-function', $model);
 
-Hierarchieal / Template Inheritance
+Hierarchical / Template Inheritance
 -----------------------------------
 
 Hierarchical Views and Placeholders (Available in versions 1.1.0 and up).
