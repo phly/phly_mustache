@@ -1,64 +1,86 @@
 Phly\Mustache
 =============
+
+[![Build Status](https://secure.travis-ci.org/weierophinney/phly_mustache.png?branch=master)](http://travis-ci.org/weierophinney/phly_mustache)
+
 Phly\Mustache is a Mustache (http://mustache.github.com) implementation written
 for PHP 5.3+. It conforms to the principles of mustache, and allows for
 extension of the format via pragmas.
 
+For full documentation, please visit 
+[ReadTheDocs](http://phly_mustache.readthedocs.org/).
+
 At this time, it has support for the following:
 
-- Renders string templates
-- Renders file templates
-- Can use object properties for substitutions
-- Can use method return value for substitutions
-- Template may use conditionals
-- Conditional is skipped if value is false
-- Conditional is skipped if value is empty
-- Template iterates arrays
-- Template iterates traversable objects
-- Higher order sections render inside out
-- Template will dereference nested arrays
-- Template will dereference nested objects
-- Inverted sections render on empty values
-- Renders partials
-- Allows aliasing partials
-- Escapes standard characters
-- Triple mustaches prevent escaping
-- Honors implicit iterator pragma
-- Allows setting alternate template suffix
-- Strips comments from rendered output
-- Allows specifying alternate delimiters
-- Alternate delimiters set in section only apply to that section
-- Alternate delimiters apply to child sections
-- Alternate delimiters do not carry to partials
-- Pragmas are section specific
-- Pragmas do not extend to partials
-- Handles recursive partials
-- Lexer strips unwanted whitespace from tokens
-- Array values that refer to p h p built ins should not call them
-- Object properties that refer to p h p built ins should not call them
-- Array values that refer to static methods should not call them
-- String values that refer to functions should not call them
-- Array values that refer to static methods in array syntax should not call them
-- Std class as view should not raise error
-- Understands hierarchical templates
-- Placeholders are rendered as unnamed sections
-- Only placeholders with replacements receive substitutions
-- Dot notation is exanded to sub property of view
-- With dot notation if subproperty does not exist empty string is rendered
-- Sub view content is captured in parent
-- Renders nested sub views
-- Sub view uses parent view when no view provided
-- Should render sub view returned by closure
-- Std class composing sub view should not raise error
+- `PhlyTest\Mustache\Mustache`
+  - Renders string templates
+  - Renders file templates
+  - Can use object properties for substitutions
+  - Can use method return value for substitutions
+  - Template may use conditionals
+  - Conditional is skipped if value is false
+  - Conditional is skipped if value is empty
+  - Template iterates arrays
+  - Template iterates traversable objects
+  - Higher order sections render inside out
+  - Template will dereference nested arrays
+  - Template will dereference nested objects
+  - Inverted sections render on empty values
+  - Renders partials
+  - Allows aliasing partials
+  - Escapes standard characters
+  - Triple mustaches prevent escaping
+  - Honors implicit iterator pragma
+  - Allows setting alternate template suffix
+  - Strips comments from rendered output
+  - Allows specifying alternate delimiters
+  - Alternate delimiters set in section only apply to that section
+  - Alternate delimiters apply to child sections
+  - Alternate delimiters do not carry to partials
+  - Pragmas are section specific
+  - Pragmas do not extend to partials
+  - Handles recursive partials
+  - Lexer strips unwanted whitespace from tokens
+  - Array values that refer to p h p built ins should not call them
+  - Object properties that refer to p h p built ins should not call them
+  - Array values that refer to static methods should not call them
+  - String values that refer to functions should not call them
+  - Array values that refer to static methods in array syntax should not call them
+  - Std class as view should not raise error
+  - Dot notation is exanded to sub property of view
+  - With dot notation if subproperty does not exist empty string is rendered
+
+- `PhlyTest\Mustache\HierarchicalViews`
+  - Understands hierarchical templates
+  - Placeholders are rendered as unnamed sections
+  - Only placeholders with replacements receive substitutions
+  - Can render multiple placeholders
+  - Can render nested child placeholders
+  - Nested children can render placeholders defined in parent child
+
+- `PhlyTest\Mustache\DefaultResolver`
+  - Resolves using mustache suffix by default
+  - Resolves using provided suffix
+  - Resolves using specified directory separator
+  - Uses path stack internally
+
+- `PhlyTest\Mustache\Pragma\SubViews`
+  - Sub view content is captured in parent
+  - Renders nested sub views
+  - Sub view uses parent view when no view provided
+  - Should render sub view returned by closure
+  - Std class composing sub view should not raise error
 
 
 Architecture
 ============
-Phly\Mustache consists of four primary classes:
 
-- Lexer: tokenizes a template
-- Renderer: renders a list of tokens, using substitions provided via a view
+Phly\Mustache consists of five primary classes:
+
+- Lexer: tokenizes mustache syntax.
+- Renderer: renders a list of tokens, using substitions provided via a view.
 - Pragma: interface for pragmas, which may modify how tokens are handled
+- Resolver: resolves a template name to mustache syntax or tokens.
 - Mustache: facade/gateway class. Tokenizes and renders templates, caches
   tokens, provides partial aliasing, and acts as primary interface for
   end-users.
