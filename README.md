@@ -10,7 +10,9 @@ extension of the format via pragmas.
 For full documentation, please visit 
 [ReadTheDocs](http://phly_mustache.readthedocs.org/).
 
-At this time, it has support for the following:
+The mailing list is at https://groups.google.com/d/forum/phly_mustache
+
+At this time, Phly\Mustache has support for the following:
 
 - `PhlyTest\Mustache\Mustache`
   - Renders string templates
