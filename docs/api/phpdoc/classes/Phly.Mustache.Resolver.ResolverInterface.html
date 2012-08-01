@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <meta charset="utf-8">
-<title>phly_mustache » phly\mustache\Pragma</title>
+<title>phly_mustache » \Phly\Mustache\Resolver\ResolverInterface</title>
 <meta name="author" content="Mike van Riel">
 <meta name="description" content="">
 <link href="../css/template.css" rel="stylesheet" media="all">
@@ -53,62 +53,64 @@
                         </div></noscript>
 <div class="row">
 <div class="span4">
-<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
 <button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
 </div>
 <ul class="side-nav nav nav-list">
 <li class="nav-header">
-<i class="icon-map-marker"></i> Packages</li>
-<li>
-<a href="../packages/phly.mustache.Pragma.html" title="Pragma"><i class="icon-folder-open"></i>Pragma</a><ul class="nav nav-list nav-packages"></ul>
-</li>
-<li class="nav-header">
-<i class="icon-custom icon-class"></i> Classes</li>
-<li><a href="#AbstractPragma" title="Abstract pragma implementation">AbstractPragma</a></li>
-<li><a href="#ImplicitIterator" title="IMPLICIT-ITERATOR pragma">ImplicitIterator</a></li>
-<li><a href="#SubViews" title="SUB-VIEWS pragma">SubViews</a></li>
-<li><a href="#SubView" title="Sub-view description">SubView</a></li>
+<i class="icon-custom icon-method"></i> Methods</li>
+<li class="method public "><a href="#resolve" title="resolve :: Resolve a template name"><span class="description">Resolve a template name</span><pre>resolve()</pre></a></li>
 </ul>
 </div>
-<div class="span8 package-contents">
-<ul class="breadcrumb">
+<div class="span8">
+<a name="%5CPhly%5CMustache%5CResolver%5CResolverInterface" id="\Phly\Mustache\Resolver\ResolverInterface"></a><ul class="breadcrumb">
 <li>
-<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
 </li>
-<li><a href="../packages/phly.html">phly</a></li>
-<span class="divider">\</span><li><a href="../packages/phly.mustache.html">mustache</a></li>
-<span class="divider">\</span><li class="active"><a href="../packages/phly.mustache.Pragma.html">Pragma</a></li>
+<li><a href="../namespaces/Phly.html">Phly</a></li>
+<span class="divider">\</span><li><a href="../namespaces/Phly.Mustache.html">Mustache</a></li>
+<span class="divider">\</span><li><a href="../namespaces/Phly.Mustache.Resolver.html">Resolver</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Phly.Mustache.Resolver.ResolverInterface.html">ResolverInterface</a>
+</li>
 </ul>
-<div class="package-indent">
+<div href="../classes/Phly.Mustache.Resolver.ResolverInterface.html" class="element interface">
+<p class="short_description">Base resolver interface</p>
+<div class="details">
+<p class="long_description"></p>
+<table class="table table-bordered">
+<tr>
+<th>category</th>
+<td>Phly</td>
+</tr>
+<tr>
+<th>package</th>
+<td><a href="../packages/phly.mustache.Resolver.html">phly_mustache</a></td>
+</tr>
+<tr>
+<th>subpackage</th>
+<td>Resolver</td>
+</tr>
+</table>
 <h3>
-<i class="icon-custom icon-class"></i> Classes and interfaces</h3>
-<a name="AbstractPragma" id="AbstractPragma"></a><div class="element ajax clickable class" href="../classes/Phly.Mustache.Pragma.AbstractPragma.html">
-<h1>AbstractPragma<a href="../classes/Phly.Mustache.Pragma.AbstractPragma.html">¶</a>
-</h1>
-<p class="short_description">Abstract pragma implementation</p>
-<div class="details collapse"></div>
-<a href="../classes/Phly.Mustache.Pragma.AbstractPragma.html" class="more">« More »</a>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a name="resolve" id="resolve"></a><div class="element clickable method public resolve" data-toggle="collapse" data-target=".resolve .collapse">
+<h2>Resolve a template name</h2>
+<pre>resolve(string $template) : string | array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"><p>Resolve a template name to mustache content or a set of tokens.</p></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$template</h4>
+<code>string</code>
 </div>
-<a name="ImplicitIterator" id="ImplicitIterator"></a><div class="element ajax clickable class" href="../classes/Phly.Mustache.Pragma.ImplicitIterator.html">
-<h1>ImplicitIterator<a href="../classes/Phly.Mustache.Pragma.ImplicitIterator.html">¶</a>
-</h1>
-<p class="short_description">IMPLICIT-ITERATOR pragma</p>
-<div class="details collapse"></div>
-<a href="../classes/Phly.Mustache.Pragma.ImplicitIterator.html" class="more">« More »</a>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code><code>array</code>
 </div>
-<a name="SubView" id="SubView"></a><div class="element ajax clickable class" href="../classes/Phly.Mustache.Pragma.SubView.html">
-<h1>SubView<a href="../classes/Phly.Mustache.Pragma.SubView.html">¶</a>
-</h1>
-<p class="short_description">Sub-view description</p>
-<div class="details collapse"></div>
-<a href="../classes/Phly.Mustache.Pragma.SubView.html" class="more">« More »</a>
+</div></div>
 </div>
-<a name="SubViews" id="SubViews"></a><div class="element ajax clickable class" href="../classes/Phly.Mustache.Pragma.SubViews.html">
-<h1>SubViews<a href="../classes/Phly.Mustache.Pragma.SubViews.html">¶</a>
-</h1>
-<p class="short_description">SUB-VIEWS pragma</p>
-<div class="details collapse"></div>
-<a href="../classes/Phly.Mustache.Pragma.SubViews.html" class="more">« More »</a>
 </div>
 </div>
 </div>

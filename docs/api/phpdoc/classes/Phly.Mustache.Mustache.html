@@ -59,15 +59,16 @@
 <ul class="side-nav nav nav-list">
 <li class="nav-header">
 <i class="icon-custom icon-method"></i> Methods</li>
-<li class="method public "><a href="#__construct" title="__construct :: Constructor"><span class="description">Constructor</span><pre>__construct()</pre></a></li>
 <li class="method public "><a href="#getAllTokens" title="getAllTokens :: Returns an array of template name/token list pairs"><span class="description">Returns an array of template name/token list pairs</span><pre>getAllTokens()</pre></a></li>
 <li class="method public "><a href="#getLexer" title="getLexer :: Get lexer"><span class="description">Get lexer</span><pre>getLexer()</pre></a></li>
 <li class="method public "><a href="#getRenderer" title="getRenderer :: Get renderer"><span class="description">Get renderer</span><pre>getRenderer()</pre></a></li>
+<li class="method public "><a href="#getResolver" title="getResolver :: Get template resolver"><span class="description">Get template resolver</span><pre>getResolver()</pre></a></li>
 <li class="method public "><a href="#getSuffix" title="getSuffix :: Get template suffix"><span class="description">Get template suffix</span><pre>getSuffix()</pre></a></li>
 <li class="method public "><a href="#render" title="render :: Render a template using a view, and optionally a list of partials"><span class="description">Render a template using a view, and optionally a list of partials</span><pre>render()</pre></a></li>
 <li class="method public "><a href="#restoreTokens" title="restoreTokens :: Restore or seed this instance's list of cached template tokens"><span class="description">Restore or seed this instance's list of cached template tokens</span><pre>restoreTokens()</pre></a></li>
 <li class="method public "><a href="#setLexer" title="setLexer :: Set lexer to use when tokenizing templates"><span class="description">Set lexer to use when tokenizing templates</span><pre>setLexer()</pre></a></li>
 <li class="method public "><a href="#setRenderer" title="setRenderer :: Set renderer"><span class="description">Set renderer</span><pre>setRenderer()</pre></a></li>
+<li class="method public "><a href="#setResolver" title="setResolver :: Set template resolver"><span class="description">Set template resolver</span><pre>setResolver()</pre></a></li>
 <li class="method public "><a href="#setSuffix" title="setSuffix :: Set suffix used when resolving templates"><span class="description">Set suffix used when resolving templates</span><pre>setSuffix()</pre></a></li>
 <li class="method public "><a href="#setTemplatePath" title="setTemplatePath :: Add a template path to the template path stack"><span class="description">Add a template path to the template path stack</span><pre>setTemplatePath()</pre></a></li>
 <li class="method public "><a href="#tokenize" title="tokenize :: Tokenize a template"><span class="description">Tokenize a template</span><pre>tokenize()</pre></a></li>
@@ -104,12 +105,6 @@
 </table>
 <h3>
 <i class="icon-custom icon-method"></i> Methods</h3>
-<a name="__construct" id="__construct"></a><div class="element clickable method public __construct" data-toggle="collapse" data-target=".__construct .collapse">
-<h2>Constructor</h2>
-<pre>__construct() : void</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
-</div>
 <a name="getAllTokens" id="getAllTokens"></a><div class="element clickable method public getAllTokens" data-toggle="collapse" data-target=".getAllTokens .collapse">
 <h2>Returns an array of template name/token list pairs</h2>
 <pre>getAllTokens() : array</pre>
@@ -142,6 +137,16 @@ use with other instances, either in parallel or later.</p>
 <p class="long_description"></p>
 <h3>Returns</h3>
 <div class="subelement response"><code><a href="../classes/Phly.Mustache.Renderer.html">\Phly\Mustache\Renderer</a></code></div>
+</div></div>
+</div>
+<a name="getResolver" id="getResolver"></a><div class="element clickable method public getResolver" data-toggle="collapse" data-target=".getResolver .collapse">
+<h2>Get template resolver</h2>
+<pre>getResolver() : <a href="../classes/Phly.Mustache.Resolver.ResolverInterface.html">\Phly\Mustache\Resolver\ResolverInterface</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Resolver.ResolverInterface.html">\Phly\Mustache\Resolver\ResolverInterface</a></code></div>
 </div></div>
 </div>
 <a name="getSuffix" id="getSuffix"></a><div class="element clickable method public getSuffix" data-toggle="collapse" data-target=".getSuffix .collapse">
@@ -177,7 +182,7 @@ use with other instances, either in parallel or later.</p>
 </div>
 <h3>Exceptions</h3>
 <table class="table table-bordered"><tr>
-<th><code>\Phly\Mustache\InvalidPartialsException</code></th>
+<th><code><a href="../classes/Phly.Mustache.Exception.InvalidPartialsException.html">\Phly\Mustache\Exception\InvalidPartialsException</a></code></th>
 <td></td>
 </tr></table>
 <h3>Returns</h3>
@@ -230,6 +235,21 @@ ideally as received from <a href="getAllTokens()">getAllTokens()</a>.</p></p>
 <div class="subelement response"><code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code></div>
 </div></div>
 </div>
+<a name="setResolver" id="setResolver"></a><div class="element clickable method public setResolver" data-toggle="collapse" data-target=".setResolver .collapse">
+<h2>Set template resolver</h2>
+<pre>setResolver(\Phly\Mustache\Resolver\ResolverInterface $resolver) : <a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resolver</h4>
+<code><a href="../classes/Phly.Mustache.Resolver.ResolverInterface.html">\Phly\Mustache\Resolver\ResolverInterface</a></code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code></div>
+</div></div>
+</div>
 <a name="setSuffix" id="setSuffix"></a><div class="element clickable method public setSuffix" data-toggle="collapse" data-target=".setSuffix .collapse">
 <h2>Set suffix used when resolving templates</h2>
 <pre>setSuffix(string $suffix) : <a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></pre>
@@ -256,11 +276,6 @@ ideally as received from <a href="getAllTokens()">getAllTokens()</a>.</p></p>
 <h4>$path</h4>
 <code>string</code>
 </div>
-<h3>Exceptions</h3>
-<table class="table table-bordered"><tr>
-<th><code>\Phly\Mustache\InvalidTemplatePathException</code></th>
-<td></td>
-</tr></table>
 <h3>Returns</h3>
 <div class="subelement response"><code><a href="../classes/Phly.Mustache.Mustache.html">\Phly\Mustache\Mustache</a></code></div>
 </div></div>
@@ -287,7 +302,7 @@ ideally as received from <a href="getAllTokens()">getAllTokens()</a>.</p></p>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
-            generated on 2012-07-29T20:23:07-05:00.<br></footer></div>
+            generated on 2012-07-31T21:39:38-05:00.<br></footer></div>
 </div>
 </body>
 </html>
