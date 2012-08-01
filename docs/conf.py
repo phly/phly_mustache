@@ -178,7 +178,7 @@ htmlhelp_basename = 'phly_mustache'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'phly_mustache.tex', u'Phly\\Mustache - Mustache Implementation in PHP 5.3 Documentation',
+  ('index', 'phly_mustache.tex', u'Phly\\textbackslash{}Mustache - Mustache Implementation in PHP 5.3 Documentation',
    u'Matthew Weier O\'Phinney', 'manual'),
 ]
 

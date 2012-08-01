@@ -3,7 +3,7 @@ Resolvers
 
 Resolvers are a feature specific to ``Phly\Mustache``'s implementation. What a
 resolver does is accept a template name, and return either the Mustache content,
-or a set of tokens that Phly\\Mustache understands.
+or a set of tokens that ``Phly\Mustache`` understands.
 
 .. _resolvers-resolver-interface:
 
