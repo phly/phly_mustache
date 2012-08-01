@@ -75,6 +75,22 @@ class Lexer
     protected $manager;
 
     /**
+     * Current nesting level in hierarchical templates
+     *
+     * @var int
+     */
+    protected $nestingLevel = 0;
+
+    /**
+     * Placeholders
+     *
+     * Array is keyed based on current $nestingLevel
+     *
+     * @var array
+     */
+    protected $placeholders = array();
+
+    /**
      * Whether or not to strip whitespace
      * @var bool
      */
@@ -447,13 +463,8 @@ class Lexer
                         break;
                     }
 
-                    $parent = $manager->tokenize($token[1]['name']);
-
-                    // Then, we need to compile the content (compile($token['template'])).
-                    // Once done, we determine what placeholders were in the content,
-                    // and iterate over the tokens in the parent; any tokens of
-                    // type placeholder with a matching name will be replaced
-                    // with these tokens.
+                    // Then, we need to compile the content (compile($token[1]['template'])).
+                    // Once done, we determine what placeholders were in the content.
                     $delimStart = $this->patterns[self::DS];
                     $delimEnd   = $this->patterns[self::DE];
 
@@ -473,21 +484,12 @@ class Lexer
                         $placeholders[$childToken[1]['name']] = $childToken[1]['content'];
                     }
 
-                    // Replace placeholders in parent with child
-                    foreach ($parent as $p => $parentToken) {
-                        $parentType = $parentToken[0];
-                        if ($parentType !== self::TOKEN_PLACEHOLDER) {
-                            continue;
-                        }
-
-                        $placeholderName = $parentToken[1]['name'];
-                        if (!isset($placeholders[$placeholderName])) {
-                            continue;
-                        }
-
-                        $parentToken[1]['content'] = $placeholders[$placeholderName];
-                        $parent[$p] = $parentToken;
-                    }
+                    // Now, tokenize the parent
+                    $this->nestingLevel += 1;
+                    $this->placeholders[$this->nestingLevel] = $placeholders;
+                    $parent = $manager->tokenize($token[1]['name']);
+                    unset($this->placeholders[$this->nestingLevel]);
+                    $this->nestingLevel -= 1;
 
                     // At this point, we hint that we need to remove the
                     // previous token, and inject the tokens of the parent in
@@ -496,6 +498,24 @@ class Lexer
                     break;
 
                 case self::TOKEN_PLACEHOLDER:
+                    if ($this->nestingLevel > 0) {
+                        $placeholders = array();
+                        foreach ($this->placeholders as $childPlaceholders) {
+                            // 1 is deepest, and thus has precedence
+                            $placeholders = array_merge($childPlaceholders, $placeholders);
+                        }
+
+                        $placeholder = $token[1]['name'];
+
+                        if (isset($placeholders[$placeholder])) {
+                            $token[1]['content'] = $placeholders[$placeholder];
+                            $tokens[$key]        = $token;
+
+                            // Break out of the case; we had a replacement
+                            break;
+                        }
+                    }
+                    // intentionally fall through in the case of no nesting level
                 case self::TOKEN_SECTION:
                 case self::TOKEN_SECTION_INVERT:
                     $delimStart = $this->patterns[self::DS];
