@@ -2,7 +2,7 @@
     "name": "phly/mustache",
     "description": "PHP 5.3 Mustache Implementation",
     "keywords": ["mustache"],
-    "homepage": "http://wiki.github.com/weierophinney/phly_mustache/",
+    "homepage": "http://weierophinney.github.com/phly_mustache/",
     "type": "library",
     "license": "BSD-3-Clause",
     "authors": [
