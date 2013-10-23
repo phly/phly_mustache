@@ -14,7 +14,7 @@ namespace Phly\Mustache\Exception;
 use Phly\Mustache\Exception;
 
 /**
- * Exception raised when an invalid callback is registered for escaping 
+ * Exception raised when an invalid callback is registered for escaping
  * variables
  *
  * @category   Phly

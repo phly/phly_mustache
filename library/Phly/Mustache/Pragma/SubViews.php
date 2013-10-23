@@ -17,11 +17,11 @@ use Phly\Mustache\Lexer;
 /**
  * SUB-VIEWS pragma
  *
- * When enabled, allows passing "sub-views". A sub view is an object 
+ * When enabled, allows passing "sub-views". A sub view is an object
  * implementing SubView, which contains the following methods:
  * - getTemplate()
  * - getView()
- * When detected as the value of a variable, the pragma will render the given 
+ * When detected as the value of a variable, the pragma will render the given
  * template using the view provided, and return that value as the value of the
  * variable.
  *
@@ -92,7 +92,7 @@ class SubViews extends AbstractPragma
         Lexer::TOKEN_VARIABLE,
     );
 
-    /** 
+    /**
      * Mustache manager
      * @var Mustache
      */
@@ -100,8 +100,8 @@ class SubViews extends AbstractPragma
 
     /**
      * Constructor
-     * 
-     * @param  Mustache $manager 
+     *
+     * @param  Mustache $manager
      * @return void
      */
     public function __construct(Mustache $manager = null)
@@ -115,8 +115,8 @@ class SubViews extends AbstractPragma
      * Set manager object
      *
      * Sets manager object and registers self as a pragma on the renderer.
-     * 
-     * @param  Mustache $manager 
+     *
+     * @param  Mustache $manager
      * @return SubViews
      */
     public function setManager(Mustache $manager)
@@ -128,7 +128,7 @@ class SubViews extends AbstractPragma
 
     /**
      * Retrieve manager object
-     * 
+     *
      * @return Mustache
      */
     public function getManager()
@@ -140,11 +140,11 @@ class SubViews extends AbstractPragma
      * Handle a given token
      *
      * Returning an empty value returns control to the renderer.
-     * 
-     * @param  int $token 
-     * @param  mixed $data 
-     * @param  mixed $view 
-     * @param  array $options 
+     *
+     * @param  int $token
+     * @param  mixed $data
+     * @param  mixed $view
+     * @param  array $options
      * @return mixed
      */
     public function handle($token, $data, $view, array $options)
@@ -178,9 +178,9 @@ class SubViews extends AbstractPragma
      * Get the value represented by the key $data from the $view
      *
      * Returns boolean false if unable to retrieve the value.
-     * 
-     * @param  string $data 
-     * @param  mixed $view 
+     *
+     * @param  string $data
+     * @param  mixed $view
      * @return false|mixed
      */
     protected function getValue($data, $view)

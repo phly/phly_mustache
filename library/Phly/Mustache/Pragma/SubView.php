@@ -17,9 +17,9 @@ use InvalidArgumentException;
 /**
  * Sub-view description
  *
- * Objects extending this may be used to describe sub-views that should be 
+ * Objects extending this may be used to describe sub-views that should be
  * rendered as substitutions for template variables.
- * 
+ *
  * @category   Phly
  * @package    phly_mustache
  * @subpackage Pragma
@@ -28,7 +28,7 @@ class SubView
 {
     /**
      * Template name/path
-     * @var string 
+     * @var string
      */
     protected $template;
 
@@ -41,8 +41,8 @@ class SubView
     /**
      * Constructor
      *
-     * @param  string $template 
-     * @param  null|array|object $view 
+     * @param  string $template
+     * @param  null|array|object $view
      * @return void
      */
     public function __construct($template, $view = null)
@@ -59,7 +59,7 @@ class SubView
 
     /**
      * Retrieve template
-     * 
+     *
      * @return string
      */
     public function getTemplate()
@@ -69,7 +69,7 @@ class SubView
 
     /**
      * Retrieve view
-     * 
+     *
      * @return array|object
      */
     public function getView()
@@ -77,4 +77,3 @@ class SubView
         return $this->view;
     }
 }
-

@@ -66,9 +66,9 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
         $sidebar = new SubView('sub-view-sidebar');
         $content = new SubView('sub-view-template');
         $view = array(
-            'name'     => 'bat', 
-            'greeting' => 'Shabaz', 
-            'content'  => $content, 
+            'name'     => 'bat',
+            'greeting' => 'Shabaz',
+            'content'  => $content,
             'sidebar'  => $sidebar,
         );
         $test = $this->mustache->render('sub-view-containing-sub-views', $view);
@@ -80,7 +80,7 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldRenderSubViewReturnedByClosure()
     {
-        $view = array('closure' => function() { 
+        $view = array('closure' => function() {
             return new SubView('sub-view-template', array(
                 'greeting' => 'Shalom',
                 'name'     => 'Ishmael',
