@@ -14,7 +14,7 @@ namespace Phly\Mustache\Exception;
 use Phly\Mustache\Exception;
 
 /**
- * Exception raised when the renderer encounters a pragma for which a handler 
+ * Exception raised when the renderer encounters a pragma for which a handler
  * has not yet been registered
  *
  * @category   Phly
