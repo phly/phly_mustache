@@ -115,4 +115,16 @@ class HierarchicalViewsTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Salutations Stan', $subLayout);
         $this->assertContains('Lorem ipsum, yada yada yada...', $subLayout);
     }
+
+    /**
+     * @group issue-25
+     */
+    public function testCanRenderCorrectTemplatesWhenExistingParentHasBeenRendered()
+    {
+        // set up existing cache
+        $this->mustache->render('issue-25-child1', array());
+
+        $test = $this->mustache->render('issue-25-child2', array());
+        $this->assertContains('<div class="span4">This is the sidebar content for child2</div>', $test);
+    }
 }
