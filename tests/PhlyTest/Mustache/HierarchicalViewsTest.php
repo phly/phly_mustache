@@ -95,4 +95,16 @@ class HierarchicalViewsTest extends \PHPUnit_Framework_TestCase
         $test = $this->mustache->render('issue-17-nested-child-2', array());
         $this->assertRegexp('#<div class="container-fluid">\s+<div class="row-fluid">.*?<div class="span9">\s+new content#s', $test, $test);
     }
+
+    /**
+     * @group issue-25
+     */
+    public function testCanRenderCorrectTemplatesWhenExistingParentHasBeenRendered()
+    {
+        // set up existing cache
+        $this->mustache->render('issue-25-child1', array());
+
+        $test = $this->mustache->render('issue-25-child2', array());
+        $this->assertContains('<div class="span4">This is the sidebar content for child2</div>', $test);
+    }
 }
