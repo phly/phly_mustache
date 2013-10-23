@@ -14,7 +14,7 @@ namespace Phly\Mustache\Exception;
 use Phly\Mustache\Exception;
 
 /**
- * Exception raised when a malformed variable name is encountered in a template 
+ * Exception raised when a malformed variable name is encountered in a template
  * by the lexer
  *
  * @category   Phly

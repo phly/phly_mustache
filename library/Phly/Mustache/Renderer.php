@@ -27,19 +27,19 @@ class Renderer
      */
     protected $manager;
 
-    /** 
+    /**
      * Array of registered pragmas
      * @var array
      */
     protected $pragmas = array();
 
-    /** 
+    /**
      * Callback for escaping variable content
      * @var Closure
      */
     protected $escaper;
 
-    /** 
+    /**
      * List of pragmas invoked by current template
      * @var array
      */
@@ -49,8 +49,8 @@ class Renderer
      * Set mustache manager
      *
      * Used internally to resolve and tokenize partials
-     * 
-     * @param  Mustache $manager 
+     *
+     * @param  Mustache $manager
      * @return Lexer
      */
     public function setManager(Mustache $manager)
@@ -61,7 +61,7 @@ class Renderer
 
     /**
      * Retrieve the mustache manager
-     * 
+     *
      * @return null|Mustache
      */
     public function getManager()
@@ -71,9 +71,9 @@ class Renderer
 
     /**
      * Render a set of tokens with view substitutions
-     * 
-     * @param  array $tokens 
-     * @param  mixed $view 
+     *
+     * @param  array $tokens
+     * @param  mixed $view
      * @param  array|null $partials
      * @return string
      */
@@ -153,7 +153,7 @@ class Renderer
                         }
                     } elseif (is_callable($section) && $this->isValidCallback($section)) {
                         // Higher order section
-                        // Execute the callback, passing it the section's template 
+                        // Execute the callback, passing it the section's template
                         // string, as well as a renderer lambda.
                         $pragmas = $this->invokedPragmas;
                         $rendered .= call_user_func($section, $data['template'], function($text) use ($renderer, $view, $partials) {
@@ -244,10 +244,10 @@ class Renderer
     }
 
     /**
-     * escape 
-     * 
+     * escape
+     *
      * @todo   allow using a callback for escaping
-     * @param  string $value 
+     * @param  string $value
      * @return string
      */
     public function escape($value)
@@ -258,8 +258,8 @@ class Renderer
 
     /**
      * Set escaping mechanism
-     * 
-     * @param  callback $callback 
+     *
+     * @param  callback $callback
      * @return Renderer
      */
     public function setEscaper($callback)
@@ -273,7 +273,7 @@ class Renderer
 
     /**
      * Get escaping mechanism
-     * 
+     *
      * @return callback
      */
     public function getEscaper()
@@ -290,8 +290,8 @@ class Renderer
      * Add a pragma
      *
      * Pragmas allow extension of mustache capabilities.
-     * 
-     * @param  Pragma $pragma 
+     *
+     * @param  Pragma $pragma
      * @return Renderer
      */
     public function addPragma(Pragma $pragma)
@@ -303,7 +303,7 @@ class Renderer
 
     /**
      * Retrieve all registered pragmas
-     * 
+     *
      * @return array
      */
     public function getPragmas()
@@ -313,8 +313,8 @@ class Renderer
 
     /**
      * Do we have a pragma by a specified name?
-     * 
-     * @param  string $name 
+     *
+     * @param  string $name
      * @return bool
      */
     public function hasPragma($name)
@@ -324,8 +324,8 @@ class Renderer
 
     /**
      * Get a registered pragma by name
-     * 
-     * @param  string $name 
+     *
+     * @param  string $name
      * @return null|Pragma
      */
     public function getPragma($name)
@@ -339,8 +339,8 @@ class Renderer
 
     /**
      * Remove a given pragma
-     * 
-     * @param  string $name 
+     *
+     * @param  string $name
      * @return bool Returns true if found and removed; false otherwise
      */
     public function removePragma($name)
@@ -354,11 +354,11 @@ class Renderer
 
     /**
      * Get a named value from the view
-     * 
+     *
      * Returns an empty string if no matching value found.
      *
-     * @param  string $key 
-     * @param  mixed $view 
+     * @param  string $key
+     * @param  mixed $view
      * @return mixed
      */
     public function getValue($key, $view)
@@ -384,7 +384,7 @@ class Renderer
                 return call_user_func($view[$key]);
             }
             return $view[$key];
-        } 
+        }
         return '';
     }
 
@@ -393,9 +393,9 @@ class Renderer
      *
      * A dot value indicates a variable nested in a data structure
      * in the view object.
-     * 
-     * @param  string $key 
-     * @param  mixed $view 
+     *
+     * @param  string $key
+     * @param  mixed $view
      * @return mixed
      */
     protected function getDotValue($key, $view)
@@ -413,14 +413,14 @@ class Renderer
 
     /**
      * Determine if an array is associative
-     * 
-     * @param  array $array 
+     *
+     * @param  array $array
      * @return bool
      */
     protected function isAssocArray(array $array)
     {
-        return (is_array($array) 
-            && (count($array) == 0 
+        return (is_array($array)
+            && (count($array) == 0
                 || 0 !== count(array_diff_key($array, array_keys(array_keys($array))))
             )
         );
@@ -428,8 +428,8 @@ class Renderer
 
     /**
      * Register a pragma for the current rendering session
-     * 
-     * @param  array $definition 
+     *
+     * @param  array $definition
      * @return void
      */
     protected function registerPragma(array $definition)
@@ -443,8 +443,8 @@ class Renderer
 
     /**
      * Register cached invoked pragma definitions
-     * 
-     * @param  array $pragmas 
+     *
+     * @param  array $pragmas
      * @return void
      */
     protected function registerPragmas(array $pragmas)
@@ -454,7 +454,7 @@ class Renderer
 
     /**
      * Clear list of invoked pragmas
-     * 
+     *
      * @return void
      */
     protected function clearPragmas()
@@ -466,15 +466,15 @@ class Renderer
      * Handle pragmas
      *
      * Extend the functionality of the renderer via pragmas. When creating new
-     * pragmas, extend the appropriate method for the token types affected. 
+     * pragmas, extend the appropriate method for the token types affected.
      * Returning an empty value indicates that the renderer should render normally.
      *
-     * This implementation includes the IMPLICIT-ITERATOR pragma, which affects 
+     * This implementation includes the IMPLICIT-ITERATOR pragma, which affects
      * values within loops.
-     * 
-     * @param  string $token 
-     * @param  mixed $data 
-     * @param  mixed $view 
+     *
+     * @param  string $token
+     * @param  mixed $data
+     * @param  mixed $view
      * @return mixed
      */
     protected function handlePragmas($token, $data, $view)
@@ -492,8 +492,8 @@ class Renderer
 
     /**
      * Is the callback provided valid?
-     * 
-     * @param  callback $callback 
+     *
+     * @param  callback $callback
      * @return bool
      */
     protected function isValidCallback($callback)

@@ -16,10 +16,10 @@ use Phly\Mustache\Lexer;
 /**
  * IMPLICIT-ITERATOR pragma
  *
- * When enabled, allows passing an indexed array or Traversable object to a 
- * section within a view, instead of an array of associative arrays or array of 
+ * When enabled, allows passing an indexed array or Traversable object to a
+ * section within a view, instead of an array of associative arrays or array of
  * objects. By default, the tag {{.}} will render the current item in the array;
- * you may specify an alternate tag name using the "iterator" option of the 
+ * you may specify an alternate tag name using the "iterator" option of the
  * pragma:
  *
  * <code>
@@ -54,11 +54,11 @@ class ImplicitIterator extends AbstractPragma
      * Handle a given token
      *
      * Returning an empty value returns control to the renderer.
-     * 
-     * @param  int $token 
-     * @param  mixed $data 
-     * @param  mixed $view 
-     * @param  array $options 
+     *
+     * @param  int $token
+     * @param  mixed $data
+     * @param  mixed $view
+     * @param  array $options
      * @return mixed
      */
     public function handle($token, $data, $view, array $options)

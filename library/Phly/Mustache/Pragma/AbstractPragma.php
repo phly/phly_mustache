@@ -32,19 +32,19 @@ abstract class AbstractPragma implements Pragma
 
     /**
      * Tokens this pragma handles
-     * @var array 
+     * @var array
      */
     protected $tokensHandled = array();
 
     /**
      * Renderer
-     * @var Renderer 
+     * @var Renderer
      */
     protected $renderer;
 
     /**
      * Retrieve the name of the pragma
-     * 
+     *
      * @return string
      */
     public function getName()
@@ -54,8 +54,8 @@ abstract class AbstractPragma implements Pragma
 
     /**
      * Set the renderer instance
-     * 
-     * @param  Renderer $renderer 
+     *
+     * @param  Renderer $renderer
      * @return void
      */
     public function setRenderer(Renderer $renderer)
@@ -65,7 +65,7 @@ abstract class AbstractPragma implements Pragma
 
     /**
      * Retrieve renderer
-     * 
+     *
      * @return Renderer
      */
     public function getRenderer()
@@ -75,8 +75,8 @@ abstract class AbstractPragma implements Pragma
 
     /**
      * Whether or not this pragma can handle the given token
-     * 
-     * @param  int $token 
+     *
+     * @param  int $token
      * @return bool
      */
     public function handlesToken($token)
