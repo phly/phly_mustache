@@ -487,7 +487,7 @@ class Lexer
                     // Now, tokenize the parent
                     $this->nestingLevel += 1;
                     $this->placeholders[$this->nestingLevel] = $placeholders;
-                    $parent = $manager->tokenize($token[1]['name']);
+                    $parent = $manager->tokenize($token[1]['name'], false);
                     unset($this->placeholders[$this->nestingLevel]);
                     $this->nestingLevel -= 1;
 
