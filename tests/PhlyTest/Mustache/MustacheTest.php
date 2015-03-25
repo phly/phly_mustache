@@ -105,6 +105,24 @@ EOT;
         $this->assertEquals($expected, $test);
     }
 
+    public function testTagsCanContainWhitespace()
+    {
+        $robert = array(
+            'person' => array('name'=>'Robert')
+        );
+
+        $test = $this->mustache->render(
+            'template-with-whitespace-in-tags',
+            $robert
+        );
+        $expected =<<<EOT
+Hello, Robert
+
+EOT;
+
+        $this->assertEquals($expected, $test);
+    }
+
     public function testConditionalIsSkippedIfValueIsEmpty()
     {
         $chris = new TestAsset\ViewWithMethod;

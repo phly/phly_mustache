@@ -178,6 +178,7 @@ class Lexer
                     $delimEndLen = strlen($this->patterns[self::DE]);
                     if (substr($tagData, -$delimEndLen) === $this->patterns[self::DE]) {
                         $tagData = substr($tagData, 0, -$delimEndLen);
+                        $tagData = trim($tagData);
 
                         // Evaluate what kind of token we have
                         switch ($tagData[0]) {
@@ -361,13 +362,14 @@ class Lexer
                     $sectionData .= $string[$i];
                     $ds           = $this->patterns[self::DS];
                     $de           = $this->patterns[self::DE];
-                    $pattern      = $ds . '/' . $section . $de;
-                    if (preg_match('/' . preg_quote($pattern, '/') . '$/', $sectionData)) {
+                    $pattern      = $this->implodePregQuote('\\s*', array($ds,'/',$section,$de), '/');
+
+                    if (preg_match('/' . $pattern . '$/', $sectionData)) {
                         // we have a match. Now, let's make sure we're balanced
                         $pattern = '/(('
-                                 . preg_quote($ds . '#' . $section . $de, '/')
+                                 . $this->implodePregQuote('\\s*', array($ds,'#',$section,$de), '/')
                                  . ')|('
-                                 . preg_quote($ds . '/' . $section . $de, '/')
+                                 . $this->implodePregQuote('\\s*', array($ds,'/',$section,$de), '/')
                                  . '))/';
                         preg_match_all($pattern, $sectionData, $matches);
                         $open   = 0;
@@ -382,7 +384,7 @@ class Lexer
 
                         if ($closed > $open) {
                             // We're balanced if we have 1 more end tag then start tags
-                            $endTag      = $ds . '/' . $section . $de;
+                            $endTag      = end($matches[3]);
                             $sectionData = substr($sectionData, 0, strlen($sectionData) - strlen($endTag));
 
                             // compile sections later
@@ -551,6 +553,23 @@ class Lexer
         }
 
         return $tokens;
+    }
+
+    /**
+     * Implode and preg_quote() an array of $pieces
+     *
+     * @param  string $glue       String to join $pieces with
+     * @param  array  $pieces     Strings to be quoted then joined
+     * @param  string $delimiter  The delimiter required by PCRE functions
+     *                            If included, it will also be escaped
+     * @return string
+     */
+    protected function implodePregQuote($glue, array $pieces, $delimiter = null)
+    {
+        foreach ($pieces as &$p) {
+            $p = preg_quote($p, $delimiter);
+        }
+        return implode($glue, $pieces);
     }
 
     /**
