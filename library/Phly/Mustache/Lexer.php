@@ -178,7 +178,13 @@ class Lexer
                     $delimEndLen = strlen($this->patterns[self::DE]);
                     if (substr($tagData, -$delimEndLen) === $this->patterns[self::DE]) {
                         $tagData = substr($tagData, 0, -$delimEndLen);
-                        $tagData = trim($tagData);
+                        $tagData = trim($oldTagData = $tagData);
+
+                        if (in_array($tagData[0], str_split('%=<>!&^#$'))) {
+                            // begins with a sigil
+                            if (in_array($oldTagData[0], str_split(" \n\r\t")))
+                                throw new \Exception("Whitespace is not allowed before sigils (#, ^, $, etc.)");
+                        }
 
                         // Evaluate what kind of token we have
                         switch ($tagData[0]) {
@@ -367,9 +373,9 @@ class Lexer
                     if (preg_match('/' . $pattern . '$/', $sectionData)) {
                         // we have a match. Now, let's make sure we're balanced
                         $pattern = '/(('
-                                 . $this->implodePregQuote('\\s*', array($ds,'#',$section,$de), '/')
+                                 . $this->implodePregQuote('\\s*', array($ds . '#',$section,$de), '/')
                                  . ')|('
-                                 . $this->implodePregQuote('\\s*', array($ds,'/',$section,$de), '/')
+                                 . $this->implodePregQuote('\\s*', array($ds . '/',$section,$de), '/')
                                  . '))/';
                         preg_match_all($pattern, $sectionData, $matches);
                         $open   = 0;
