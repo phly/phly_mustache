@@ -21,8 +21,8 @@
 - [X] Update license docblocks of all classes
 - [X] Change homepage to point to RTD
 - [X] change test bootstrapping
-- [ ] Remove documentation from README and link to docs
-- [ ] Add installation instructions to README, usage docs
+- [X] Remove documentation from README and link to docs
+- [X] Add installation instructions to README, usage docs
 - [X] Push minimum supported version to 5.5
 
 ## New resolvers
