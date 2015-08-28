@@ -6,11 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use RuntimeException;
 
 /**
- * Exception raised when a matching template file may not be found
+ * Exception raised when a matching template file may not be found.
  */
-class TemplateNotFoundException extends \Exception implements Exception
+class TemplateNotFoundException extends RuntimeException implements ExceptionInterface
 {
 }

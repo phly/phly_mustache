@@ -6,11 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use DomainException;
 
 /**
- * Exception raised when an invalid/unknown state is reached in the lexer
+ * Exception raised when an invalid/unknown state is reached in the lexer.
  */
-class InvalidStateException extends \Exception implements Exception
+class InvalidStateException extends DomainException implements ExceptionInterface
 {
 }

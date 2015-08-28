@@ -6,12 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use DomainException;
 
 /**
- * Exception raised when a malformed variable name is encountered in a template
- * by the lexer
+ * Exception raised when a malformed variable name is encountered in a template by the lexer.
  */
-class InvalidVariableNameException extends \Exception implements Exception
+class InvalidVariableNameException extends DomainException implements ExceptionInterface
 {
 }

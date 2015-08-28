@@ -6,12 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use InvalidArgumentException;
 
 /**
- * Exception raised when an invalid argument is passed describing available
- * partials
+ * Exception raised when an invalid argument is passed describing available partials.
  */
-class InvalidPartialsException extends \Exception implements Exception
+class InvalidPartialsException extends InvalidArgumentException implements ExceptionInterface
 {
 }

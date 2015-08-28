@@ -6,11 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use RuntimeException;
 
 /**
- * Exception raised when we don't have tokens
+ * Exception raised when we don't have tokens.
  */
-class InvalidTokensException extends \Exception implements Exception
+class InvalidTokensException extends RuntimeException implements ExceptionInterface
 {
 }

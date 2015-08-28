@@ -4,11 +4,11 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-namespace Phly\Mustache;
+namespace Phly\Mustache\Exception;
 
 /**
- * Base exception interface
+ * Marker interface for package-specific exceptions.
  */
-interface Exception
+interface ExceptionInterface
 {
 }

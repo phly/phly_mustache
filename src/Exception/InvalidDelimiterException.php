@@ -6,11 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use DomainException;
 
 /**
  * Exception raised when a delimiter tag is malformed.
  */
-class InvalidDelimiterException extends \Exception implements Exception
+class InvalidDelimiterException extends DomainException implements ExceptionInterface
 {
 }

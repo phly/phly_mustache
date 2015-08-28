@@ -6,11 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use DomainException;
 
 /**
- * Exception raised when an unclosed tag is encountered by the lexer
+ * Exception raised when an unclosed tag is encountered by the lexer.
  */
-class UnbalancedTagException extends \Exception implements Exception
+class UnbalancedTagException extends DomainException implements ExceptionInterface
 {
 }

@@ -6,11 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use DomainException;
 
 /**
- * Exception raised when the name provided in a pragma tag is malformed
+ * Exception raised when the name provided in a pragma tag is malformed.
  */
-class InvalidPragmaNameException extends \Exception implements Exception
+class InvalidPragmaNameException extends DomainException implements ExceptionInterface
 {
 }

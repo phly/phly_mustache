@@ -6,12 +6,12 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use RuntimeException;
 
 /**
  * Exception raised when the renderer encounters a pragma for which a handler
- * has not yet been registered
+ * has not yet been registered.
  */
-class UnregisteredPragmaException extends \Exception implements Exception
+class UnregisteredPragmaException extends RuntimeException implements ExceptionInterface
 {
 }

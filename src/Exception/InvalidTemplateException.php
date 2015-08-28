@@ -6,11 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use InvalidArgumentException;
 
 /**
- * Exception raised when the template provided to the lexer is not a string
+ * Exception raised when the template provided to the lexer is not a string.
  */
-class InvalidTemplateException extends \Exception implements Exception
+class InvalidTemplateException extends InvalidTemplateException implements ExceptionInterface
 {
 }

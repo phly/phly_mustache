@@ -6,12 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use InvalidArgumentException;
 
 /**
- * Exception raised when an invalid callback is registered for escaping
- * variables
+ * Exception raised when an invalid callback is registered for escaping variables.
  */
-class InvalidEscaperException extends \Exception implements Exception
+class InvalidEscaperException extends InvalidArgumentException implements ExceptionInterface
 {
 }
