@@ -6,11 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use DomainException;
 
 /**
- * Exception raised when an unclosed section is encountered by the lexer
+ * Exception raised when an unclosed section is encountered by the lexer.
  */
-class UnbalancedSectionException extends \Exception implements Exception
+class UnbalancedSectionException extends DomainException implements ExceptionInterface
 {
 }

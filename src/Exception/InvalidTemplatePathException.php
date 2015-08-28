@@ -6,11 +6,11 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
+use InvalidArgumentException;
 
 /**
- * Exception raised when an invalid template path is provided
+ * Exception raised when an invalid template path is provided.
  */
-class InvalidTemplatePathException extends \Exception implements Exception
+class InvalidTemplatePathException extends InvalidArgumentException implements ExceptionInterface
 {
 }

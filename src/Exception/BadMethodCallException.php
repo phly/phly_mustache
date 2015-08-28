@@ -6,11 +6,9 @@
 
 namespace Phly\Mustache\Exception;
 
-use Phly\Mustache\Exception;
-
 /**
  * Exception raised when an invalid method call is made
  */
-class BadMethodCallException extends \BadMethodCallException implements Exception
+class BadMethodCallException extends \BadMethodCallException implements ExceptionInterface
 {
 }
