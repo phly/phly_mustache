@@ -4,7 +4,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-namespace PhlyTest\Mustache;
+namespace PhlyTest\Mustache\Resolver;
 
 use Phly\Mustache\Resolver\DefaultResolver;
 use PHPUnit_Framework_TestCase as TestCase;
@@ -17,7 +17,7 @@ class DefaultResolverTest extends TestCase
     public function setUp()
     {
         $this->resolver = new DefaultResolver();
-        $this->resolver->setTemplatePath(__DIR__ . '/templates');
+        $this->resolver->setTemplatePath(__DIR__ . '/../templates');
     }
 
     public function templateNames()
@@ -65,7 +65,7 @@ class DefaultResolverTest extends TestCase
     public function testUsesPathStackInternally($template)
     {
         $this->resolver->clearTemplatePath();
-        $this->resolver->setTemplatePath(__DIR__ . '/templates');
+        $this->resolver->setTemplatePath(__DIR__ . '/../templates');
         $this->resolver->setTemplatePath(__DIR__);
         $expected = $template . '.mustache';
         $this->assertContains($expected, $this->resolver->resolve($template));
