@@ -1,11 +1,6 @@
 <?php
 /**
- * phly_mustache
- *
- * @category   PhlyTest
- * @package    phly_mustache
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
+ * @copyright  Copyright (c) 2010-2015 Matthew Weier O'Phinney <matthew@weierophinney.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
@@ -14,16 +9,13 @@ namespace PhlyTest\Mustache\Pragma;
 use Phly\Mustache\Mustache;
 use Phly\Mustache\Pragma\SubView;
 use Phly\Mustache\Pragma\SubViews;
+use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
 
 /**
  * Unit tests for Sub-Views pragma
- *
- * @category   Phly
- * @package    phly_mustache
- * @subpackage UnitTests
  */
-class SubViewsTest extends \PHPUnit_Framework_TestCase
+class SubViewsTest extends TestCase
 {
     public function setUp()
     {

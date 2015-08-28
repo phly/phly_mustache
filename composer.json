@@ -1,6 +1,6 @@
 {
     "name": "phly/mustache",
-    "description": "PHP 5.3 Mustache Implementation",
+    "description": "PHP Mustache implementation supporting inheritance",
     "keywords": ["mustache"],
     "homepage": "http://phly-mustache.readthedocs.org",
     "type": "library",

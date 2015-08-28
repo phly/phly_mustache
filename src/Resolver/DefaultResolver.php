@@ -1,10 +1,6 @@
 <?php
 /**
- * phly_mustache
- *
- * @category   Phly
- * @package    phly_mustache
- * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
+ * @copyright  Copyright (c) 2010-2015 Matthew Weier O'Phinney <matthew@weierophinney.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
@@ -18,10 +14,6 @@ use SplStack;
  *
  * By default, assumes ".mustache" extension, and that a normal directory
  * separator ('/') is used. However, both are configurable.
- *
- * @category   Phly
- * @package    phly_mustache
- * @subpackage Resolver
  */
 class DefaultResolver implements ResolverInterface
 {

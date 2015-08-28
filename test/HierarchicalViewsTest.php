@@ -1,27 +1,19 @@
 <?php
 /**
- * phly_mustache
- *
- * @category   PhlyTest
- * @package    phly_mustache
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2010 Matthew Weier O'Phinney <mweierophinney@gmail.com>
+ * @copyright  Copyright (c) 2010-2015 Matthew Weier O'Phinney <matthew@weierophinney.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 namespace PhlyTest\Mustache;
 
 use Phly\Mustache\Mustache;
+use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
 
 /**
  * Unit tests for hierarchical views
- *
- * @category   Phly
- * @package    phly_mustache
- * @subpackage UnitTests
  */
-class HierarchicalViewsTest extends \PHPUnit_Framework_TestCase
+class HierarchicalViewsTest extends TestCase
 {
     public function setUp()
     {

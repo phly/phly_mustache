@@ -17,7 +17,8 @@
 - [ ] .gitattribute file to exclude docs, tests
 - [X] new Travis matrix
 - [X] phpcs
-- [ ] LICENSE -> LICENSE.md
+- [X] LICENSE -> LICENSE.md
+- [X] Update license docblocks of all classes
 - [X] Change homepage to point to RTD
 - [X] change test bootstrapping
 - [ ] Remove documentation from README and link to docs
