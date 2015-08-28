@@ -21,7 +21,7 @@ use SplStack;
  * If no namespace is provided, it only searches paths on the default
  * namespace.
  */
-class NamespacedMustacheResolver extends DefaultResolver
+class NamespacedResolver extends DefaultResolver
 {
     const DEFAULT_NAMESPACE = '__DEFAULT__';
 
