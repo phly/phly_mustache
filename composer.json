@@ -2,25 +2,30 @@
     "name": "phly/mustache",
     "description": "PHP 5.3 Mustache Implementation",
     "keywords": ["mustache"],
-    "homepage": "http://weierophinney.github.com/phly_mustache/",
+    "homepage": "http://phly-mustache.readthedocs.org",
     "type": "library",
-    "license": "BSD-3-Clause",
+    "license": "BSD-2-Clause",
     "authors": [
         {
             "name": "Matthew Weier O'Phinney",
-            "email": "me@mwop.net",
-            "homepage": "http://mwop.net/"
+            "email": "matthew@weierophinney.net",
+            "homepage": "https://mwop.net/"
         }
     ],
     "require": {
         "php": ">=5.3.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "^4.7"
     },
     "autoload": {
-        "psr-0": {
-            "Phly": "library/"
+        "psr-4": {
+            "Phly\\Mustache\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PhlyTest\\Mustache\\": "test/"
         }
     }
 }

@@ -11,13 +11,15 @@
 ## Better packaging
 
 - [ ] Switch to PSR-4
+    - [X] autoload
+    - [X] autoload-dev
     - [ ] Make sure all docs are updated as well!
 - [ ] .gitattribute file to exclude docs, tests
 - [ ] new Travis matrix
 - [ ] phpcs
 - [ ] LICENSE -> LICENSE.md
-- [ ] Change homepage to point to RTD
-- [ ] change test bootstrapping
+- [X] Change homepage to point to RTD
+- [X] change test bootstrapping
 - [ ] Remove documentation from README and link to docs
 - [ ] Add installation instructions to README, usage docs
 
