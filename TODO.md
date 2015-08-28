@@ -10,16 +10,20 @@
 
 ## Better packaging
 
-- [ ] Switch to PSR-4
-    - [ ] Make sure all docs are updated as well!
-- [ ] .gitattribute file to exclude docs, tests
-- [ ] new Travis matrix
-- [ ] phpcs
-- [ ] LICENSE -> LICENSE.md
-- [ ] Change homepage to point to RTD
-- [ ] change test bootstrapping
-- [ ] Remove documentation from README and link to docs
-- [ ] Add installation instructions to README, usage docs
+- [X] Switch to PSR-4
+    - [X] autoload
+    - [X] autoload-dev
+    - [X] Make sure all docs are updated as well!
+- [X] .gitattribute file to exclude docs, tests
+- [X] new Travis matrix
+- [X] phpcs
+- [X] LICENSE -> LICENSE.md
+- [X] Update license docblocks of all classes
+- [X] Change homepage to point to RTD
+- [X] change test bootstrapping
+- [X] Remove documentation from README and link to docs
+- [X] Add installation instructions to README, usage docs
+- [X] Push minimum supported version to 5.5
 
 ## New resolvers
 

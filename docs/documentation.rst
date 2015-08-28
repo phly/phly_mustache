@@ -1,6 +1,7 @@
-phly_mustache
+phly-mustache
 =============
-``phly_mustache`` is a `Mustache <http://mustache.github.com>`_
+
+``phly-mustache`` is a `Mustache <http://mustache.github.com>`_
 implementation written for PHP 5.3+. It conforms to the principles of
 mustache , and allows for extension of the format via pragmas.
 
@@ -19,5 +20,5 @@ basic concepts are:
   computing values, filtering them, etc.
 
 This guide will take you through the basics of using the
-``phly_mustache`` library, as well as provide a thorough reference of
+``phly-mustache`` library, as well as provide a thorough reference of
 the syntax supported, as well as implementation-specific features.

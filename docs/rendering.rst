@@ -93,7 +93,7 @@ The above will result in:
     The github user for Matthew is weierophinney.
 
 Now that you know about basic templating, variable substitution, and
-views, let's look at how you actually render using ``phly_mustache``.
+views, let's look at how you actually render using ``phly-mustache``.
 
 .. _rendering-string-templates:
 
@@ -170,7 +170,7 @@ Rendering Object Properties
 ---------------------------
 
 You are not limited to associative arrays for your views; you can also
-use objects, and ``phly_mustache`` will render object properties.
+use objects, and ``phly-mustache`` will render object properties.
 
 .. code-block:: php
 

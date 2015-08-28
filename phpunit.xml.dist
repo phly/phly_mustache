@@ -1,0 +1,24 @@
+<phpunit bootstrap="./vendor/autoload.php">
+    <testsuite name="phly-mustache Test Suite">
+        <directory>./test</directory>
+    </testsuite>
+
+    <filter>
+        <blacklist>
+            <directory suffix=".mustache">./test/templates</directory>
+        </blacklist>
+        <whitelist>
+            <directory suffix=".php">./src/</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <!--
+        <log type="coverage-html" target="./log/report" charset="UTF-8"
+            yui="true" highlight="true"
+            lowUpperBound="50" highLowerBound="80"/>
+        -->
+        <!-- <log type="testdox-html" target="./test/log/testdox.html" /> -->
+        <log type="testdox-text" target="./test/log/testdox.txt" />
+    </logging>
+</phpunit>
