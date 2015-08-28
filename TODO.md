@@ -10,11 +10,11 @@
 
 ## Better packaging
 
-- [ ] Switch to PSR-4
+- [X] Switch to PSR-4
     - [X] autoload
     - [X] autoload-dev
-    - [ ] Make sure all docs are updated as well!
-- [ ] .gitattribute file to exclude docs, tests
+    - [X] Make sure all docs are updated as well!
+- [X] .gitattribute file to exclude docs, tests
 - [X] new Travis matrix
 - [X] phpcs
 - [X] LICENSE -> LICENSE.md
