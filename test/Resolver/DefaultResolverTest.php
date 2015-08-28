@@ -10,7 +10,7 @@ use Phly\Mustache\Resolver\DefaultResolver;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * Unit tests for default resolver
+ * Unit tests for default resolver.
  */
 class DefaultResolverTest extends TestCase
 {

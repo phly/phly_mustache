@@ -10,7 +10,7 @@ use Countable;
 use IteratorAggregate;
 use Zend\Stdlib\PriorityQueue;
 
-class AggregateMustacheResolver implements Countable, IteratorAggregate, ResolverInterface
+class AggregateResolver implements Countable, IteratorAggregate, ResolverInterface
 {
     /**
      * @var PriorityQueue
