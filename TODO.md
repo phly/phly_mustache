@@ -15,13 +15,14 @@
     - [X] autoload-dev
     - [ ] Make sure all docs are updated as well!
 - [ ] .gitattribute file to exclude docs, tests
-- [ ] new Travis matrix
-- [ ] phpcs
+- [X] new Travis matrix
+- [X] phpcs
 - [ ] LICENSE -> LICENSE.md
 - [X] Change homepage to point to RTD
 - [X] change test bootstrapping
 - [ ] Remove documentation from README and link to docs
 - [ ] Add installation instructions to README, usage docs
+- [X] Push minimum supported version to 5.5
 
 ## New resolvers
 

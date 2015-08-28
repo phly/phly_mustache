@@ -88,9 +88,9 @@ class SubViews extends AbstractPragma
      * Tokens this pragma handles
      * @var array
      */
-    protected $tokensHandled = array(
+    protected $tokensHandled = [
         Lexer::TOKEN_VARIABLE,
-    );
+    ];
 
     /**
      * Mustache manager

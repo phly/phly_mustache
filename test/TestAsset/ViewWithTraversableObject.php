@@ -26,9 +26,9 @@ class ViewWithTraversableObject
 
     public function __construct()
     {
-        $this->items = new \ArrayObject(array(
-            array('item' => 'bananas'),
-            array('item' => 'apples'),
-        ));
+        $this->items = new \ArrayObject([
+            ['item' => 'bananas'],
+            ['item' => 'apples'],
+        ]);
     }
 }

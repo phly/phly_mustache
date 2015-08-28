@@ -22,8 +22,11 @@ namespace PhlyTest\Mustache\TestAsset;
 class PartialView
 {
     public $value = 1000;
+
+    // @codingStandardsIgnoreStart
     public function taxed_value()
     {
         return $this->value - ($this->value * 0.4);
     }
+    // @codingStandardsIgnoreEnd
 }

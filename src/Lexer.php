@@ -24,9 +24,9 @@ class Lexer
      * Constants referenced within lexer
      * @var string
      */
-    CONST DS                  = 'delim_start';
-    CONST DE                  = 'delim_end';
-    CONST VARNAME             = 'varname';
+    const DS                  = 'delim_start';
+    const DE                  = 'delim_end';
+    const VARNAME             = 'varname';
     const DEFAULT_DELIM_START = '{{';
     const DEFAULT_DELIM_END   = '}}';
     /**@-*/
@@ -61,12 +61,12 @@ class Lexer
      * Patterns referenced by lexer
      * @var array
      */
-    protected $patterns = array(
+    protected $patterns = [
         'delim_start' => self::DEFAULT_DELIM_START,
         'delim_end'   => self::DEFAULT_DELIM_END,
         'varname'     => '([a-z.][a-z0-9_?.-]*|[.])',
         'pragma'      => '[A-Z][A-Z0-9_-]*',
-    );
+    ];
 
     /**
      * The Mustache manager
@@ -88,7 +88,7 @@ class Lexer
      *
      * @var array
      */
-    protected $placeholders = array();
+    protected $placeholders = [];
 
     /**
      * Whether or not to strip whitespace
@@ -153,17 +153,17 @@ class Lexer
         $len     = strlen($string);
 
         $state   = self::STATE_CONTENT;
-        $tokens  = array();
+        $tokens  = [];
         $content = '';
 
-        for ($i = 0; $i < $len; ) {
+        for ($i = 0; $i < $len;) {
             switch ($state) {
                 case self::STATE_CONTENT:
                     $content .= $string[$i];
                     $delimStartLen = strlen($this->patterns[self::DS]);
                     if (substr($content, -$delimStartLen) === $this->patterns[self::DS]) {
                         // Create token for content
-                        $tokens[] = array(self::TOKEN_CONTENT, substr($content, 0, -$delimStartLen));
+                        $tokens[] = [self::TOKEN_CONTENT, substr($content, 0, -$delimStartLen)];
                         $content  = '';
 
                         // Switch to tag state
@@ -235,7 +235,7 @@ class Lexer
                                 $i += 1;
 
                                 // Create token
-                                $tokens[] = array(self::TOKEN_VARIABLE_RAW, ltrim($tagData, '{'));
+                                $tokens[] = [self::TOKEN_VARIABLE_RAW, ltrim($tagData, '{')];
                                 $state    = self::STATE_CONTENT;
                                 $i       += 1;
                                 break;
@@ -245,14 +245,14 @@ class Lexer
                                 $tagData = trim($tagData);
 
                                 // Create token
-                                $tokens[] = array(self::TOKEN_VARIABLE_RAW, $tagData);
+                                $tokens[] = [self::TOKEN_VARIABLE_RAW, $tagData];
                                 $state    = self::STATE_CONTENT;
                                 $i       += 1;
                                 break;
                             case '!':
                                 // Comment
                                 // Create token
-                                $tokens[] = array(self::TOKEN_COMMENT, ltrim($tagData, '!'));
+                                $tokens[] = [self::TOKEN_COMMENT, ltrim($tagData, '!')];
                                 $state    = self::STATE_CONTENT;
                                 $i       += 1;
                                 break;
@@ -263,9 +263,9 @@ class Lexer
                                 $partial = trim($tagData);
 
                                 // Create token
-                                $token = array(self::TOKEN_PARTIAL, array(
+                                $token = [self::TOKEN_PARTIAL, [
                                     'partial' => $partial,
-                                ));
+                                ]];
 
                                 $tokens[] = $token;
                                 $state    = self::STATE_CONTENT;
@@ -298,20 +298,24 @@ class Lexer
                                 $this->patterns[self::DE] = $delimEnd   = $matches[2];
 
                                 // Create token
-                                $tokens[] = array(self::TOKEN_DELIM_SET, array(
+                                $tokens[] = [self::TOKEN_DELIM_SET, [
                                     'delim_start' => $delimStart,
                                     'delim_end'   => $delimEnd,
-                                ));
+                                ]];
                                 $state = self::STATE_CONTENT;
                                 ++$i;
                                 break;
                             case '%':
                                 // Pragmas
                                 $data    = ltrim($tagData, '%');
-                                $options = array();
+                                $options = [];
                                 if (!strstr($data, '=')) {
                                     // No options
-                                    if (!preg_match('/^(?P<pragma>' . $this->patterns['pragma'] . ')$/', $data, $matches)) {
+                                    if (! preg_match(
+                                        '/^(?P<pragma>' . $this->patterns['pragma'] . ')$/',
+                                        $data,
+                                        $matches
+                                    )) {
                                         throw new Exception\InvalidPragmaNameException();
                                     }
                                     $pragma = $matches['pragma'];
@@ -321,7 +325,7 @@ class Lexer
                                         throw new Exception\InvalidPragmaNameException();
                                     }
                                     $pairs = explode(' ', $options);
-                                    $options = array();
+                                    $options = [];
                                     foreach ($pairs as $pair) {
                                         if (!strstr($pair, '=')) {
                                             $options[$pair] = null;
@@ -331,21 +335,24 @@ class Lexer
                                         }
                                     }
                                 }
-                                $tokens[] = array(self::TOKEN_PRAGMA, array(
+                                $tokens[] = [self::TOKEN_PRAGMA, [
                                     'pragma'  => $pragma,
                                     'options' => $options,
-                                ));
+                                ]];
                                 $state = self::STATE_CONTENT;
                                 $i++;
                                 break;
                             default:
                                 // We have a simple variable replacement
                                 if (!preg_match($this->patterns[self::VARNAME], $tagData)) {
-                                    throw new Exception\InvalidVariableNameException('Invalid variable name provided (' . $tagData . ')');
+                                    throw new Exception\InvalidVariableNameException(sprintf(
+                                        'Invalid variable name provided (%s)',
+                                        $tagData
+                                    ));
                                 }
 
                                 // Create token
-                                $tokens[] = array(self::TOKEN_VARIABLE, $tagData);
+                                $tokens[] = [self::TOKEN_VARIABLE, $tagData];
                                 $state = self::STATE_CONTENT;
                                 ++$i;
                                 break;
@@ -386,10 +393,10 @@ class Lexer
                             $sectionData = substr($sectionData, 0, strlen($sectionData) - strlen($endTag));
 
                             // compile sections later
-                            $tokens[] = array($tokenType, array(
+                            $tokens[] = [$tokenType, [
                                 'name'     => $section,
                                 'template' => $sectionData,
-                            ));
+                            ]];
                             $state = self::STATE_CONTENT;
                         }
                     }
@@ -399,7 +406,10 @@ class Lexer
                     break;
 
                 default:
-                    throw new Exception\InvalidStateException('Invalid state invoked ("' . var_export($state, 1) . '")?');
+                    throw new Exception\InvalidStateException(sprintf(
+                        'Invalid state invoked ("%s")?',
+                        var_export($state, 1)
+                    ));
             }
         }
 
@@ -407,19 +417,21 @@ class Lexer
         switch ($state) {
             case self::STATE_CONTENT:
                 // Un-collected content
-                $tokens[] = array(self::TOKEN_CONTENT, $content);
+                $tokens[] = [self::TOKEN_CONTENT, $content];
                 break;
             case self::STATE_TAG:
                 // Un-closed content
                 throw new Exception\UnbalancedTagException();
             case self::STATE_SECTION:
                 // Un-closed section
-                throw new Exception\UnbalancedSectionException('Unbalanced section, placeholder, or inheritance in template');
+                throw new Exception\UnbalancedSectionException(
+                    'Unbalanced section, placeholder, or inheritance in template'
+                );
         }
 
         // Tokenize any partials, sections, placeholders, or child templates
         // discovered, strip whitespaces as necessary
-        $replaceKeys = array();
+        $replaceKeys = [];
         foreach ($tokens as $key => $token) {
             $type = $token[0];
             switch ($type) {
@@ -475,7 +487,7 @@ class Lexer
                     $this->patterns[self::DE] = $delimEnd;
 
                     // Get placeholders from child
-                    $placeholders = array();
+                    $placeholders = [];
                     foreach ($child as $childToken) {
                         $childType = $childToken[0];
                         if ($childType !== self::TOKEN_PLACEHOLDER) {
@@ -499,7 +511,7 @@ class Lexer
 
                 case self::TOKEN_PLACEHOLDER:
                     if ($this->nestingLevel > 0) {
-                        $placeholders = array();
+                        $placeholders = [];
                         foreach ($this->placeholders as $childPlaceholders) {
                             // 1 is deepest, and thus has precedence
                             $placeholders = array_merge($childPlaceholders, $placeholders);
@@ -574,11 +586,11 @@ class Lexer
                 $token = $sectionTokens[0];
                 if ($token[0] === self::TOKEN_CONTENT) {
                     $content = preg_replace('/^\s*?(\r\n?|\n)/s', '', $token[1]);
-                    $token = array(
+                    $token = [
                         self::TOKEN_CONTENT,
                         $content,
                         'original_content' => $token[1],
-                    );
+                    ];
                     $sectionTokens[0] = $token;
                     $tokens[$position][1]['content'] = $sectionTokens;
                     break;
@@ -595,11 +607,11 @@ class Lexer
             $type = $previous[0];
             if ($type === self::TOKEN_CONTENT) {
                 $content = preg_replace('/(\r\n?|\n)\s+$/s', '$1', $previous[1]);
-                $previous = array(
+                $previous = [
                     self::TOKEN_CONTENT,
                     $content,
                     'original_content' => $previous[1],
-                );
+                ];
                 $tokens[$position - 1] = $previous;
             }
         }
@@ -611,11 +623,11 @@ class Lexer
             $type = $next[0];
             if ($type === self::TOKEN_CONTENT) {
                 $content = preg_replace('/^\s*?(\r\n?|\n)/s', '', $next[1]);
-                $next = array(
+                $next = [
                     self::TOKEN_CONTENT,
                     $content,
                     'original_content' => $next[1],
-                );
+                ];
                 $tokens[$position + 1] = $next;
             }
         }
@@ -630,7 +642,7 @@ class Lexer
      */
     protected function replaceTokens(array $originalTokens, array $replacements)
     {
-        $tokens = array();
+        $tokens = [];
         foreach ($originalTokens as $key => $token) {
             if (!array_key_exists($key, $replacements)) {
                 $tokens[] = $token;

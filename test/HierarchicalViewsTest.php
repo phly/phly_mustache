@@ -72,7 +72,7 @@ class HierarchicalViewsTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanRenderMultiplePlaceholders()
     {
-        $test = $this->mustache->render('issue-17-child', array());
+        $test = $this->mustache->render('issue-17-child', []);
         $this->assertContains('<div class="span4">This is the sidebar content</div>', $test);
         $this->assertRegexp('#<div class="span8">\s+This is the primary content\s+</div>#s', $test);
     }
@@ -82,7 +82,7 @@ class HierarchicalViewsTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanRenderNestedChildPlaceholders()
     {
-        $test = $this->mustache->render('issue-17-nested-child', array());
+        $test = $this->mustache->render('issue-17-nested-child', []);
         $this->assertContains('<div class="span4">This is the sidebar content</div>', $test);
         $this->assertRegexp('#<div class="span8">\s+This is the nested content\s+</div>#s', $test);
     }
@@ -92,8 +92,12 @@ class HierarchicalViewsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNestedChildrenCanRenderPlaceholdersDefinedInParentChild()
     {
-        $test = $this->mustache->render('issue-17-nested-child-2', array());
-        $this->assertRegexp('#<div class="container-fluid">\s+<div class="row-fluid">.*?<div class="span9">\s+new content#s', $test, $test);
+        $test = $this->mustache->render('issue-17-nested-child-2', []);
+        $this->assertRegexp(
+            '#<div class="container-fluid">\s+<div class="row-fluid">.*?<div class="span9">\s+new content#s',
+            $test,
+            $test
+        );
     }
 
     /**
@@ -122,9 +126,9 @@ class HierarchicalViewsTest extends \PHPUnit_Framework_TestCase
     public function testCanRenderCorrectTemplatesWhenExistingParentHasBeenRendered()
     {
         // set up existing cache
-        $this->mustache->render('issue-25-child1', array());
+        $this->mustache->render('issue-25-child1', []);
 
-        $test = $this->mustache->render('issue-25-child2', array());
+        $test = $this->mustache->render('issue-25-child2', []);
         $this->assertContains('<div class="span4">This is the sidebar content for child2</div>', $test);
     }
 }

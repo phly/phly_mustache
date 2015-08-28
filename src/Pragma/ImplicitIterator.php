@@ -45,10 +45,10 @@ class ImplicitIterator extends AbstractPragma
      * Tokens handled by this pragma
      * @var array
      */
-    protected $tokensHandled = array(
+    protected $tokensHandled = [
         Lexer::TOKEN_VARIABLE,
         Lexer::TOKEN_VARIABLE_RAW,
-    );
+    ];
 
     /**
      * Handle a given token

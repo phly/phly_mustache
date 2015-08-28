@@ -30,9 +30,9 @@ class NestedObject
         $item1->label = 'listitem1';
         $item2 = new \stdClass;
         $item2->label = 'listitem2';
-        $this->list = array(
+        $this->list = [
             $item1,
             $item2,
-        );
+        ];
     }
 }

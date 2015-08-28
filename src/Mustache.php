@@ -26,7 +26,7 @@ class Mustache
      * Cached file-based templates; contains template name/token pairs
      * @var array
      */
-    protected $cachedTemplates = array();
+    protected $cachedTemplates = [];
 
     /**
      * Lexer
@@ -200,7 +200,7 @@ class Mustache
     public function render($template, $view, $partials = null)
     {
         // Tokenize and alias partials
-        $tokenizedPartials = array();
+        $tokenizedPartials = [];
         if (null !== $partials) {
             if (!is_array($partials) && !is_object($partials)) {
                 throw new Exception\InvalidPartialsException();

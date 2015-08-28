@@ -30,11 +30,11 @@ class DefaultResolverTest extends \PHPUnit_Framework_TestCase
 
     public function templateNames()
     {
-        return array(
-            array('foo'),
-            array('foo/bar'),
-            array('foo/bar/baz'),
-        );
+        return [
+            ['foo'],
+            ['foo/bar'],
+            ['foo/bar/baz'],
+        ];
     }
 
     /**

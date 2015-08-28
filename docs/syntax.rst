@@ -3,7 +3,7 @@
 Syntax
 ======
 
-The following syntax is supported by ``phly_mustache``. 
+The following syntax is supported by ``phly-mustache``. 
 
 .. _syntax-escaping:
 

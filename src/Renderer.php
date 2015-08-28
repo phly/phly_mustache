@@ -31,7 +31,7 @@ class Renderer
      * Array of registered pragmas
      * @var array
      */
-    protected $pragmas = array();
+    protected $pragmas = [];
 
     /**
      * Callback for escaping variable content
@@ -43,7 +43,7 @@ class Renderer
      * List of pragmas invoked by current template
      * @var array
      */
-    protected $invokedPragmas = array();
+    protected $invokedPragmas = [];
 
     /**
      * Set mustache manager
@@ -89,7 +89,7 @@ class Renderer
         }
 
         if (null === $partials) {
-            $partials = array();
+            $partials = [];
         }
 
         $rendered = '';
@@ -108,7 +108,7 @@ class Renderer
                     if (is_scalar($value)) {
                         $value = ('' === $value) ? '' : $this->escape($value);
                     } else {
-                        $pragmaView = array($data => $value);
+                        $pragmaView = [$data => $value];
                         if ($test = $this->handlePragmas($type, $data, $pragmaView)) {
                             $value = $test;
                         } else {
@@ -156,14 +156,18 @@ class Renderer
                         // Execute the callback, passing it the section's template
                         // string, as well as a renderer lambda.
                         $pragmas = $this->invokedPragmas;
-                        $rendered .= call_user_func($section, $data['template'], function($text) use ($renderer, $view, $partials) {
-                            $manager = $renderer->getManager();
-                            if (!$manager instanceof Mustache) {
-                                return $text;
+                        $rendered .= call_user_func(
+                            $section,
+                            $data['template'],
+                            function ($text) use ($renderer, $view, $partials) {
+                                $manager = $renderer->getManager();
+                                if (!$manager instanceof Mustache) {
+                                    return $text;
+                                }
+                                $tokens = $manager->tokenize($text);
+                                return $renderer->render($tokens, $view, $partials);
                             }
-                            $tokens = $manager->tokenize($text);
-                            return $renderer->render($tokens, $view, $partials);
-                        });
+                        );
                         $this->registerPragmas($pragmas);
                         break;
                     } elseif (is_object($section)) {
@@ -221,7 +225,10 @@ class Renderer
                                 $partialTokens = $manager->tokenize($data['partial']);
                                 $rendered .= $this->render($partialTokens, $view);
                             } else {
-                                throw new Exception\InvalidPartialsException('Unable to resolve partial "' . $data['partial'] . '"');
+                                throw new Exception\InvalidPartialsException(sprintf(
+                                    'Unable to resolve partial "%s"',
+                                    $data['partial']
+                                ));
                             }
                         }
                         $this->registerPragmas($pragmas);
@@ -279,7 +286,7 @@ class Renderer
     public function getEscaper()
     {
         if (null === $this->escaper) {
-            $this->escaper = function($value) {
+            $this->escaper = function ($value) {
                 return htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8');
             };
         }
@@ -373,7 +380,7 @@ class Renderer
 
         if (is_object($view)) {
             if (method_exists($view, $key)) {
-                return call_user_func(array($view, $key));
+                return call_user_func([$view, $key]);
             } elseif (isset($view->$key)) {
                 return $view->$key;
             }
@@ -436,7 +443,10 @@ class Renderer
     {
         $name = $definition['pragma'];
         if (!$this->hasPragma($name)) {
-            throw new Exception\UnregisteredPragmaException('No handler for pragma "' . $name . '" registered; cannot proceed rendering');
+            throw new Exception\UnregisteredPragmaException(sprintf(
+                'No handler for pragma "%s" registered; cannot proceed rendering',
+                $name
+            ));
         }
         $this->invokedPragmas[$name] = $definition['options'];
     }
@@ -459,7 +469,7 @@ class Renderer
      */
     protected function clearPragmas()
     {
-        $this->invokedPragmas = array();
+        $this->invokedPragmas = [];
     }
 
     /**

@@ -35,16 +35,16 @@ class MustacheTest extends \PHPUnit_Framework_TestCase
     {
         $test = $this->mustache->render(
             'Hello {{planet}}',
-            array('planet' => 'World')
+            ['planet' => 'World']
         );
         $this->assertEquals('Hello World', $test);
     }
 
     public function testRendersFileTemplates()
     {
-        $test = $this->mustache->render('renders-file-templates', array(
+        $test = $this->mustache->render('renders-file-templates', [
             'planet' => 'World',
-        ));
+        ]);
         $this->assertEquals('Hello World', trim($test));
     }
 
@@ -185,16 +185,16 @@ EOT;
      */
     public function testTemplateWillDereferenceNestedArrays()
     {
-        $view = array(
-            'a' => array(
+        $view = [
+            'a' => [
                 'title' => 'this is an object',
                 'description' => 'one of its attributes is a list',
-                'list' => array(
-                    array('label' => 'listitem1'),
-                    array('label' => 'listitem2'),
-                ),
-            ),
-        );
+                'list' => [
+                    ['label' => 'listitem1'],
+                    ['label' => 'listitem2'],
+                ],
+            ],
+        ];
         $test = $this->mustache->render(
             'template-with-dereferencing',
             $view
@@ -236,7 +236,7 @@ EOT;
 
     public function testInvertedSectionsRenderOnEmptyValues()
     {
-        $view = array('repo' => array());
+        $view = ['repo' => []];
         $test = $this->mustache->render(
             'template-with-inverted-section',
             $view
@@ -268,7 +268,7 @@ EOT;
         $test = $this->mustache->render(
             'template-with-aliased-partial',
             $view,
-            array('winnings' => 'partial-template')
+            ['winnings' => 'partial-template']
         );
         $expected = 'Welcome, Joe! You just won $1000 (which is $600 after tax)';
         $this->assertEquals($expected, trim($test));
@@ -276,7 +276,7 @@ EOT;
 
     public function testEscapesStandardCharacters()
     {
-        $view = array('foo' => 't&h\\e"s<e>');
+        $view = ['foo' => 't&h\\e"s<e>'];
         $test = $this->mustache->render(
             '{{foo}}',
             $view
@@ -286,7 +286,7 @@ EOT;
 
     public function testTripleMustachesPreventEscaping()
     {
-        $view = array('foo' => 't&h\\e"s<e>');
+        $view = ['foo' => 't&h\\e"s<e>'];
         $test = $this->mustache->render(
             '{{{foo}}}',
             $view
@@ -308,7 +308,7 @@ EOT;
     public function testHonorsImplicitIteratorPragma()
     {
         $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
-        $view = array('foo' => array(1, 2, 3, 4, 5, 'french'));
+        $view = ['foo' => [1, 2, 3, 4, 5, 'french']];
         $test = $this->mustache->render(
             'template-with-implicit-iterator',
             $view
@@ -329,13 +329,13 @@ EOT;
     public function testAllowsSettingAlternateTemplateSuffix()
     {
         $this->mustache->setSuffix('html');
-        $test = $this->mustache->render('alternate-suffix', array());
+        $test = $this->mustache->render('alternate-suffix', []);
         $this->assertContains('alternate template suffix', $test);
     }
 
     public function testStripsCommentsFromRenderedOutput()
     {
-        $test = $this->mustache->render('template-with-comments', array());
+        $test = $this->mustache->render('template-with-comments', []);
         $expected =<<<EOT
 First line
 Second line
@@ -351,7 +351,7 @@ EOT;
      */
     public function testAllowsSpecifyingAlternateDelimiters()
     {
-        $test = $this->mustache->render('template-with-delim-set', array('substitution' => 'working'));
+        $test = $this->mustache->render('template-with-delim-set', ['substitution' => 'working']);
         $expected = <<<EOT
 This is content, working, from new delimiters.
 
@@ -364,13 +364,13 @@ EOT;
      */
     public function testAlternateDelimitersSetInSectionOnlyApplyToThatSection()
     {
-        $test = $this->mustache->render('template-with-delim-set-in-section', array(
+        $test = $this->mustache->render('template-with-delim-set-in-section', [
             'content' => 'style',
-            'section' => array(
+            'section' => [
                 'name' => '-World',
-            ),
+            ],
             'postcontent' => 'P.S. Done',
-        ));
+        ]);
         $expected =<<<EOT
 Some text with style
     -World
@@ -385,7 +385,10 @@ EOT;
      */
     public function testAlternateDelimitersApplyToChildSections()
     {
-        $test = $this->mustache->render('template-with-sections-and-delim-set', array('content' => 'style', 'substitution' => array('name' => '-World')));
+        $test = $this->mustache->render(
+            'template-with-sections-and-delim-set',
+            ['content' => 'style', 'substitution' => ['name' => '-World']]
+        );
         $expected = <<<EOT
 Some text with style
     -World
@@ -399,11 +402,11 @@ EOT;
      */
     public function testAlternateDelimitersDoNotCarryToPartials()
     {
-        $test = $this->mustache->render('template-with-partials-and-delim-set', array(
+        $test = $this->mustache->render('template-with-partials-and-delim-set', [
             'substitution' => 'style',
             'value'        => 1000000,
             'taxed_value'  =>  400000,
-        ));
+        ]);
         $expected =<<<EOT
 This is content, style, from new delimiters.
 You just won $1000000 (which is $400000 after tax)
@@ -419,15 +422,15 @@ EOT;
     public function testPragmasAreSectionSpecific()
     {
         $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
-        $test = $this->mustache->render('template-with-pragma-in-section', array(
+        $test = $this->mustache->render('template-with-pragma-in-section', [
             'type' => 'style',
-            'section' => array(
-                'subsection' => array(1, 2, 3),
-            ),
-            'section2' => array(
-                'subsection' => array(1, 2, 3),
-            ),
-        ));
+            'section' => [
+                'subsection' => [1, 2, 3],
+            ],
+            'section2' => [
+                'subsection' => [1, 2, 3],
+            ],
+        ]);
         $this->assertEquals(1, substr_count($test, '1'), $test);
         $this->assertEquals(1, substr_count($test, '2'), $test);
         $this->assertEquals(1, substr_count($test, '3'), $test);
@@ -440,12 +443,12 @@ EOT;
     public function testPragmasDoNotExtendToPartials()
     {
         $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
-        $test = $this->mustache->render('template-with-pragma-and-partial', array(
+        $test = $this->mustache->render('template-with-pragma-and-partial', [
             'type' => 'style',
-            'section' => array(
-                'subsection' => array(1, 2, 3),
-            ),
-        ));
+            'section' => [
+                'subsection' => [1, 2, 3],
+            ],
+        ]);
         $this->assertEquals(1, substr_count($test, 'Some content, with style'));
         $this->assertEquals(1, substr_count($test, 'This is from the partial'));
         $this->assertEquals(0, substr_count($test, '1'));
@@ -460,7 +463,7 @@ EOT;
     {
         $view = $this->getRecursiveView();
         $test = $this->mustache->render('crazy_recursive', $view);
-        foreach(range(1, 6) as $content) {
+        foreach (range(1, 6) as $content) {
             $this->assertEquals(1, substr_count($test, $content), 'Content: ' . $test);
         }
     }
@@ -522,36 +525,36 @@ EOT;
 
     protected function getRecursiveView()
     {
-        return array(
-            'top_nodes' => array(
+        return [
+            'top_nodes' => [
                 'contents' => '1',
-                'children' => array(
-                    array(
+                'children' => [
+                    [
                         'contents' => '2',
-                        'children' => array(
-                            array(
+                        'children' => [
+                            [
                                 'contents' => 3,
-                                'children' => array(),
-                            )
-                        ),
-                    ),
-                    array(
+                                'children' => [],
+                            ]
+                        ],
+                    ],
+                    [
                         'contents' => '4',
-                        'children' => array(
-                            array(
+                        'children' => [
+                            [
                                 'contents' => '5',
-                                'children' => array(
-                                    array(
+                                'children' => [
+                                    [
                                         'contents' => '6',
-                                        'children' => array(),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
+                                        'children' => [],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -559,9 +562,9 @@ EOT;
      */
     public function testArrayValuesThatReferToPHPBuiltInsShouldNotCallThem()
     {
-        $test = $this->mustache->render('template-referencing-php-function', array(
+        $test = $this->mustache->render('template-referencing-php-function', [
             'message' => 'time',
-        ));
+        ]);
         $this->assertEquals('time', trim($test));
     }
 
@@ -570,7 +573,7 @@ EOT;
      */
     public function testObjectPropertiesThatReferToPHPBuiltInsShouldNotCallThem()
     {
-        $model = (object) array('message' => 'time');
+        $model = (object) ['message' => 'time'];
         $test  = $this->mustache->render('template-referencing-php-function', $model);
         $this->assertEquals('time', trim($test));
     }
@@ -580,7 +583,7 @@ EOT;
      */
     public function testArrayValuesThatReferToStaticMethodsShouldNotCallThem()
     {
-        $model = array('message' => 'DateTime::createFromFormat');
+        $model = ['message' => 'DateTime::createFromFormat'];
         $test = $this->mustache->render('template-referencing-php-function', $model);
         $this->assertEquals('DateTime::createFromFormat', trim($test));
     }
@@ -590,7 +593,7 @@ EOT;
      */
     public function testStringValuesThatReferToFunctionsShouldNotCallThem()
     {
-        $model = array('message' => 'time');
+        $model = ['message' => 'time'];
         $this->mustache->getRenderer()->addPragma(new ImplicitIterator());
         $test = $this->mustache->render('template-referencing-static-function-notempty', $model);
         $this->assertEquals('time', trim($test));
@@ -601,7 +604,7 @@ EOT;
      */
     public function testArrayValuesThatReferToStaticMethodsInArraySyntaxShouldNotCallThem()
     {
-        $model = array('section' => array('DateTime', 'createFromFormat'));
+        $model = ['section' => ['DateTime', 'createFromFormat']];
         $this->mustache->getRenderer()->addPragma(new ImplicitIterator());
         $test = $this->mustache->render('template-referencing-static-function', $model);
         $this->assertEquals("DateTime\ncreateFromFormat", trim($test));
@@ -623,11 +626,11 @@ EOT;
      */
     public function testDotNotationIsExandedToSubPropertyOfView()
     {
-        $view = array(
-            'foo' => array(
+        $view = [
+            'foo' => [
                 'bar' => 'baz',
-            ),
-        );
+            ],
+        ];
         $test = $this->mustache->render('dot-notation', $view);
         $this->assertEquals('baz', trim($test));
     }
@@ -637,9 +640,9 @@ EOT;
      */
     public function testWithDotNotationIfSubpropertyDoesNotExistEmptyStringIsRendered()
     {
-        $view = array(
+        $view = [
             'foo' => 'bar',
-        );
+        ];
         $test = $this->mustache->render('dot-notation', $view);
         $this->assertEquals('', trim($test));
     }

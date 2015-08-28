@@ -36,27 +36,27 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
 
     public function testSubViewContentIsCapturedInParent()
     {
-        $content = new SubView('sub-view-template', array(
+        $content = new SubView('sub-view-template', [
             'greeting' => 'Hello',
             'name'     => 'World',
-        ));
-        $view = array('content' => $content);
+        ]);
+        $view = ['content' => $content];
         $test = $this->mustache->render('template-with-sub-view', $view);
         $this->assertRegexp('/Header content.*?Hello, World.*Footer content/s', $test);
     }
 
     public function testRendersNestedSubViews()
     {
-        $sidebar = new SubView('sub-view-sidebar', array('name' => 'final'));
-        $content = new SubView('sub-view-template', array(
+        $sidebar = new SubView('sub-view-sidebar', ['name' => 'final']);
+        $content = new SubView('sub-view-template', [
             'greeting' => 'Goodbye',
             'name'     => 'cruel world',
-        ));
-        $mainContent = new SubView('sub-view-containing-sub-views', array(
+        ]);
+        $mainContent = new SubView('sub-view-containing-sub-views', [
             'content' => $content,
             'sidebar' => $sidebar,
-        ));
-        $view = array('content' => $mainContent);
+        ]);
+        $view = ['content' => $mainContent];
         $test = $this->mustache->render('template-with-sub-view', $view);
         $this->assertRegexp('/Header content.*?Goodbye, cruel world.*?break.*?final sidebar.*?Footer content/s', $test);
     }
@@ -65,12 +65,12 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
     {
         $sidebar = new SubView('sub-view-sidebar');
         $content = new SubView('sub-view-template');
-        $view = array(
+        $view = [
             'name'     => 'bat',
             'greeting' => 'Shabaz',
             'content'  => $content,
             'sidebar'  => $sidebar,
-        );
+        ];
         $test = $this->mustache->render('sub-view-containing-sub-views', $view);
         $this->assertRegexp('/Shabaz, bat.*?bat sidebar/s', $test, $test);
     }
@@ -80,12 +80,12 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldRenderSubViewReturnedByClosure()
     {
-        $view = array('closure' => function() {
-            return new SubView('sub-view-template', array(
+        $view = ['closure' => function () {
+            return new SubView('sub-view-template', [
                 'greeting' => 'Shalom',
                 'name'     => 'Ishmael',
-            ));
-        });
+            ]);
+        }];
         $test = $this->mustache->render('sub-view-from-closure', $view);
         $this->assertContains('Shalom, Ishmael', $test);
     }
@@ -96,10 +96,10 @@ class SubViewsTest extends \PHPUnit_Framework_TestCase
     public function testStdClassComposingSubViewShouldNotRaiseError()
     {
         $view    = new stdClass;
-        $content = new SubView('sub-view-template', array(
+        $content = new SubView('sub-view-template', [
             'greeting' => 'Hello',
             'name'     => 'World',
-        ));
+        ]);
         $view->content = $content;
         $test = $this->mustache->render('issue-5-subview', $view);
         $this->assertEquals('Hello, World!', trim($test));

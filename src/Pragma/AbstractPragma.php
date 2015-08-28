@@ -34,7 +34,7 @@ abstract class AbstractPragma implements Pragma
      * Tokens this pragma handles
      * @var array
      */
-    protected $tokensHandled = array();
+    protected $tokensHandled = [];
 
     /**
      * Renderer
