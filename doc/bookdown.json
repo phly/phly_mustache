@@ -6,7 +6,8 @@
       {"Rendering": "book/rendering.md"},
       {"Syntax": "book/syntax.md"},
       {"Pragmas": "book/pragmas.md"},
-      {"Resolvers": "book/resolvers.md"}
+      {"Resolvers": "book/resolvers.md"},
+      {"Cookbook and FAQ": "book/cookbook.md"}
   ],
   "target": "./html"
 }
