@@ -25,11 +25,27 @@
 - [X] Add installation instructions to README, usage docs
 - [X] Push minimum supported version to 5.5
 
+## Change docs to markdown
+
+- [X] Remove sphinx build chain
+    - [X] conf.py
+    - [X] make.bat
+    - [X] Makefile
+    - [X] _static, api directories
+- [X] Convert existing rst files to markdown
+- [X] Add bookdown.json
+- [X] Document using bookdown to generate docs
+- [X] Add build rules for mkdocs.yml
+- [X] Add mkdocs.yml
+
 ## New resolvers
 
-- [ ] Namespaced template resolver
+Branch: feature/resolvers
+
+- [X] Namespaced template resolver
+- [X] Aggregate resolver
+- [ ] Document resolvers
 - [ ] Add optional namespace argument to `Mustache::setTemplatePath()`?
-- [ ] Aggregate resolver
 
 ## Rename package?
 
