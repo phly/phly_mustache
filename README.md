@@ -23,6 +23,27 @@ Install via composer:
 $ composer require phly/mustache
 ```
 
+## Documentation
+
+Documentation builds are available at:
+
+- https://phly-mustache.readthedocs.org
+
+You can also build documentation in one of two ways:
+
+- [MkDocs](http://www.mkdocs.org): Execute `mkdocs build` from the repository
+  root.
+- [Bookdown](http://bookdown.io): Execute `bookdown doc/bookdown.json` from the
+  repository root.
+
+In each case, you can use PHP's built-in web server to serve the documentation:
+
+```bash
+$ php -S 0.0.0.0:8080 -t doc/html/
+```
+
+and then browse to http://localhost:8080/.
+
 ## Usage
 
 Basic usage is:
@@ -152,93 +173,3 @@ Since the tokens are template name/token list pairs, you can safely pass them to
 cache of template tokens. This will greatly improve performance when rendering
 templates on subsequent calls — particularly if you cache the tokens in a
 memory store such as memcached.
-
-## Pragmas shipped with phly-mustache
-
-### IMPLICIT-ITERATOR
-
-This pragma allows iteration of indexed arrays or Traversable objects with
-scalar values, with the option of specifying the iterator "key" to use within
-the template. By default, a variable key "." will be replaced by the current
-value of the iterator.
-
-A sample template:
-
-```mustache
-{{#some_iterable_data}}
-    {{.}}
-{{/some_iterable_data}}
-```
-
-To use an explicit iterator key, specify it via the "iterator" option of the
-pragma:
-
-```mustache
-{{%IMPLICIT-ITERATOR iterator=bob}}
-{{#some_iterable_data}}
-    {{bob}}
-{{/some_iterable_data}}
-```
-
-### SUB-VIEWS
-
-The Sub-Views pragma allows you to implement the two-step view pattern using
-Mustache. When active, any variable whose value is an instance of
-Phly\Mustache\Pragma\SubView will be substituted by rendering the template and
-view that object encapsulates.
-
-The SubView class takes a template name and a view as a constructor:
-
-```php
-use Phly\Mustache\Pragma\SubView;
-$subView = new SubView('some-partial', array('name' => 'Matthew'));
-```
-
-That object is then assigned as a value to a view key:
-
-```php
-$view = new stdClass;
-$view->content = $subView;
-```
-
-The template might look like this:
-
-```mustache
-{{!layout}}
-{{%SUB-VIEWS}}
-<html>
-<body>
-    {{content}}
-</body>
-</html>
-```
-
-and the partial like this:
-
-```mustache
-{{!some-partial}}
-Hello, {{name}}!
-```
-
-Rendering the view:
-
-```php
-use Phly\Mustache\Mustache;
-use Phly\Mustache\Pragma\SubViews;
-
-$mustache = new Mustache();
-$subViews = new SubViews($mustache);
-$rendered = $mustache->render('layout', $view);
-```
-
-will result in:
-
-```html
-<html>
-<body>
-    Hello, Matthew!
-</body>
-</html>
-```
-
-Sub views may be nested, and re-used.

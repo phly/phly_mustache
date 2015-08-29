@@ -1,0 +1,14 @@
+docs_dir: doc/book
+site_dir: doc/html
+pages:
+    - index.md
+    - { Introduction: intro.md }
+    - { 'Installation and Usage': usage.md }
+    - { Rendering: rendering.md }
+    - { Syntax: syntax.md }
+    - { Pragmas: pragmas.md }
+    - { Resolvers: resolvers.md }
+site_name: phly-mustache
+site_description: 'phly-mustache: Mustache for PHP, featuring template inheritance'
+repo_url: 'https://github.com/phly/phly_mustache'
+copyright: 'Copyright (c) 2015 <a href="https://mwop.net/">Matthew Weier O\''Phinney</a>'

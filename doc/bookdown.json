@@ -1,0 +1,12 @@
+{
+  "title": "phly-mustache: Mustache for PHP, featuring template inheritance",
+  "content": [
+      {"Introduction": "book/intro.md"},
+      {"Installation and Usage": "book/usage.md"},
+      {"Rendering": "book/rendering.md"},
+      {"Syntax": "book/syntax.md"},
+      {"Pragmas": "book/pragmas.md"},
+      {"Resolvers": "book/resolvers.md"}
+  ],
+  "target": "./html"
+}
