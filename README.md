@@ -58,22 +58,35 @@ echo $mustache->render('some-template', $view);
 ```
 
 By default, phly-mustache will look under the current directory for templates
-ending with '.mustache'; you can create a stack of directories to search by
-using the setTemplatePath() method:
+ending with '.mustache'; you can create a stack of directories using the
+default resolver:
 
 ```php
-$mustache
-    ->setTemplatePath($path1)
-    ->setTemplatePath($path2);
+use Phly\Mustache\Resolver\DefaultResolver;
+
+$resolver = $mustache->getResolver()->getByType(DefaultResolver::class);
+$resolver->addTemplatePath($path1);
+$resolver->addTemplatePath($path2);
 ```
 
 In the above, it will search first `$path2`, then `$path1` to resolve the
 template.
 
+Template names may be namespaced, using the syntax `namespace::template`:
+
+```php
+$resolver->addTemplatePath($path1, 'blog');
+$resolver->addTemplatePath($path2, 'contact');
+```
+
+Per the above configuratin, rendering the template `contact::index` will resolve
+to `$path2`. If it cannot, it will drop back to the default namespace (any paths
+registered without a namespace).
+
 You may also change the suffix it will use to resolve templates:
 
 ```php
-$mustache->setSuffix('html'); // use '.html' as the suffix
+$resolver->setSuffix('html'); // use '.html' as the suffix
 ```
 
 If your templates use pragmas, you must first add pragma handlers to the
@@ -116,8 +129,8 @@ $view->full_name  = function() use ($view) {
 };
 ```
 
-Refer to the [documentation](http://phly-mustache.readthedocs.org) for full
-usage details.
+Refer to the documentation([online](http://phly-mustache.readthedocs.org) /
+[local](doc/book/)) for full usage details.
 
 ## Architecture
 
@@ -125,7 +138,7 @@ Phly\Mustache consists of five primary classes:
 
 - **Lexer**: tokenizes mustache syntax.
 - **Renderer**: renders a list of tokens, using substitions provided via a view.
-- **Pragma**: interface for pragmas, which may modify how tokens are handled
+- **Pragma**: interface for pragmas, which may modify how tokens are handled.
 - **Resolver**: resolves a template name to mustache syntax or tokens.
 - **Mustache**: facade/gateway class. Tokenizes and renders templates, caches
   tokens, provides partial aliasing, and acts as primary interface for
