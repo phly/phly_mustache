@@ -102,7 +102,7 @@ class DefaultResolver implements ResolverInterface
      * @return DefaultResolver
      * @throws Exception\InvalidTemplatePathException
      */
-    public function setTemplatePath($templatePath, $namespace = null)
+    public function addTemplatePath($templatePath, $namespace = null)
     {
         if (! is_dir($templatePath)) {
             throw new Exception\InvalidTemplatePathException(sprintf(

@@ -20,7 +20,7 @@ class MustacheTest extends TestCase
     public function setUp()
     {
         $this->mustache = new Mustache();
-        $this->mustache->getResolver()->setTemplatePath(__DIR__ . '/templates');
+        $this->mustache->getResolver()->addTemplatePath(__DIR__ . '/templates');
     }
 
     public function testRendersStringTemplates()

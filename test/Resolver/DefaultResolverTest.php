@@ -51,7 +51,7 @@ class DefaultResolverTest extends TestCase
      */
     public function testResolvesUsingMustacheSuffixByDefault($template)
     {
-        $this->resolver->setTemplatePath($this->suiteTemplates);
+        $this->resolver->addTemplatePath($this->suiteTemplates);
         $expected = $template . '.mustache';
         $this->assertContains($expected, $this->resolver->resolve($template));
     }
@@ -61,7 +61,7 @@ class DefaultResolverTest extends TestCase
      */
     public function testResolvesUsingProvidedSuffix($template)
     {
-        $this->resolver->setTemplatePath($this->suiteTemplates);
+        $this->resolver->addTemplatePath($this->suiteTemplates);
         $this->resolver->setSuffix('tpl');
         $expected = $template . '.tpl';
         $this->assertContains($expected, $this->resolver->resolve($template));
@@ -72,7 +72,7 @@ class DefaultResolverTest extends TestCase
      */
     public function testResolvesUsingSpecifiedDirectorySeparator($template)
     {
-        $this->resolver->setTemplatePath($this->suiteTemplates);
+        $this->resolver->addTemplatePath($this->suiteTemplates);
         $this->resolver->setSeparator('.');
         $expected = $template . '.mustache';
         $template = str_replace('/', '.', $template);
@@ -84,15 +84,15 @@ class DefaultResolverTest extends TestCase
      */
     public function testUsesPathStackInternally($template)
     {
-        $this->resolver->setTemplatePath($this->suiteTemplates);
-        $this->resolver->setTemplatePath(__DIR__);
+        $this->resolver->addTemplatePath($this->suiteTemplates);
+        $this->resolver->addTemplatePath(__DIR__);
         $expected = $template . '.mustache';
         $this->assertContains($expected, $this->resolver->resolve($template));
     }
 
     public function testCanAddAndRetrievePathsWithNamespaces()
     {
-        $this->resolver->setTemplatePath($this->templates . '/test', 'test');
+        $this->resolver->addTemplatePath($this->templates . '/test', 'test');
         $paths = $this->assertContainsPath(
             $this->templates . '/test',
             $this->resolver->getTemplatePath('test')
@@ -101,7 +101,7 @@ class DefaultResolverTest extends TestCase
 
     public function testAddingAndRetrievingPathWithoutNamespaceUsesDefaultNamespace()
     {
-        $this->resolver->setTemplatePath($this->templates);
+        $this->resolver->addTemplatePath($this->templates);
         $paths = $this->assertContainsPath(
             $this->templates,
             $this->resolver->getTemplatePath()
@@ -112,7 +112,7 @@ class DefaultResolverTest extends TestCase
     {
         $namespaces = ['test', 'namespace', 'default'];
         foreach ($namespaces as $namespace) {
-            $this->resolver->setTemplatePath(sprintf(
+            $this->resolver->addTemplatePath(sprintf(
                 '%s/%s',
                 $this->templates,
                 $namespace
@@ -138,7 +138,7 @@ class DefaultResolverTest extends TestCase
     {
         foreach ($this->namespaces() as $inject) {
             $ns = array_shift($inject);
-            $this->resolver->setTemplatePath(sprintf(
+            $this->resolver->addTemplatePath(sprintf(
                 '%s/%s',
                 $this->templates,
                 $ns
@@ -157,10 +157,10 @@ class DefaultResolverTest extends TestCase
      */
     public function testTemplateResolutionByNamespaceFallsBackToDefaultNamespaceWhenNecessary($namespace)
     {
-        $this->resolver->setTemplatePath($this->templates);
+        $this->resolver->addTemplatePath($this->templates);
         foreach ($this->namespaces() as $inject) {
             $ns = array_shift($inject);
-            $this->resolver->setTemplatePath(sprintf(
+            $this->resolver->addTemplatePath(sprintf(
                 '%s/%s',
                 $this->templates,
                 $ns
@@ -178,13 +178,13 @@ class DefaultResolverTest extends TestCase
     {
         foreach ($this->namespaces() as $inject) {
             $ns = array_shift($inject);
-            $this->resolver->setTemplatePath(sprintf(
+            $this->resolver->addTemplatePath(sprintf(
                 '%s/%s',
                 $this->templates,
                 $ns
             ), $ns);
         }
-        $this->resolver->setTemplatePath($this->templates);
+        $this->resolver->addTemplatePath($this->templates);
 
         $result   = $this->resolver->resolve('index');
         $expected = file_get_contents(sprintf('%s/index.mustache', $this->templates));
