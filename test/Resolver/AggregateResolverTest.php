@@ -7,6 +7,7 @@
 namespace PhlyTest\Mustache\Resolver;
 
 use Phly\Mustache\Resolver\AggregateResolver;
+use Phly\Mustache\Resolver\DefaultResolver;
 use Phly\Mustache\Resolver\ResolverInterface;
 use PHPUnit_Framework_TestCase as TestCase;
 use Prophecy\Argument;
@@ -106,5 +107,44 @@ class AggregateResolverTest extends TestCase
 
         $result = $this->resolver->resolve('template');
         $this->assertEquals('resolved', $result);
+    }
+
+    public function testCanTestIfResolverOfTypeIsPresent()
+    {
+        $this->assertFalse($this->resolver->hasType(DefaultResolver::class));
+
+        $default = new DefaultResolver();
+        $this->resolver->attach($default);
+
+        $this->assertTrue($this->resolver->hasType(DefaultResolver::class));
+    }
+
+    public function testCanRetrieveResolverByType()
+    {
+        $default = new DefaultResolver();
+        $this->resolver->attach($default);
+        $this->assertSame($default, $this->resolver->fetchByType(DefaultResolver::class));
+    }
+
+    public function testFetchByTypeRaisesExceptionIfResolverNotFound()
+    {
+        $this->setExpectedException('Phly\Mustache\Exception\ResolverTypeNotFoundException');
+        $this->resolver->fetchByType(DefaultResolver::class);
+    }
+
+    public function testFetchByTypeReturnsAggregateIfMultipleResolversOfTypeFound()
+    {
+        $first  = new DefaultResolver();
+        $second = new DefaultResolver();
+
+        $this->resolver->attach($first);
+        $this->resolver->attach($second);
+
+        $test = $this->resolver->fetchByType(DefaultResolver::class);
+        $this->assertInstanceOf(AggregateResolver::class, $test);
+        $this->assertNotSame($this->resolver, $test);
+
+        $this->assertQueueContains($first, $test, 'First instance of default resolver not found');
+        $this->assertQueueContains($second, $test, 'Second instance of default resolver not found');
     }
 }

@@ -49,8 +49,7 @@ Branch: feature/resolvers
     - [X] Remove setTemplatePath(), setSeparator(), setSuffix() from Mustache
     - [X] DefaultResolver will now incorporate Namespaced resolver
     - [X] Rename `setTemplatePath()` to `addTemplatePath()` (resolves #24)
-    - [ ] Add "getResolverByType()" to Aggregate
-        - What happens if multiple of the same type are present?
+    - [X] Add "getResolverByType()" to Aggregate
     - [ ] Mustache will compose an Aggregate resolver composing a
       Default/Namespaced resolver by default
     - [ ] Update documentation to demonstrate:

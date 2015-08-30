@@ -8,6 +8,7 @@ namespace Phly\Mustache\Resolver;
 
 use Countable;
 use IteratorAggregate;
+use Phly\Mustache\Exception;
 use Zend\Stdlib\PriorityQueue;
 
 class AggregateResolver implements Countable, IteratorAggregate, ResolverInterface
@@ -25,6 +26,24 @@ class AggregateResolver implements Countable, IteratorAggregate, ResolverInterfa
     public function __construct()
     {
         $this->queue = new PriorityQueue();
+    }
+
+    /**
+     * Resolve a template name to a resource the renderer can consume.
+     *
+     * @param  string $template
+     * @return false|string
+     */
+    public function resolve($template)
+    {
+        foreach ($this->queue as $resolver) {
+            $resource = $resolver->resolve($template);
+            if (false !== $resource) {
+                return $resource;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -61,20 +80,48 @@ class AggregateResolver implements Countable, IteratorAggregate, ResolverInterfa
     }
 
     /**
-     * Resolve a template name to a resource the renderer can consume.
+     * Does the aggregate contain a resolver of the specified type?
      *
-     * @param  string $template
-     * @return false|string
+     * @param string $type
+     * @return bool
      */
-    public function resolve($template)
+    public function hasType($type)
     {
-        foreach ($this->queue as $resolver) {
-            $resource = $resolver->resolve($template);
-            if (false !== $resource) {
-                return $resource;
+        foreach ($this as $resolver) {
+            if ($resolver instanceof $type) {
+                return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Fetch one or more resolvers that match the given type.
+     *
+     * @param string $type
+     * @return ResolverInterface Return the matched instance, or an aggregate
+     *     containing all matched instances.
+     * @throws Exception\ResolverTypeNotFoundException if no resolvers of the type are found.
+     */
+    public function fetchByType($type)
+    {
+        if (! $this->hasType($type)) {
+            throw new Exception\ResolverTypeNotFoundException();
+        }
+        
+        $resolvers = new self();
+
+        foreach ($this as $resolver) {
+            if ($resolver instanceof $type) {
+                $resolvers->attach($resolver);
+            }
+        }
+
+        if (1 === count($resolvers)) {
+            return $resolvers->queue->extract();
+        }
+
+        return $resolvers;
     }
 }
