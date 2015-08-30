@@ -61,6 +61,18 @@ Branch: feature/resolvers
 - [X] Change documentation of resolvers to inject a new DefaultResolver, instead
     of fetching by type?
 
+## Pragmas
+
+- [ ] Add an `addPragma()` or `registerPragma()` method to `Mustache` class.
+  This will pull the pragma name from the Pragma class, using a new interface
+  method.
+- [ ] `addPragma` will inject `MustacheAware` instances with the mustache
+  instance on registration.
+- Pragmas will be collected in a collection object, which `Mustache` will pass to
+  the renderer when rendering.
+- [ ] Mustache will trigger the Pragma at specific points, passing related
+  objects and/or  contextual data, and expect specific return values.
+
 ## Rename package?
 
 - Repo to phly/phly-mustache
