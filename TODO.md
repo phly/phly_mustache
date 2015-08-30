@@ -47,7 +47,8 @@ Branch: feature/resolvers
 - [ ] Document resolvers
 - [ ] Add optional namespace argument to `Mustache::setTemplatePath()`?
     - [X] Remove setTemplatePath(), setSeparator(), setSuffix() from Mustache
-    - [ ] DefaultResolver will now incorporate Namespaced resolver
+    - [X] DefaultResolver will now incorporate Namespaced resolver
+    - [ ] Rename `setTemplatePath()` to `addTemplatePath()` (resolves #24)
     - [ ] Add "getResolverByType()" to Aggregate
         - What happens if multiple of the same type are present?
     - [ ] Mustache will compose an Aggregate resolver composing a
