@@ -20,4 +20,5 @@
     <file>test</file>
     <exclude-pattern>*/test/log/*</exclude-pattern>
     <exclude-pattern>*/test/templates/*</exclude-pattern>
+    <exclude-pattern>*/test/Resolver/templates/*</exclude-pattern>
 </ruleset>

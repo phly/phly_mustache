@@ -42,22 +42,38 @@ configuration — you can retrieve it from the `Mustache` instance as well:
 $resolver = $mustache->getResolver();
 ```
 
-## The DefaultResolver
+By default, `Mustache` composes an `AggregateResolver`, which in turn composes a
+`DefaultResolver` at low priority. As such, you can typically just add your own
+resolvers to the aggregate as needed:
 
-`Phly\Mustache` comes with one resolver, `Phly\Mustache\Resolver\DefaultResolver`.
-This implementation is a filesystem-based implementation, and looks for a
-template within an internal stack of templates. If found, it returns the content
-of that template.
+```php
+$mustache->getResolver()->attach($customResolver);
+```
+
+## DefaultResolver
+
+`Phly\Mustache\Resolver\DefaultResolver`.  is a filesystem-based implementation,
+and looks for a template within an internal stack of templates. If found, it
+returns the content of that template.
 
 It has three features you can manipulate:
 
 - Filesystem directory separator, via `setSeparator()`.
 - File suffix, via `setSuffix()`.
-- Template path stack, via `setTemplatePath()` and `clearTemplatePath()` (the
-  latter removes all paths from the stack).
+- Template path stack, via `addTemplatePath()`.
 
-As this is the default implementation, the `setSuffix()` and `setTemplatePath()`
-methods have proxy methods in the main `Mustache` class as well.
+`addTemplatePath()` accepts up to two arguments:
+
+- The `$path` to add.
+- The `$namespace` under which to add the path; if none is provided, the default
+  (fallback) namespace is assumed.
+
+When rendering, and hence resolving, namespaces are denoted with the syntax
+`namespace::template`; if no `nameespace::` segment is present, the default
+namespace is assumed. Internally, when you attempt to resolve a template, the
+`DefaultResolver` will query first the stack of paths representing the
+namespace, and then, if not found, the default (fallback) namespace. (In the
+case that no namespace was provided, it queries only the default namespace.)
 
 One interesting use case for manipulating the filesystem directory separator is
 to allow using "dot notation" for template names, and having each segment map to
@@ -69,6 +85,26 @@ $mustache->getResolver()->setSeparator('.');
 // Render foo/bar.mustache:
 echo $mustache->render('foo.bar');
 ```
+
+## AggregateResolver
+
+`Phly\Mustache\Resolver\AggregateResolver` allows aggregating multiple
+resolvers. When resolution is performed, the first resolver to return a
+non-false response short-circuits execution, and its response is returned.
+
+The `AggregateResolver` is both countable and iterable, and exposes the
+following methods:
+
+- `attach(ResolverInterface $resolver, $priority = 1)`: attach a resolver to the
+  aggregate. `AggregateResolver` acts as a priority queue; large numbers have
+  higher priority, lower numbers (including negative numbers!) have lower
+  priority; resolvers registered at the same priority are executed in the order
+  in which they are attached. Use `$priority` to ensure execution order.
+- `hasType($type)`: query to see if a resolver of the given type is already
+  registered in the aggregate.
+- `fetchByType($type)`: retrieve resolvers that match the given type. If only
+  one matches, that instance will be returned; if multiple resolvers match,
+  they will be returned as an `AggregateResolver`.
 
 ## Use Cases
 

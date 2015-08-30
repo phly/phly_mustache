@@ -118,67 +118,11 @@ class Mustache
     public function getResolver()
     {
         if (!$this->resolver instanceof Resolver\ResolverInterface) {
-            $this->setResolver(new Resolver\DefaultResolver());
+            $resolver = new Resolver\AggregateResolver();
+            $resolver->attach(new Resolver\DefaultResolver(), 0);
+            $this->setResolver($resolver);
         }
         return $this->resolver;
-    }
-
-    /**
-     * Add a template path to the template path stack
-     *
-     * @param  string $path
-     * @return Mustache
-     */
-    public function setTemplatePath($path)
-    {
-        $resolver = $this->getResolver();
-        if (!method_exists($resolver, 'setTemplatePath')) {
-            throw new Exception\BadMethodCallException(sprintf(
-                'Cannot call %s; resolver of type "%s" does not have a corresponding method',
-                __METHOD__,
-                get_class($resolver)
-            ));
-        }
-        $resolver->setTemplatePath($path);
-        return $this;
-    }
-
-    /**
-     * Set suffix used when resolving templates
-     *
-     * @param  string $suffix
-     * @return Mustache
-     */
-    public function setSuffix($suffix)
-    {
-        $resolver = $this->getResolver();
-        if (!method_exists($resolver, 'setSuffix')) {
-            throw new Exception\BadMethodCallException(sprintf(
-                'Cannot call %s; resolver of type "%s" does not have a corresponding method',
-                __METHOD__,
-                get_class($resolver)
-            ));
-        }
-        $resolver->setSuffix($suffix);
-        return $this;
-    }
-
-    /**
-     * Get template suffix
-     *
-     * @return string
-     */
-    public function getSuffix()
-    {
-        $resolver = $this->getResolver();
-        if (!method_exists($resolver, 'getSuffix')) {
-            throw new Exception\BadMethodCallException(sprintf(
-                'Cannot call %s; resolver of type "%s" does not have a corresponding method',
-                __METHOD__,
-                get_class($resolver)
-            ));
-        }
-        return $resolver->getSuffix();
     }
 
     /**

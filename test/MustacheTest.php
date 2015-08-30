@@ -9,7 +9,11 @@ namespace PhlyTest\Mustache;
 use Phly\Mustache\Mustache;
 use Phly\Mustache\Pragma;
 use Phly\Mustache\Pragma\ImplicitIterator;
+use Phly\Mustache\Resolver\AggregateResolver;
+use Phly\Mustache\Resolver\DefaultResolver;
 use PHPUnit_Framework_TestCase as TestCase;
+use ReflectionProperty;
+use SplPriorityQueue;
 use stdClass;
 
 /**
@@ -19,8 +23,11 @@ class MustacheTest extends TestCase
 {
     public function setUp()
     {
+        $resolver = new DefaultResolver();
+        $resolver->addTemplatePath(__DIR__ . '/templates');
+
         $this->mustache = new Mustache();
-        $this->mustache->setTemplatePath(__DIR__ . '/templates');
+        $this->mustache->setResolver($resolver);
     }
 
     public function testRendersStringTemplates()
@@ -316,13 +323,6 @@ EOT;
 
 EOT;
         $this->assertEquals($expected, $test);
-    }
-
-    public function testAllowsSettingAlternateTemplateSuffix()
-    {
-        $this->mustache->setSuffix('html');
-        $test = $this->mustache->render('alternate-suffix', []);
-        $this->assertContains('alternate template suffix', $test);
     }
 
     public function testStripsCommentsFromRenderedOutput()
@@ -637,5 +637,34 @@ EOT;
         ];
         $test = $this->mustache->render('dot-notation', $view);
         $this->assertEquals('', trim($test));
+    }
+
+    public function testComposesAggregateResolverWithDefaultResolverComposedByDefault()
+    {
+        $mustache = new Mustache();
+        $resolver = $mustache->getResolver();
+
+        // Basic assertions
+        $this->assertInstanceOf(AggregateResolver::class, $resolver);
+        $this->assertTrue($resolver->hasType(DefaultResolver::class));
+
+        // Now, make sure it's at the end of the queue. This requires:
+        // - Fetching the queue property (a Zend\Stdlib\PriorityQueue)
+        // - Fetching the iterator from the queue (an SplPriorityQueue)
+        // - Extracting the priority specification for the resolver (an array of
+        //   priority, seed within priority)
+        // - Extracting the priority from the specification
+        // The latter is not possible on HHVM, so we skip on that platform.
+        if (defined('HHVM_VERSION')) {
+            return;
+        }
+
+        $r = new ReflectionProperty($resolver, 'queue');
+        $r->setAccessible(true);
+        $queue = $r->getValue($resolver)->getIterator();
+
+        $queue->setExtractFlags(SplPriorityQueue::EXTR_PRIORITY);
+        $priority = $queue->extract();
+        $this->assertSame(0, array_shift($priority));
     }
 }
