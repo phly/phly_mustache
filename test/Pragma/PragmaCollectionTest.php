@@ -26,17 +26,8 @@ class PragmaCollectionTest extends TestCase
         $this->assertInstanceOf('Traversable', $this->collection);
     }
 
-    public function testComposesImplicitIteratorByDefault()
+    public function testComposesNoPragmasByDefault()
     {
-        $this->assertCount(1, $this->collection);
-        $this->assertTrue($this->collection->has('IMPLICIT-ITERATOR'));
-        $pragma = $this->collection->get('IMPLICIT-ITERATOR');
-        $this->assertInstanceOf(Pragma\ImplicitIterator::class, $pragma);
-    }
-
-    public function testCanRemoveAllPragmas()
-    {
-        $this->collection->clear();
         $this->assertCount(0, $this->collection);
     }
 
@@ -50,6 +41,14 @@ class PragmaCollectionTest extends TestCase
         $this->assertTrue($this->collection->has('TEST-PRAGMA'));
         $test = $this->collection->get('TEST-PRAGMA');
         $this->assertSame($pragma->reveal(), $test);
+    }
+
+    public function testCanRemoveAllPragmas()
+    {
+        $this->collection->add(new Pragma\ImplicitIterator());
+        $this->assertCount(1, $this->collection);
+        $this->collection->clear();
+        $this->assertCount(0, $this->collection);
     }
 
     public function testCannotAddTwoPragmasAdvertisingSameName()

@@ -63,15 +63,16 @@ Branch: feature/resolvers
 
 ## Pragmas
 
-- [ ] Add an `addPragma()` or `registerPragma()` method to `Mustache` class.
-  This will pull the pragma name from the Pragma class, using a new interface
-  method.
-- [ ] `addPragma` will inject `MustacheAware` instances with the mustache
-  instance on registration.
-- Pragmas will be collected in a collection object, which `Mustache` will pass to
-  the renderer when rendering.
-- [ ] Mustache will trigger the Pragma at specific points, passing related
-  objects and/or  contextual data, and expect specific return values.
+- [X] Move interface into Pragma namespace.
+- [X] Remove renderer awareness from Pragma interface; add new argument to
+    `handle()`, a `Mustache` instance.
+- [X] Replace `AbstractPragma` with a trait.
+- [X] Add a `PragmaCollection`.
+- [X] Add a `getPragmas()`  method to `Mustache` class.  This will return the
+  composed `PragmaCollection`.
+- [X] Refactor existing pragmas
+    - [X] ImplicitIterator
+    - [X] SubViews
 
 ## Rename package?
 

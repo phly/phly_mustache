@@ -11,7 +11,7 @@ use Phly\Mustache\Mustache;
 use Phly\Mustache\Pragma;
 use PHPUnit_Framework_TestCase as TestCase;
 
-class PragmaCollectionTest extends TestCase
+class ImplicitIteratorTest extends TestCase
 {
     public function setUp()
     {

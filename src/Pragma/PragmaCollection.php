@@ -10,6 +10,7 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Phly\Mustache\Exception;
+use Traversable;
 
 class PragmaCollection implements
     Countable,
@@ -23,15 +24,9 @@ class PragmaCollection implements
     private $pragmas = [];
 
     /**
-     * Construcor.
-     *
-     * Injects ImplicitIterator by default.
+     * @param PragmaInterface $pragma
+     * @throws Exception\DuplicatePragmaException
      */
-    public function __construct()
-    {
-        $this->add(new ImplicitIterator());
-    }
-
     public function add(PragmaInterface $pragma)
     {
         if (isset($this->pragmas[$pragma->getName()])) {
@@ -41,11 +36,20 @@ class PragmaCollection implements
         $this->pragmas[$pragma->getName()] = $pragma;
     }
 
+    /**
+     * @param string $pragma
+     * @return bool
+     */
     public function has($pragma)
     {
         return isset($this->pragmas[$pragma]);
     }
 
+    /**
+     * @param string $pragma
+     * @return PragmaInterface
+     * @throws Exception\PragmaNotFoundException
+     */
     public function get($pragma)
     {
         if (! isset($this->pragmas[$pragma])) {
@@ -55,16 +59,25 @@ class PragmaCollection implements
         return $this->pragmas[$pragma];
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
         return count($this->pragmas);
     }
 
+    /**
+     * Clears all pragmas from the collection.
+     */
     public function clear()
     {
         $this->pragmas = [];
     }
 
+    /**
+     * @return Traversable
+     */
     public function getIterator()
     {
         return new ArrayIterator($this->pragmas);

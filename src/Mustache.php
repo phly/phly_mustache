@@ -29,6 +29,11 @@ class Mustache
     protected $lexer;
 
     /**
+     * @var Pragma\PragmaCollection
+     */
+    private $pragmas;
+
+    /**
      * Renderer
      * @var Renderer
      */
@@ -45,6 +50,11 @@ class Mustache
      * @var string
      */
     protected $suffix = '.mustache';
+
+    public function __construct()
+    {
+        $this->pragmas = new Pragma\PragmaCollection();
+    }
 
     /**
      * Set lexer to use when tokenizing templates
@@ -123,6 +133,14 @@ class Mustache
             $this->setResolver($resolver);
         }
         return $this->resolver;
+    }
+
+    /**
+     * @return Pragma\PragmaCollection
+     */
+    public function getPragmas()
+    {
+        return $this->pragmas;
     }
 
     /**
