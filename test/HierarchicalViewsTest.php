@@ -18,7 +18,7 @@ class HierarchicalViewsTest extends TestCase
     public function setUp()
     {
         $this->mustache = new Mustache();
-        $this->mustache->setTemplatePath(__DIR__ . '/templates');
+        $this->mustache->getResolver()->setTemplatePath(__DIR__ . '/templates');
     }
 
     /**
@@ -98,7 +98,7 @@ class HierarchicalViewsTest extends TestCase
     public function testSubLayoutsCanAlterContentOfParent()
     {
         $mustache = new Mustache();
-        $mustache->setTemplatePath(__DIR__ . '/templates/no-layout-dups');
+        $mustache->getResolver()->setTemplatePath(__DIR__ . '/templates/no-layout-dups');
 
         $view = new stdClass;
         $view->name = 'Stan';

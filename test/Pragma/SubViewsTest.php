@@ -20,7 +20,7 @@ class SubViewsTest extends TestCase
     public function setUp()
     {
         $this->mustache = new Mustache();
-        $this->mustache->setTemplatePath(__DIR__ . '/../templates');
+        $this->mustache->getResolver()->setTemplatePath(__DIR__ . '/../templates');
         $subViews = new SubViews();
         $subViews->setManager($this->mustache);
         $this->mustache->getRenderer()->addPragma($subViews);

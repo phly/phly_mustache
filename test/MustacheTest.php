@@ -20,7 +20,7 @@ class MustacheTest extends TestCase
     public function setUp()
     {
         $this->mustache = new Mustache();
-        $this->mustache->setTemplatePath(__DIR__ . '/templates');
+        $this->mustache->getResolver()->setTemplatePath(__DIR__ . '/templates');
     }
 
     public function testRendersStringTemplates()
@@ -316,13 +316,6 @@ EOT;
 
 EOT;
         $this->assertEquals($expected, $test);
-    }
-
-    public function testAllowsSettingAlternateTemplateSuffix()
-    {
-        $this->mustache->setSuffix('html');
-        $test = $this->mustache->render('alternate-suffix', []);
-        $this->assertContains('alternate template suffix', $test);
     }
 
     public function testStripsCommentsFromRenderedOutput()

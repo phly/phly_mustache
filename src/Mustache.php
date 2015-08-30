@@ -124,64 +124,6 @@ class Mustache
     }
 
     /**
-     * Add a template path to the template path stack
-     *
-     * @param  string $path
-     * @return Mustache
-     */
-    public function setTemplatePath($path)
-    {
-        $resolver = $this->getResolver();
-        if (!method_exists($resolver, 'setTemplatePath')) {
-            throw new Exception\BadMethodCallException(sprintf(
-                'Cannot call %s; resolver of type "%s" does not have a corresponding method',
-                __METHOD__,
-                get_class($resolver)
-            ));
-        }
-        $resolver->setTemplatePath($path);
-        return $this;
-    }
-
-    /**
-     * Set suffix used when resolving templates
-     *
-     * @param  string $suffix
-     * @return Mustache
-     */
-    public function setSuffix($suffix)
-    {
-        $resolver = $this->getResolver();
-        if (!method_exists($resolver, 'setSuffix')) {
-            throw new Exception\BadMethodCallException(sprintf(
-                'Cannot call %s; resolver of type "%s" does not have a corresponding method',
-                __METHOD__,
-                get_class($resolver)
-            ));
-        }
-        $resolver->setSuffix($suffix);
-        return $this;
-    }
-
-    /**
-     * Get template suffix
-     *
-     * @return string
-     */
-    public function getSuffix()
-    {
-        $resolver = $this->getResolver();
-        if (!method_exists($resolver, 'getSuffix')) {
-            throw new Exception\BadMethodCallException(sprintf(
-                'Cannot call %s; resolver of type "%s" does not have a corresponding method',
-                __METHOD__,
-                get_class($resolver)
-            ));
-        }
-        return $resolver->getSuffix();
-    }
-
-    /**
      * Render a template using a view, and optionally a list of partials
      *
      * @todo   should partials be passed here? or simply referenced?
