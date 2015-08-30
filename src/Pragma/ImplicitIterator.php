@@ -7,6 +7,7 @@
 namespace Phly\Mustache\Pragma;
 
 use Phly\Mustache\Lexer;
+use Phly\Mustache\Mustache;
 
 /**
  * IMPLICIT-ITERATOR pragma
@@ -24,13 +25,16 @@ use Phly\Mustache\Lexer;
  * {{/section}}
  * </code>
  */
-class ImplicitIterator extends AbstractPragma
+class ImplicitIterator implements PragmaInterface
 {
+    use PragmaNameAndTokensTrait;
+
     /**
      * Pragma name
+     *
      * @var string
      */
-    protected $name = 'IMPLICIT-ITERATOR';
+    private $name = 'IMPLICIT-ITERATOR';
 
     /**
      * Tokens handled by this pragma
@@ -52,10 +56,10 @@ class ImplicitIterator extends AbstractPragma
      * @param  array $options
      * @return mixed
      */
-    public function handle($token, $data, $view, array $options)
+    public function handle($token, $data, $view, array $options, Mustache $mustache)
     {
         // If we don't have a scalar view, implicit iteration isn't possible
-        if (!is_scalar($view)) {
+        if (! is_scalar($view)) {
             return;
         }
 
@@ -76,9 +80,13 @@ class ImplicitIterator extends AbstractPragma
 
         // Get the iterator option, and compare it to the token we received
         $iterator = isset($options['iterator']) ? $options['iterator'] : '.';
-        if ($iterator === $data) {
-            // Match found, so replace the value
-            return ($escape) ? $this->getRenderer()->escape($view) : $view;
+        if ($iterator !== $data) {
+            return;
         }
+
+        // Match found, so replace the value
+        return ($escape)
+            ? $mustache->getRenderer()->escape($view)
+            : $view;
     }
 }

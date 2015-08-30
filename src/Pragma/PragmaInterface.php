@@ -4,21 +4,24 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-namespace Phly\Mustache;
+namespace Phly\Mustache\Pragma;
+
+use Phly\Mustache\Mustache;
 
 /**
  * Pragma interface
  *
- * Pragmas may be used to extend the capabilities of the renderer. Typically,
- * this will involve parsing tokens slightly differently (implicit-iterator
- * allows specifying what "variable" token name can be used), or allowing
- * alternate subsitution strategies (for instance, allowing scalar views, or
- * replacing contents with a string representation of an object).
+ * Pragmas may be used to extend the capabilities of Mustache during rendering.
+ * Typically, this will involve parsing tokens slightly differently
+ * (implicit-iterator allows specifying what "variable" token name can be
+ * used), or allowing alternate subsitution strategies (for instance, allowing
+ * scalar views, or replacing contents with a string representation of an
+ * object).
  *
- * In most cases, you will want to extend {@link Phly\Mustache\Pragma\AbstractPragma},
+ * In most cases, you will want to use {@link Phly\Mustache\Pragma\PragmaNameAndTokensTrait},
  * as it provides some convenience features.
  */
-interface Pragma
+interface PragmaInterface
 {
     /**
      * Retrieve the name of the pragma
@@ -26,14 +29,6 @@ interface Pragma
      * @return string
      */
     public function getName();
-
-    /**
-     * Set the renderer instance
-     *
-     * @param  Renderer $renderer
-     * @return void
-     */
-    public function setRenderer(Renderer $renderer);
 
     /**
      * Whether or not this pragma can handle the given token
@@ -52,7 +47,8 @@ interface Pragma
      * @param  mixed $data
      * @param  mixed $view
      * @param  array $options
+     * @param  Mustache $mustache Mustache instance handling rendering.
      * @return mixed
      */
-    public function handle($token, $data, $view, array $options);
+    public function handle($token, $data, $view, array $options, Mustache $mustache);
 }
