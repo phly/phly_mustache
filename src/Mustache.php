@@ -119,7 +119,7 @@ class Mustache
     {
         if (!$this->resolver instanceof Resolver\ResolverInterface) {
             $resolver = new Resolver\AggregateResolver();
-            $resolver->attach(new Resolver\DefaultResolver());
+            $resolver->attach(new Resolver\DefaultResolver(), 0);
             $this->setResolver($resolver);
         }
         return $this->resolver;
