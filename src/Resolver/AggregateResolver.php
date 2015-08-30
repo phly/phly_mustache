@@ -109,7 +109,7 @@ class AggregateResolver implements Countable, IteratorAggregate, ResolverInterfa
         if (! $this->hasType($type)) {
             throw new Exception\ResolverTypeNotFoundException();
         }
-        
+
         $resolvers = new self();
 
         foreach ($this as $resolver) {
