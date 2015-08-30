@@ -64,13 +64,24 @@ default resolver:
 ```php
 use Phly\Mustache\Resolver\DefaultResolver;
 
-$resolver = $mustache->getResolver()->getByType(DefaultResolver::class);
+$resolver = new DefaultResolver(;
 $resolver->addTemplatePath($path1);
 $resolver->addTemplatePath($path2);
+
+$resolver = $mustache->getResolver()->attach($defaultResolver);
 ```
 
 In the above, it will search first `$path2`, then `$path1` to resolve the
 template.
+
+The default resolver is composed in an aggregate resolver by default; as such,
+you can also fetch it by type from the aggregate instead of adding it manually:
+
+```php
+use Phly\Mustache\Resolver\DefaultResolver;
+
+$resolver = $mustache->getResolver()->fetchByType(DefaultResolver::class);
+```
 
 Template names may be namespaced, using the syntax `namespace::template`:
 

@@ -43,7 +43,12 @@ $resolver = $mustache->getResolver();
 ```
 
 By default, `Mustache` composes an `AggregateResolver`, which in turn composes a
-`DefaultResolver` at the bottom of the stack.
+`DefaultResolver` at low priority. As such, you can typically just add your own
+resolvers to the aggregate as needed:
+
+```php
+$mustache->getResolver()->attach($customResolver);
+```
 
 ## DefaultResolver
 

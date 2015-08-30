@@ -53,10 +53,22 @@ specific namespaces:
 ```php
 use Phly\Mustache\Resolver\DefaultResolver;
 
-$defaultResolver = $mustache->getResolver()->getByType(DefaultResolver::class);
-$defaultResolver->addTemplatePath('templates'); // default namespace
-$defaultResolver->addTemplatePath('templates/blog', 'blog');
-$defaultResolver->addTemplatePath('templates/contact', 'contact');
+// Either create an instance manually:
+$resolver = new DefaultResolver();
+
+// and push it to Mustache:
+$mustache->setResolver($resolver);
+
+// or onto the default aggregate composed in Mustache:
+$mustache->getResolver()->attach($resolver);
+
+// Or pull from the default aggregate:
+$resolver = $mustache->getResolver()->fetchByType(DefaultResolver::class);
+
+// Now, add templates:
+$resolver->addTemplatePath('templates'); // default namespace
+$resolver->addTemplatePath('templates/blog', 'blog');
+$resolver->addTemplatePath('templates/contact', 'contact');
 
 $content = $mustache->render('blog::index');
 ```
@@ -87,5 +99,5 @@ $defaultResolver->setSuffix('mst'); // now looks for files ending in ".mst"
 > database or NoSQL storage — while ensuring you have a working resolver
 > out-of-the-box.
 >
-> You can compose your own, specific resolver by using
-> `Mustache::setResolver()`.
+> You can compose your own, specific resolver by using either
+> `Mustache::setResolver()` or `Mustache::getResolver()->attach()`.

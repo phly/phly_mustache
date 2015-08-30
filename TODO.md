@@ -44,19 +44,22 @@ Branch: feature/resolvers
 
 - [X] Namespaced template resolver
 - [X] Aggregate resolver
-- [ ] Document resolvers
-- [ ] Add optional namespace argument to `Mustache::setTemplatePath()`?
+- [X] Document resolvers
+- [X] Add optional namespace argument to `Mustache::setTemplatePath()`?
     - [X] Remove setTemplatePath(), setSeparator(), setSuffix() from Mustache
     - [X] DefaultResolver will now incorporate Namespaced resolver
     - [X] Rename `setTemplatePath()` to `addTemplatePath()` (resolves #24)
     - [X] Add "getResolverByType()" to Aggregate
     - [X] Mustache will compose an Aggregate resolver composing a
       Default/Namespaced resolver by default
-    - [ ] Update documentation to demonstrate:
-        - [ ] Aggregating multiple resolvers
-        - [ ] Manipulating paths on the default resolver
-        - [ ] Retrieving a resolver by type from the aggregate
-        - [ ] Indicate paths should typically be set before injecting a resolver
+    - [X] Update documentation to demonstrate:
+        - [X] Aggregating multiple resolvers
+        - [X] Manipulating paths on the default resolver
+        - [X] Retrieving a resolver by type from the aggregate
+        - [X] Indicate paths should typically be set before injecting a resolver
+- [X] Ensure default resolver is at priority less than 1
+- [X] Change documentation of resolvers to inject a new DefaultResolver, instead
+    of fetching by type?
 
 ## Rename package?
 
