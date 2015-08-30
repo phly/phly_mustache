@@ -7,6 +7,7 @@
 namespace PhlyTest\Mustache;
 
 use Phly\Mustache\Mustache;
+use Phly\Mustache\Resolver\DefaultResolver;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
 
@@ -17,8 +18,11 @@ class HierarchicalViewsTest extends TestCase
 {
     public function setUp()
     {
+        $resolver = new DefaultResolver();
+        $resolver->addTemplatePath(__DIR__ . '/templates');
+
         $this->mustache = new Mustache();
-        $this->mustache->getResolver()->addTemplatePath(__DIR__ . '/templates');
+        $this->mustache->setResolver($resolver);
     }
 
     /**
@@ -97,8 +101,10 @@ class HierarchicalViewsTest extends TestCase
      */
     public function testSubLayoutsCanAlterContentOfParent()
     {
+        $resolver = new DefaultResolver();
+        $resolver->addTemplatePath(__DIR__ . '/templates/no-layout-dups');
         $mustache = new Mustache();
-        $mustache->getResolver()->addTemplatePath(__DIR__ . '/templates/no-layout-dups');
+        $mustache->setResolver($resolver);
 
         $view = new stdClass;
         $view->name = 'Stan';

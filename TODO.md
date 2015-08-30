@@ -50,7 +50,7 @@ Branch: feature/resolvers
     - [X] DefaultResolver will now incorporate Namespaced resolver
     - [X] Rename `setTemplatePath()` to `addTemplatePath()` (resolves #24)
     - [X] Add "getResolverByType()" to Aggregate
-    - [ ] Mustache will compose an Aggregate resolver composing a
+    - [X] Mustache will compose an Aggregate resolver composing a
       Default/Namespaced resolver by default
     - [ ] Update documentation to demonstrate:
         - [ ] Aggregating multiple resolvers

@@ -9,6 +9,8 @@ namespace PhlyTest\Mustache;
 use Phly\Mustache\Mustache;
 use Phly\Mustache\Pragma;
 use Phly\Mustache\Pragma\ImplicitIterator;
+use Phly\Mustache\Resolver\AggregateResolver;
+use Phly\Mustache\Resolver\DefaultResolver;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
 
@@ -19,8 +21,11 @@ class MustacheTest extends TestCase
 {
     public function setUp()
     {
+        $resolver = new DefaultResolver();
+        $resolver->addTemplatePath(__DIR__ . '/templates');
+
         $this->mustache = new Mustache();
-        $this->mustache->getResolver()->addTemplatePath(__DIR__ . '/templates');
+        $this->mustache->setResolver($resolver);
     }
 
     public function testRendersStringTemplates()
@@ -630,5 +635,14 @@ EOT;
         ];
         $test = $this->mustache->render('dot-notation', $view);
         $this->assertEquals('', trim($test));
+    }
+
+    public function testComposesAggregateResolverWithDefaultResolverComposedByDefault()
+    {
+        $mustache = new Mustache();
+        $resolver = $mustache->getResolver();
+
+        $this->assertInstanceOf(AggregateResolver::class, $resolver);
+        $this->assertTrue($resolver->hasType(DefaultResolver::class));
     }
 }
