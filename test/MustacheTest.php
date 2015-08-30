@@ -654,6 +654,11 @@ EOT;
         // - Extracting the priority specification for the resolver (an array of
         //   priority, seed within priority)
         // - Extracting the priority from the specification
+        // The latter is not possible on HHVM, so we skip on that platform.
+        if (defined('HHVM_VERSION')) {
+            return;
+        }
+
         $r = new ReflectionProperty($resolver, 'queue');
         $r->setAccessible(true);
         $queue = $r->getValue($resolver)->getIterator();
