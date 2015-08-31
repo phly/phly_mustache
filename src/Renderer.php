@@ -420,7 +420,7 @@ class Renderer
                 continue;
             }
 
-            $value = $pragma->handle($token, $data, $view, $options, $mustache);
+            $value = $pragma->render($token, $data, $view, $options, $mustache);
 
             if ($value) {
                 return $value;

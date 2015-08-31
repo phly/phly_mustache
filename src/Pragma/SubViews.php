@@ -86,9 +86,12 @@ class SubViews implements PragmaInterface
     ];
 
     /**
-     * Handle a given token
+     * Render a sub view variable.
      *
-     * Returning an empty value returns control to the renderer.
+     * If the data/view combination do not represent a subview, it returns null,
+     * returning handling to the renderer.
+     *
+     * Otherwise, it will render the template and view in the SubView provided.
      *
      * @param  int $token
      * @param  mixed $data
@@ -97,7 +100,7 @@ class SubViews implements PragmaInterface
      * @param  Mustache $mustache
      * @return mixed
      */
-    public function handle($token, $data, $view, array $options, Mustache $mustache)
+    public function render($token, $data, $view, array $options, Mustache $mustache)
     {
         $subView = $this->getValue($data, $view);
 

@@ -46,9 +46,14 @@ class ImplicitIterator implements PragmaInterface
     ];
 
     /**
-     * Handle a given token
+     * Render a given token.
      *
-     * Returning an empty value returns control to the renderer.
+     * Attempts to render a token. If the view is non-scalar, the token is not
+     * one it handles, or the variable does not match the iterator name, it
+     * returns null, returning control to the renderer.
+     *
+     * Otherwise, it will output the view, escaping it unless the token
+     * indicates a raw value.
      *
      * @param  int $token
      * @param  mixed $data
@@ -56,7 +61,7 @@ class ImplicitIterator implements PragmaInterface
      * @param  array $options
      * @return mixed
      */
-    public function handle($token, $data, $view, array $options, Mustache $mustache)
+    public function render($token, $data, $view, array $options, Mustache $mustache)
     {
         // If we don't have a scalar view, implicit iteration isn't possible
         if (! is_scalar($view)) {

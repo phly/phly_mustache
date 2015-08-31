@@ -130,7 +130,7 @@ interface PragmaInterface
     public function handlesToken($token);
 
     /**
-     * Handle a given token
+     * Render a given token.
      *
      * Returning an empty value returns control to the renderer.
      *
@@ -141,14 +141,14 @@ interface PragmaInterface
      * @param  Mustache $mustache Mustache instance handling rendering.
      * @return mixed
      */
-    public function handle($token, $data, $view, array $options, Mustache $mustache);
+    public function render($token, $data, $view, array $options, Mustache $mustache);
 }
 ```
 
 phly-mustache also provides a trait, `Phly\Mustache\Pragma\PragmaNameAndTokensTrait`,
 that you can use to simplify pragma development. `use` the trait, and define the
 properties `$name` and `$tokensHandled`, and you will only need to define the
-`handle()` method at that point.
+`render()` method at that point.
 
 ```php
 use Phly\Mustache\Lexer;
@@ -166,7 +166,7 @@ class FooBarPragma implements PragmaInterface
         Lexer::TOKEN_VARIABLE,
     ];
 
-    public function handle($token, $data, $view, array $options, Mustache $mustache)
+    public function render($token, $data, $view, array $options, Mustache $mustache)
     {
         // ...
     }

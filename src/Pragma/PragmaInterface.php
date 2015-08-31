@@ -39,7 +39,7 @@ interface PragmaInterface
     public function handlesToken($token);
 
     /**
-     * Handle a given token
+     * Render a given token.
      *
      * Returning an empty value returns control to the renderer.
      *
@@ -50,5 +50,5 @@ interface PragmaInterface
      * @param  Mustache $mustache Mustache instance handling rendering.
      * @return mixed
      */
-    public function handle($token, $data, $view, array $options, Mustache $mustache);
+    public function render($token, $data, $view, array $options, Mustache $mustache);
 }

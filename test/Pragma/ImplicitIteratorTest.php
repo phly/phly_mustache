@@ -60,7 +60,7 @@ class ImplicitIteratorTest extends TestCase
     public function testHandleEscapesNormalVariable()
     {
         $mustache = new Mustache();
-        $result   = $this->pragma->handle(
+        $result   = $this->pragma->render(
             Lexer::TOKEN_VARIABLE,
             '.',
             '<b>foo</b>',
@@ -74,7 +74,7 @@ class ImplicitIteratorTest extends TestCase
     public function testHandlePassesThroughRawVariable()
     {
         $mustache = new Mustache();
-        $result   = $this->pragma->handle(
+        $result   = $this->pragma->render(
             Lexer::TOKEN_VARIABLE_RAW,
             '.',
             '<b>foo</b>',
@@ -91,7 +91,7 @@ class ImplicitIteratorTest extends TestCase
     public function testHandleReturnsEarlyForUnrecognizedTokens($token)
     {
         $mustache = new Mustache();
-        $this->assertNull($this->pragma->handle(
+        $this->assertNull($this->pragma->render(
             $token,
             '.',
             '<b>foo</b>',
@@ -119,7 +119,7 @@ class ImplicitIteratorTest extends TestCase
     public function testHandleReturnsEarlyForNonScalarViews($token, $view)
     {
         $mustache = new Mustache();
-        $this->assertNull($this->pragma->handle(
+        $this->assertNull($this->pragma->render(
             $token,
             '.',
             $view,
@@ -131,7 +131,7 @@ class ImplicitIteratorTest extends TestCase
     public function testRendersVariableIfDataMatchesIteratorOption()
     {
         $mustache = new Mustache();
-        $result   = $this->pragma->handle(
+        $result   = $this->pragma->render(
             Lexer::TOKEN_VARIABLE,
             'foo',
             '<b>foo</b>',
@@ -145,7 +145,7 @@ class ImplicitIteratorTest extends TestCase
     public function testReturnsEarlyIfDataDoesNotMatchIteratorOption()
     {
         $mustache = new Mustache();
-        $this->assertNull($this->pragma->handle(
+        $this->assertNull($this->pragma->render(
             Lexer::TOKEN_VARIABLE,
             '.',
             '<b>foo</b>',
@@ -157,7 +157,7 @@ class ImplicitIteratorTest extends TestCase
     public function testReturnsEarlyIfDataDoesNotMatchDefaultIteratorSequence()
     {
         $mustache = new Mustache();
-        $this->assertNull($this->pragma->handle(
+        $this->assertNull($this->pragma->render(
             Lexer::TOKEN_VARIABLE,
             'foo',
             '<b>foo</b>',

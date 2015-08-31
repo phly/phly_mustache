@@ -79,7 +79,7 @@ Branch: feature/resolvers
 - [ ] Alter pragma interface to allow lexer usage
     - [ ] add `parse` method that lexer will call
     - [ ] update lexer to query pragmas
-    - [ ] rename `handle` to `render`
+    - [X] rename `handle` to `render`
     - [ ] document changes
 
 ## AggregateResolver
