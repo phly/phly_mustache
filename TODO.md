@@ -73,6 +73,19 @@ Branch: feature/resolvers
 - [X] Refactor existing pragmas
     - [X] ImplicitIterator
     - [X] SubViews
+- [ ] Documentation
+    - [ ] Update all docs that reference adding pragmas.
+    - [ ] Document PragmaInterface and writing pragmas.
+
+## AggregateResolver
+
+- [ ] Is there any need to allow replacing the resolver at this point, if you
+  can specify one at higher priority in the Aggregate?
+
+## Escaping
+
+- [ ] Use `Zend\Escaper` by default.
+- [ ] Create a pragma for handling contextual escaping (CSS, JS, URLs)
 
 ## Rename package?
 
