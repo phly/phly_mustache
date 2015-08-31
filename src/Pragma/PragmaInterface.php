@@ -39,6 +39,26 @@ interface PragmaInterface
     public function handlesToken($token);
 
     /**
+     * Parse the provided token.
+     *
+     * If the pragma handles a given token, it is allowed to parse it; the
+     * lexer will call this method when the token has been created, passing the
+     * token struct.
+     *
+     * Token structs contain, minimally:
+     *
+     * - index 0: the token type (see the `Lexer::TOKEN_*` constants)
+     * - index 1: the related data for the token
+     *
+     * The method MUST return a token struct on completion; if the pragma does
+     * not need to do anything, it can simply `return $tokenStruct`.
+     *
+     * @param array $tokenStruct
+     * @return array
+     */
+    public function parse(array $tokenStruct);
+
+    /**
      * Render a given token.
      *
      * Returning an empty value returns control to the renderer.

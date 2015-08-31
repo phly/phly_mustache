@@ -86,6 +86,19 @@ class SubViews implements PragmaInterface
     ];
 
     /**
+     * Parse a given token and its data.
+     *
+     * In the case of sub-views, nothing needs to be done.
+     *
+     * {@inheritDoc}
+     */
+    public function parse(array $tokenStruct)
+    {
+        return $tokenStruct;
+    }
+
+
+    /**
      * Render a sub view variable.
      *
      * If the data/view combination do not represent a subview, it returns null,

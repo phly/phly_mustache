@@ -46,6 +46,18 @@ class ImplicitIterator implements PragmaInterface
     ];
 
     /**
+     * Parse a given token and its data.
+     *
+     * In the case of the implicit iterator, nothing needs to be done.
+     *
+     * {@inheritDoc}
+     */
+    public function parse(array $tokenStruct)
+    {
+        return $tokenStruct;
+    }
+
+    /**
      * Render a given token.
      *
      * Attempts to render a token. If the view is non-scalar, the token is not

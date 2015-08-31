@@ -65,7 +65,6 @@ class Mustache
     public function setLexer(Lexer $lexer)
     {
         $this->lexer = $lexer;
-        $this->lexer->setManager($this);
         return $this;
     }
 
@@ -191,7 +190,7 @@ class Mustache
     {
         $lexer = $this->getLexer();
         if (false !== strstr($template, '{{')) {
-            return $lexer->compile($template);
+            return $lexer->compile($this, $template);
         }
 
         if ($cacheTokens
@@ -204,7 +203,7 @@ class Mustache
         $templateOrTokens = $this->fetchTemplate($template);
 
         if (is_string($templateOrTokens)) {
-            $templateOrTokens = $lexer->compile($templateOrTokens, $template);
+            $templateOrTokens = $lexer->compile($this, $templateOrTokens, $template);
         }
 
         if ($templateOrTokens instanceof Traversable) {
