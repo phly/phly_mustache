@@ -73,21 +73,26 @@ Branch: feature/resolvers
 - [X] Refactor existing pragmas
     - [X] ImplicitIterator
     - [X] SubViews
-- [ ] Documentation
-    - [ ] Update all docs that reference adding pragmas.
-    - [ ] Document PragmaInterface and writing pragmas.
+- [X] Documentation
+    - [X] Update all docs that reference adding pragmas.
+    - [X] Document PragmaInterface and writing pragmas.
+- [ ] Alter pragma interface to allow lexer usage
+    - [ ] add `parse` method that lexer will call
+    - [ ] update lexer to query pragmas
+    - [ ] rename `handle` to `render`
+    - [ ] document changes
 
 ## AggregateResolver
 
 - [ ] Is there any need to allow replacing the resolver at this point, if you
   can specify one at higher priority in the Aggregate?
 
-## Escaping
+## Escaping [#37]
 
 - [ ] Use `Zend\Escaper` by default.
 - [ ] Create a pragma for handling contextual escaping (CSS, JS, URLs)
 
-## Rename package?
+## Rename package? [#38]
 
 - Repo to phly/phly-mustache
 - Composer package to phly/phly-mustache
