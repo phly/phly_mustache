@@ -51,18 +51,24 @@ in the format `namespace::template`, and registering paths to match only
 specific namespaces:
 
 ```php
+use Phly\Mustache\Mustache;
+use Phly\Mustache\Resolver\AggregateResolver;
 use Phly\Mustache\Resolver\DefaultResolver;
 
 // Either create an instance manually:
-$resolver = new DefaultResolver();
+$defaultResolver = new DefaultResolver();
 
-// and push it to Mustache:
-$mustache->setResolver($resolver);
+// add it to an AggregateResolver:
+$resolver = new AggregateResolver();
+$resolver->attach($defaultResolver);
 
-// or onto the default aggregate composed in Mustache:
+// and push the aggregate to Mustache via the constructor:
+$mustache = new Mustache($resolver);
+
+// Or just push it into the default aggregate composed in Mustache:
 $mustache->getResolver()->attach($resolver);
 
-// Or pull from the default aggregate:
+// Or pull it from the default aggregate:
 $resolver = $mustache->getResolver()->fetchByType(DefaultResolver::class);
 
 // Now, add templates:
@@ -93,11 +99,11 @@ $defaultResolver->setSuffix('mst'); // now looks for files ending in ".mst"
 >
 > By default, the `Mustache` instance composes an instance of
 > `Phly\Mustache\Resolver\AggregateResolver`, which in turn composes an instance
-> of `Phly\Mustache\Resolver\DefaultResolver` at the bottom of the stack. This
+> of `Phly\Mustache\Resolver\DefaultResolver` at low priority. This
 > allows you to attach additional resolvers that you want to resolve earlier —
 > for example, if you've written a caching resolver, or one that queries a
 > database or NoSQL storage — while ensuring you have a working resolver
 > out-of-the-box.
 >
-> You can compose your own, specific resolver by using either
-> `Mustache::setResolver()` or `Mustache::getResolver()->attach()`.
+> You can compose your own `AggregateResolver` instance and push it into the
+> constructor of `Mustache` if desired.

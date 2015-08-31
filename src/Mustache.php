@@ -40,20 +40,22 @@ class Mustache
     protected $renderer;
 
     /**
-     * Template resolver
-     * @var Resolver\ResolverInterface
+     * Template resolver stack
+     *
+     * @var Resolver\AggregateResolver
      */
-    protected $resolver;
+    private $resolver;
 
     /**
-     * Suffix used when resolving templates
-     * @var string
+     * Constructor
+     *
+     * @param Resolver\AggregateResolver $resolver Alternate aggregate resolver
+     *     instance to use instead of default.
      */
-    protected $suffix = '.mustache';
-
-    public function __construct()
+    public function __construct(Resolver\AggregateResolver $resolver = null)
     {
-        $this->pragmas = new Pragma\PragmaCollection();
+        $this->resolver = $resolver;
+        $this->pragmas  = new Pragma\PragmaCollection();
     }
 
     /**
@@ -108,28 +110,15 @@ class Mustache
     }
 
     /**
-     * Set template resolver
-     *
-     * @param  Resolver\ResolverInterface $resolver
-     * @return Mustache
-     */
-    public function setResolver(Resolver\ResolverInterface $resolver)
-    {
-        $this->resolver = $resolver;
-        return $this;
-    }
-
-    /**
      * Get template resolver
      *
-     * @return Resolver\ResolverInterface
+     * @return Resolver\AggregateResolver
      */
     public function getResolver()
     {
-        if (!$this->resolver instanceof Resolver\ResolverInterface) {
-            $resolver = new Resolver\AggregateResolver();
-            $resolver->attach(new Resolver\DefaultResolver(), 0);
-            $this->setResolver($resolver);
+        if (! $this->resolver instanceof Resolver\AggregateResolver) {
+            $this->resolver = new Resolver\AggregateResolver();
+            $this->resolver->attach(new Resolver\DefaultResolver(), 0);
         }
         return $this->resolver;
     }

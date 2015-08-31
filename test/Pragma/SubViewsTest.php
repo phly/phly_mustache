@@ -9,6 +9,7 @@ namespace PhlyTest\Mustache\Pragma;
 use Phly\Mustache\Mustache;
 use Phly\Mustache\Pragma\SubView;
 use Phly\Mustache\Pragma\SubViews;
+use Phly\Mustache\Resolver\AggregateResolver;
 use Phly\Mustache\Resolver\DefaultResolver;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
@@ -22,9 +23,10 @@ class SubViewsTest extends TestCase
     {
         $resolver = new DefaultResolver();
         $resolver->addTemplatePath(__DIR__ . '/../templates');
+        $aggregate = new AggregateResolver();
+        $aggregate->attach($resolver);
 
-        $this->mustache = new Mustache();
-        $this->mustache->setResolver($resolver);
+        $this->mustache = new Mustache($aggregate);
 
         $subViews = new SubViews();
         $this->mustache->getPragmas()->add($subViews);
