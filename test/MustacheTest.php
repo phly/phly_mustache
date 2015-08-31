@@ -133,7 +133,7 @@ EOT;
             $view
         );
         $expected =<<<EOT
-Joe's shopping card:
+Joe&#039;s shopping card:
 <ul>
     <li>bananas</li>
     <li>apples</li>
@@ -154,7 +154,7 @@ EOT;
             $view
         );
         $expected =<<<EOT
-Joe's shopping card:
+Joe&#039;s shopping card:
 <ul>
     <li>bananas</li>
     <li>apples</li>
