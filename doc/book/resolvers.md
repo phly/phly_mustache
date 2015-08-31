@@ -25,30 +25,46 @@ interface ResolverInterface
 }
 ```
 
-You can attach a `ResolverInterface` implementation to the `Mustache` instance,
-using the `setResolver()` method:
+## AggregateResolver
+
+`Phly\Mustache\Resolver\AggregateResolver` allows aggregating multiple
+resolvers. When resolution is performed, the first resolver to return a
+non-false response short-circuits execution, and its response is returned.
+
+The `AggregateResolver` is both countable and iterable, and exposes the
+following methods:
+
+- `attach(ResolverInterface $resolver, $priority = 1)`: attach a resolver to the
+  aggregate. `AggregateResolver` acts as a priority queue; large numbers have
+  higher priority, lower numbers (including negative numbers!) have lower
+  priority; resolvers registered at the same priority are executed in the order
+  in which they are attached. Use `$priority` to ensure execution order.
+- `hasType($type)`: query to see if a resolver of the given type is already
+  registered in the aggregate.
+- `fetchByType($type)`: retrieve resolvers that match the given type. If only
+  one matches, that instance will be returned; if multiple resolvers match,
+  they will be returned as an `AggregateResolver`.
+
+The `Mustache` instance composes an `AggregateResolver`, which implements the
+`ResolverInterface`, and composes other resolvers implementing the interface.
+You can attach a `ResolverInterface` instance to it via the following code:
 
 ```php
-$mustache->setResolver($resolver);
+$mustache->getResolver()->attach($resolver);
 ```
 
-At that point, that resolver will be used. If a resolver returns a boolean
-`false` value, `Mustache` will raise a `TemplateNotFoundException`.
+At that point, that resolver will be added to the queue of resolvers. The first
+one to return a string value will short-circuit execution; if all of them return
+a boolean `false` value, `Mustache` will raise a `TemplateNotFoundException`.
 
-To access the current resolver — for example, to manipulate its state or set
-configuration — you can retrieve it from the `Mustache` instance as well:
+The `AggregateResolver` allows you to access resolvers by class type (see above
+for details), or you can push additional resolvers into the aggregate. Since the
+`AggregateResolver` implements a priority queue, by default resolvers will be
+executed in the order registered. You can attach with higher priority if you
+want your resolver to execute earlier.
 
-```php
-$resolver = $mustache->getResolver();
-```
-
-By default, `Mustache` composes an `AggregateResolver`, which in turn composes a
-`DefaultResolver` at low priority. As such, you can typically just add your own
-resolvers to the aggregate as needed:
-
-```php
-$mustache->getResolver()->attach($customResolver);
-```
+Typically, you will instantiate and configure a new resolver, and attach it to
+the `AggregateResolver`.
 
 ## DefaultResolver
 
@@ -80,31 +96,14 @@ to allow using "dot notation" for template names, and having each segment map to
 a directory:
 
 ```php
-$mustache->getResolver()->setSeparator('.');
+use Phly\Mustache\Resolver\DefaultResolver;
+
+$resolver = $mustache->getResolver()->getByType(DefaultResolver::class);
+$resolver->setSeparator('.');
 
 // Render foo/bar.mustache:
 echo $mustache->render('foo.bar');
 ```
-
-## AggregateResolver
-
-`Phly\Mustache\Resolver\AggregateResolver` allows aggregating multiple
-resolvers. When resolution is performed, the first resolver to return a
-non-false response short-circuits execution, and its response is returned.
-
-The `AggregateResolver` is both countable and iterable, and exposes the
-following methods:
-
-- `attach(ResolverInterface $resolver, $priority = 1)`: attach a resolver to the
-  aggregate. `AggregateResolver` acts as a priority queue; large numbers have
-  higher priority, lower numbers (including negative numbers!) have lower
-  priority; resolvers registered at the same priority are executed in the order
-  in which they are attached. Use `$priority` to ensure execution order.
-- `hasType($type)`: query to see if a resolver of the given type is already
-  registered in the aggregate.
-- `fetchByType($type)`: retrieve resolvers that match the given type. If only
-  one matches, that instance will be returned; if multiple resolvers match,
-  they will be returned as an `AggregateResolver`.
 
 ## Use Cases
 

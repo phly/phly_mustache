@@ -7,6 +7,7 @@
 namespace PhlyTest\Mustache;
 
 use Phly\Mustache\Mustache;
+use Phly\Mustache\Resolver\AggregateResolver;
 use Phly\Mustache\Resolver\DefaultResolver;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
@@ -20,9 +21,10 @@ class HierarchicalViewsTest extends TestCase
     {
         $resolver = new DefaultResolver();
         $resolver->addTemplatePath(__DIR__ . '/templates');
+        $aggregate = new AggregateResolver();
+        $aggregate->attach($resolver);
 
-        $this->mustache = new Mustache();
-        $this->mustache->setResolver($resolver);
+        $this->mustache = new Mustache($aggregate);
     }
 
     /**
@@ -103,8 +105,9 @@ class HierarchicalViewsTest extends TestCase
     {
         $resolver = new DefaultResolver();
         $resolver->addTemplatePath(__DIR__ . '/templates/no-layout-dups');
-        $mustache = new Mustache();
-        $mustache->setResolver($resolver);
+        $aggregate = new AggregateResolver();
+        $aggregate->attach($resolver);
+        $mustache = new Mustache($aggregate);
 
         $view = new stdClass;
         $view->name = 'Stan';

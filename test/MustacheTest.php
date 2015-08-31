@@ -26,8 +26,10 @@ class MustacheTest extends TestCase
         $resolver = new DefaultResolver();
         $resolver->addTemplatePath(__DIR__ . '/templates');
 
-        $this->mustache = new Mustache();
-        $this->mustache->setResolver($resolver);
+        $aggregate = new AggregateResolver();
+        $aggregate->attach($resolver);
+
+        $this->mustache = new Mustache($aggregate);
     }
 
     public function testRendersStringTemplates()

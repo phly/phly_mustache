@@ -82,9 +82,9 @@ Branch: feature/resolvers
     - [X] rename `handle` to `render`
     - [X] document changes
 
-## AggregateResolver
+## AggregateResolver [#38]
 
-- [ ] Is there any need to allow replacing the resolver at this point, if you
+- [X] Is there any need to allow replacing the resolver at this point, if you
   can specify one at higher priority in the Aggregate?
 
 ## Escaping [#37]
@@ -92,7 +92,11 @@ Branch: feature/resolvers
 - [ ] Use `Zend\Escaper` by default.
 - [ ] Create a pragma for handling contextual escaping (CSS, JS, URLs)
 
-## Rename package? [#38]
+## Visibility
+
+- [ ] Use private visibility whenever possible.
+
+## Rename package?
 
 - Repo to phly/phly-mustache
 - Composer package to phly/phly-mustache
