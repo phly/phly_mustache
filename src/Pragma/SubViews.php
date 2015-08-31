@@ -67,8 +67,10 @@ use Phly\Mustache\Lexer;
  * </html>
  * </code>
  */
-class SubViews extends AbstractPragma
+class SubViews implements PragmaInterface
 {
+    use PragmaNameAndTokensTrait;
+
     /**
      * Name of this pragma
      * @var string
@@ -84,71 +86,39 @@ class SubViews extends AbstractPragma
     ];
 
     /**
-     * Mustache manager
-     * @var Mustache
-     */
-    protected $manager;
-
-    /**
-     * Constructor
+     * Parse a given token and its data.
      *
-     * @param  Mustache $manager
-     * @return void
+     * In the case of sub-views, nothing needs to be done.
+     *
+     * {@inheritDoc}
      */
-    public function __construct(Mustache $manager = null)
+    public function parse(array $tokenStruct)
     {
-        if (null !== $manager) {
-            $this->setManager($manager);
-        }
+        return $tokenStruct;
     }
 
-    /**
-     * Set manager object
-     *
-     * Sets manager object and registers self as a pragma on the renderer.
-     *
-     * @param  Mustache $manager
-     * @return SubViews
-     */
-    public function setManager(Mustache $manager)
-    {
-        $this->manager = $manager;
-        $this->manager->getRenderer()->addPragma($this);
-        return $this;
-    }
 
     /**
-     * Retrieve manager object
+     * Render a sub view variable.
      *
-     * @return Mustache
-     */
-    public function getManager()
-    {
-        return $this->manager;
-    }
-
-    /**
-     * Handle a given token
+     * If the data/view combination do not represent a subview, it returns null,
+     * returning handling to the renderer.
      *
-     * Returning an empty value returns control to the renderer.
+     * Otherwise, it will render the template and view in the SubView provided.
      *
      * @param  int $token
      * @param  mixed $data
      * @param  mixed $view
      * @param  array $options
+     * @param  Mustache $mustache
      * @return mixed
      */
-    public function handle($token, $data, $view, array $options)
+    public function render($token, $data, $view, array $options, Mustache $mustache)
     {
         $subView = $this->getValue($data, $view);
 
-        // If the view value is not a SubView, we can't handle it here
-        if (!$subView instanceof SubView) {
-            return;
-        }
-
-        // If we don't have a manager instance, can't do anything with it
-        if (null === ($manager = $this->getManager())) {
+        // If the view value is not a SubView, we cannot handle it here
+        if (! $subView instanceof SubView) {
             return;
         }
 
@@ -162,7 +132,7 @@ class SubViews extends AbstractPragma
         }
 
         // Render sub view and return it
-        return $manager->render($template, $localView);
+        return $mustache->render($template, $localView);
     }
 
     /**
@@ -181,17 +151,21 @@ class SubViews extends AbstractPragma
         }
 
         if (is_array($view) || $view instanceof ArrayAccess) {
-            if (!isset($view[$data])) {
+            if (! isset($view[$data])) {
                 return false;
             }
+
             return $view[$data];
         }
 
         if (is_object($view)) {
-            if (!isset($view->{$data})) {
+            if (! isset($view->{$data})) {
                 return false;
             }
+
             return $view->{$data};
         }
+
+        return false;
     }
 }

@@ -434,7 +434,7 @@ First, if the parent template uses alternate tag delimiters, your partial does
 not. If you want the partial to use the same alternate tag delimiters, it
 will need to make the same declaration.
 
-Second, and similarly, if The parent template uses one or more
+Second, and similarly, if the parent template uses one or more
 [pragmas](pragmas.md), your partial will not. If you want the partial to use the
 same pragmas, you must also reference them in your partial.
 
@@ -735,14 +735,14 @@ $test = $mustache->render('template-referencing-php-function', $model);
 // This one attempts to trick the renderer by using the implicit-iterator pragma
 // to dereference the value. This will still treat the value as a string.
 $model = ['message' => 'time'];
-$mustache->getRenderer()->addPragma(new ImplicitIterator());
+$mustache->getPragmas()->add(new ImplicitIterator());
 $test = $mustache->render('template-referencing-static-function-notempty', $model);
 
 // This example assigns a callable in conjunction with the implicit-iterator
 // pragma. In thiis cas, the value is treated as an array.
 // not call it, either.
 $model = ['section' => ['DateTime', 'createFromFormat']];
-$mustache->getRenderer()->addPragma(new ImplicitIterator());
+$mustache->getPragmas()->add(new ImplicitIterator());
 $test = $mustache->render('template-referencing-static-function', $model);
 ```
 

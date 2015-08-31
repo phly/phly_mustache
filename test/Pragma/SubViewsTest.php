@@ -27,8 +27,7 @@ class SubViewsTest extends TestCase
         $this->mustache->setResolver($resolver);
 
         $subViews = new SubViews();
-        $subViews->setManager($this->mustache);
-        $this->mustache->getRenderer()->addPragma($subViews);
+        $this->mustache->getPragmas()->add($subViews);
     }
 
     public function testSubViewContentIsCapturedInParent()

@@ -7,6 +7,7 @@
 namespace Phly\Mustache\Pragma;
 
 use Phly\Mustache\Lexer;
+use Phly\Mustache\Mustache;
 
 /**
  * IMPLICIT-ITERATOR pragma
@@ -24,13 +25,16 @@ use Phly\Mustache\Lexer;
  * {{/section}}
  * </code>
  */
-class ImplicitIterator extends AbstractPragma
+class ImplicitIterator implements PragmaInterface
 {
+    use PragmaNameAndTokensTrait;
+
     /**
      * Pragma name
+     *
      * @var string
      */
-    protected $name = 'IMPLICIT-ITERATOR';
+    private $name = 'IMPLICIT-ITERATOR';
 
     /**
      * Tokens handled by this pragma
@@ -42,9 +46,26 @@ class ImplicitIterator extends AbstractPragma
     ];
 
     /**
-     * Handle a given token
+     * Parse a given token and its data.
      *
-     * Returning an empty value returns control to the renderer.
+     * In the case of the implicit iterator, nothing needs to be done.
+     *
+     * {@inheritDoc}
+     */
+    public function parse(array $tokenStruct)
+    {
+        return $tokenStruct;
+    }
+
+    /**
+     * Render a given token.
+     *
+     * Attempts to render a token. If the view is non-scalar, the token is not
+     * one it handles, or the variable does not match the iterator name, it
+     * returns null, returning control to the renderer.
+     *
+     * Otherwise, it will output the view, escaping it unless the token
+     * indicates a raw value.
      *
      * @param  int $token
      * @param  mixed $data
@@ -52,10 +73,10 @@ class ImplicitIterator extends AbstractPragma
      * @param  array $options
      * @return mixed
      */
-    public function handle($token, $data, $view, array $options)
+    public function render($token, $data, $view, array $options, Mustache $mustache)
     {
         // If we don't have a scalar view, implicit iteration isn't possible
-        if (!is_scalar($view)) {
+        if (! is_scalar($view)) {
             return;
         }
 
@@ -76,9 +97,13 @@ class ImplicitIterator extends AbstractPragma
 
         // Get the iterator option, and compare it to the token we received
         $iterator = isset($options['iterator']) ? $options['iterator'] : '.';
-        if ($iterator === $data) {
-            // Match found, so replace the value
-            return ($escape) ? $this->getRenderer()->escape($view) : $view;
+        if ($iterator !== $data) {
+            return;
         }
+
+        // Match found, so replace the value
+        return ($escape)
+            ? $mustache->getRenderer()->escape($view)
+            : $view;
     }
 }

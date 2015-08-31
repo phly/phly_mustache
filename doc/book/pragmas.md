@@ -3,6 +3,15 @@
 Pragmas are a way to extend the mustache syntax, as well as alter it. They are
 invoked using the syntax `{{%PRAGMA-NAME}}`.
 
+Pragmas can affect both the lexing (tokenization/parsing) and rendering phases
+of templating. In the former case, they can be used to analyze tokens and
+potentially change them; in the latter, they can be used to alter how view data
+is processed and rendered.
+
+> ## Pragma names
+>
+> Pragma names consist **only** of uppercase alphabetical characters and dashes.
+
 ## Behavior
 
 ### Pragmas Are Section Specific
@@ -53,7 +62,7 @@ Some content, with style
             3
 ```
                 
-## Pragmas Do Not Extend To Partials
+### Pragmas Do Not Extend To Partials
 
 Pragmas only apply to the specific template in which they are defined. This
 means that any partials or parent templates (if using template inheritance) are
@@ -95,6 +104,123 @@ Some content, with style
 
 This is from the partial
 ```
+
+## Interface
+
+Pragmas extend the behavior of Mustache, allowing users to opt-in to features
+that exist outside the Mustache specification. phly-mustache provides
+`Phly\Mustache\Pragma\PragmaInterface` to allow you to define code that
+implements these features.
+
+```php
+namespace Phly\Mustache\Pragma;
+
+use Phly\Mustache\Mustache;
+
+interface PragmaInterface
+{
+    /**
+     * Retrieve the name of the pragma
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * Whether or not this pragma can handle the given token
+     *
+     * @param  int $token
+     * @return bool
+     */
+    public function handlesToken($token);
+
+    /**
+     * Parse the provided token.
+     *
+     * If the pragma handles a given token, it is allowed to parse it; the
+     * lexer will call this method when the token has been created, passing the
+     * token struct.
+     *
+     * Token structs contain, minimally:
+     *
+     * - index 0: the token type (see the `Lexer::TOKEN_*` constants)
+     * - index 1: the related data for the token
+     *
+     * The method MUST return a token struct on completion; if the pragma does
+     * not need to do anything, it can simply `return $tokenStruct`.
+     *
+     * @param array $tokenStruct
+     * @return array
+     */
+    public function parse(array $tokenStruct);
+
+    /**
+     * Render a given token.
+     *
+     * Returning an empty value returns control to the renderer.
+     *
+     * @param  int $token
+     * @param  mixed $data
+     * @param  mixed $view
+     * @param  array $options
+     * @param  Mustache $mustache Mustache instance handling rendering.
+     * @return mixed
+     */
+    public function render($token, $data, $view, array $options, Mustache $mustache);
+}
+```
+
+phly-mustache also provides a trait, `Phly\Mustache\Pragma\PragmaNameAndTokensTrait`,
+that you can use to simplify pragma development. `use` the trait, and define the
+properties `$name` and `$tokensHandled`, and you will only need to define the
+`render()` method at that point.
+
+```php
+use Phly\Mustache\Lexer;
+use Phly\Mustache\Mustache;
+use Phly\Mustache\Pragma\PragmaInterface;
+use Phly\Mustache\Pragma\PragmaNameAndTokensTrait;
+
+class FooBarPragma implements PragmaInterface
+{
+    use PragmaNameAndTokensTrait;
+
+    private $name = 'FOO-BAR';
+
+    private $tokensHandled = [
+        Lexer::TOKEN_VARIABLE,
+    ];
+
+    public function render($token, $data, $view, array $options, Mustache $mustache)
+    {
+        // ...
+    }
+}
+```
+
+## Using Pragmas
+
+To use a pragma, you need to add an instance of it to the
+`Phly\Mustache\Pragma\PragmaCollection` instance composed by the `Mustache`
+instance. You can retrieve it by calling the `getPragmas()` method of the
+`Mustache` instance:
+
+```php
+$pragmas = $mustache->getPragmas();
+```
+
+Once retrieved, you can perform the following operations:
+
+- `add(PragmaInterface $pragma)` will attach a pragma, exposing it to templates.
+  If the pragma has already been added, or another pragma with the same name
+  has, it will raise an exception.
+- `has($pragma)` will tell you if a pragma with a given name is present in the
+  collection.
+- `get($pragma)` will retrieve a pragma with a given name from the collection.
+  If the pragma is not present in the collection, it will raise an exception.
+- `clear()` will remove all pragmas from the collection.
+
+The collection is countable and iterable.
 
 ## Shipped Pragmas
 

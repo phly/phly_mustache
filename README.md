@@ -101,12 +101,12 @@ $resolver->setSuffix('html'); // use '.html' as the suffix
 ```
 
 If your templates use pragmas, you must first add pragma handlers to the
-renderer. This can be done as follows:
+`Mustache` pragma collection. This can be done as follows:
 
 ```php
 use Phly\Mustache\Pragma\ImplicitIterator as ImplicitIteratorPragma;
 
-$mustache->getRenderer()->addPragma(new ImplicitIteratorPragma());
+$mustache->getPragmas()->add(new ImplicitIteratorPragma());
 $mustache->render('template-with-pragma', $view);
 ```
 
@@ -149,8 +149,8 @@ Phly\Mustache consists of five primary classes:
 
 - **Lexer**: tokenizes mustache syntax.
 - **Renderer**: renders a list of tokens, using substitions provided via a view.
-- **Pragma**: interface for pragmas, which may modify how tokens are handled.
-- **Resolver**: resolves a template name to mustache syntax or tokens.
+- **Pragma\PragmaInterface**: interface for pragmas, which may modify how tokens are handled.
+- **Resolver\ResolverInterface**: resolves a template name to mustache syntax or tokens.
 - **Mustache**: facade/gateway class. Tokenizes and renders templates, caches
-  tokens, provides partial aliasing, and acts as primary interface for
-  end-users.
+  tokens, provides partial aliasing, aggregates pragmas, and acts as primary
+  interface for end-users.

@@ -306,7 +306,7 @@ EOT;
      */
     public function testHonorsImplicitIteratorPragma()
     {
-        $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
+        $this->mustache->getPragmas()->add(new Pragma\ImplicitIterator());
         $view = ['foo' => [1, 2, 3, 4, 5, 'french']];
         $test = $this->mustache->render(
             'template-with-implicit-iterator',
@@ -413,7 +413,7 @@ EOT;
      */
     public function testPragmasAreSectionSpecific()
     {
-        $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
+        $this->mustache->getPragmas()->add(new Pragma\ImplicitIterator());
         $test = $this->mustache->render('template-with-pragma-in-section', [
             'type' => 'style',
             'section' => [
@@ -434,7 +434,7 @@ EOT;
      */
     public function testPragmasDoNotExtendToPartials()
     {
-        $this->mustache->getRenderer()->addPragma(new Pragma\ImplicitIterator());
+        $this->mustache->getPragmas()->add(new Pragma\ImplicitIterator());
         $test = $this->mustache->render('template-with-pragma-and-partial', [
             'type' => 'style',
             'section' => [
@@ -586,7 +586,7 @@ EOT;
     public function testStringValuesThatReferToFunctionsShouldNotCallThem()
     {
         $model = ['message' => 'time'];
-        $this->mustache->getRenderer()->addPragma(new ImplicitIterator());
+        $this->mustache->getPragmas()->add(new ImplicitIterator());
         $test = $this->mustache->render('template-referencing-static-function-notempty', $model);
         $this->assertEquals('time', trim($test));
     }
@@ -597,7 +597,7 @@ EOT;
     public function testArrayValuesThatReferToStaticMethodsInArraySyntaxShouldNotCallThem()
     {
         $model = ['section' => ['DateTime', 'createFromFormat']];
-        $this->mustache->getRenderer()->addPragma(new ImplicitIterator());
+        $this->mustache->getPragmas()->add(new ImplicitIterator());
         $test = $this->mustache->render('template-referencing-static-function', $model);
         $this->assertEquals("DateTime\ncreateFromFormat", trim($test));
     }

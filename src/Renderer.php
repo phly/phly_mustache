@@ -6,6 +6,8 @@
 
 namespace Phly\Mustache;
 
+use Traversable;
+
 /**
  * Mustache renderer
  *
@@ -16,24 +18,21 @@ class Renderer
 {
     /**
      * The Mustache manager
+     *
      * @var Mustache
      */
     protected $manager;
 
     /**
-     * Array of registered pragmas
-     * @var array
-     */
-    protected $pragmas = [];
-
-    /**
      * Callback for escaping variable content
+     *
      * @var Closure
      */
     protected $escaper;
 
     /**
      * List of pragmas invoked by current template
+     *
      * @var array
      */
     protected $invokedPragmas = [];
@@ -131,7 +130,7 @@ class Renderer
                         // For a boolean true, pass the current view
                         $sectionView = $view;
                     }
-                    if (is_array($section) || $section instanceof \Traversable) {
+                    if (is_array($section) || $section instanceof Traversable) {
                         if (is_array($section) && $this->isAssocArray($section)) {
                             // Nested view; pass it as the view
                             $sectionView = $section;
@@ -148,7 +147,7 @@ class Renderer
                         // Higher order section
                         // Execute the callback, passing it the section's template
                         // string, as well as a renderer lambda.
-                        $pragmas = $this->invokedPragmas;
+                        $invokedPragmas = $this->invokedPragmas;
                         $rendered .= call_user_func(
                             $section,
                             $data['template'],
@@ -161,7 +160,7 @@ class Renderer
                                 return $renderer->render($tokens, $view, $partials);
                             }
                         );
-                        $this->registerPragmas($pragmas);
+                        $this->registerPragmas($invokedPragmas);
                         break;
                     } elseif (is_object($section)) {
                         // In this case, the child object is the view.
@@ -172,9 +171,9 @@ class Renderer
                     }
 
                     // Render the section
-                    $pragmas = $this->invokedPragmas;
+                    $invokedPragmas = $this->invokedPragmas;
                     $rendered .= $this->render($data['content'], $sectionView);
-                    $this->registerPragmas($pragmas);
+                    $this->registerPragmas($invokedPragmas);
                     break;
                 case Lexer::TOKEN_SECTION_INVERT:
                     if ($inLoop) {
@@ -189,9 +188,9 @@ class Renderer
                     }
 
                     // Otherwise, we render it
-                    $pragmas = $this->invokedPragmas;
+                    $invokedPragmas = $this->invokedPragmas;
                     $rendered .= $this->render($data['content'], $view);
-                    $this->registerPragmas($pragmas);
+                    $this->registerPragmas($invokedPragmas);
                     break;
                 case Lexer::TOKEN_PLACEHOLDER:
                     if ($inLoop) {
@@ -205,8 +204,8 @@ class Renderer
                         // In a loop, with scalar values; skip
                         break;
                     }
-                    $pragmas = $this->invokedPragmas;
-                    $this->clearPragmas();
+                    $invokedPragmas = $this->invokedPragmas;
+                    $this->clearInvokedPragmas();
                     if (!isset($data['tokens'])) {
                         $name = $data['partial'];
                         if (isset($partials[$data['partial']])) {
@@ -224,11 +223,11 @@ class Renderer
                                 ));
                             }
                         }
-                        $this->registerPragmas($pragmas);
+                        $this->registerPragmas($invokedPragmas);
                         break;
                     }
                     $rendered .= $this->render($data['tokens'], $view);
-                    $this->registerPragmas($pragmas);
+                    $this->registerPragmas($invokedPragmas);
                     break;
                 case Lexer::TOKEN_PRAGMA:
                     $this->registerPragma($data);
@@ -284,72 +283,6 @@ class Renderer
             };
         }
         return $this->escaper;
-    }
-
-    /**
-     * Add a pragma
-     *
-     * Pragmas allow extension of mustache capabilities.
-     *
-     * @param  Pragma $pragma
-     * @return Renderer
-     */
-    public function addPragma(Pragma $pragma)
-    {
-        $pragma->setRenderer($this);
-        $this->pragmas[$pragma->getName()] = $pragma;
-        return $this;
-    }
-
-    /**
-     * Retrieve all registered pragmas
-     *
-     * @return array
-     */
-    public function getPragmas()
-    {
-        return $this->pragmas;
-    }
-
-    /**
-     * Do we have a pragma by a specified name?
-     *
-     * @param  string $name
-     * @return bool
-     */
-    public function hasPragma($name)
-    {
-        return isset($this->pragmas[(string) $name]);
-    }
-
-    /**
-     * Get a registered pragma by name
-     *
-     * @param  string $name
-     * @return null|Pragma
-     */
-    public function getPragma($name)
-    {
-        $name = (string) $name;
-        if ($this->hasPragma($name)) {
-            return $this->pragmas[$name];
-        }
-        return null;
-    }
-
-    /**
-     * Remove a given pragma
-     *
-     * @param  string $name
-     * @return bool Returns true if found and removed; false otherwise
-     */
-    public function removePragma($name)
-    {
-        if ($this->hasPragma($name)) {
-            unset($this->pragma[$name]);
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -430,12 +363,12 @@ class Renderer
      * Register a pragma for the current rendering session
      *
      * @param  array $definition
-     * @return void
      */
     protected function registerPragma(array $definition)
     {
-        $name = $definition['pragma'];
-        if (!$this->hasPragma($name)) {
+        $pragmas = $this->getManager()->getPragmas();
+        $name    = $definition['pragma'];
+        if (! $pragmas->has($name)) {
             throw new Exception\UnregisteredPragmaException(sprintf(
                 'No handler for pragma "%s" registered; cannot proceed rendering',
                 $name
@@ -448,7 +381,6 @@ class Renderer
      * Register cached invoked pragma definitions
      *
      * @param  array $pragmas
-     * @return void
      */
     protected function registerPragmas(array $pragmas)
     {
@@ -457,10 +389,8 @@ class Renderer
 
     /**
      * Clear list of invoked pragmas
-     *
-     * @return void
      */
-    protected function clearPragmas()
+    protected function clearInvokedPragmas()
     {
         $this->invokedPragmas = [];
     }
@@ -482,13 +412,18 @@ class Renderer
      */
     protected function handlePragmas($token, $data, $view)
     {
+        $mustache = $this->getManager();
+        $pragmas  = $mustache->getPragmas();
         foreach ($this->invokedPragmas as $name => $options) {
-            if (null !== ($handler = $this->getPragma($name))) {
-                if ($handler->handlesToken($token)) {
-                    if ($value = $handler->handle($token, $data, $view, $options)) {
-                        return $value;
-                    }
-                }
+            $pragma = $pragmas->get($name);
+            if (! $pragma->handlesToken($token)) {
+                continue;
+            }
+
+            $value = $pragma->render($token, $data, $view, $options, $mustache);
+
+            if ($value) {
+                return $value;
             }
         }
     }
@@ -509,7 +444,7 @@ class Renderer
 
         if (is_array($callback)) {
             $target = array_shift($callback);
-            if (!is_object($target)) {
+            if (! is_object($target)) {
                 return false;
             }
         }

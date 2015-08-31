@@ -51,7 +51,8 @@ class Lexer
     /**@-*/
 
     /**
-     * Patterns referenced by lexer
+     * Patterns referenced by lexer.
+     *
      * @var array
      */
     protected $patterns = [
@@ -60,12 +61,6 @@ class Lexer
         'varname'     => '([a-z.][a-z0-9_?.-]*|[.])',
         'pragma'      => '[A-Z][A-Z0-9_-]*',
     ];
-
-    /**
-     * The Mustache manager
-     * @var Mustache
-     */
-    protected $manager;
 
     /**
      * Current nesting level in hierarchical templates
@@ -90,6 +85,25 @@ class Lexer
     protected $stripWhitespaceFlag = true;
 
     /**
+     * Allowed tokens (used for validating returns from pragmas)
+     *
+     * @var int[]
+     */
+    private $validTokens = [
+        self::TOKEN_CONTENT,
+        self::TOKEN_VARIABLE,
+        self::TOKEN_VARIABLE_RAW,
+        self::TOKEN_COMMENT,
+        self::TOKEN_SECTION,
+        self::TOKEN_SECTION_INVERT,
+        self::TOKEN_PARTIAL,
+        self::TOKEN_DELIM_SET,
+        self::TOKEN_PRAGMA,
+        self::TOKEN_PLACEHOLDER,
+        self::TOKEN_CHILD,
+    ];
+
+    /**
      * Set or get the flag indicating whether or not to strip whitespace
      *
      * @param  null|bool $flag Null indicates retrieving; boolean value sets
@@ -98,263 +112,270 @@ class Lexer
     public function disableStripWhitespace($flag = null)
     {
         if (null === $flag) {
-            return !$this->stripWhitespaceFlag;
+            return ! $this->stripWhitespaceFlag;
         }
-        $this->stripWhitespaceFlag = !(bool) $flag;
+        $this->stripWhitespaceFlag = ! (bool) $flag;
         return $this;
     }
 
     /**
-     * Set mustache manager
-     *
-     * Used internally to resolve and tokenize partials
-     *
-     * @param  Mustache $manager
-     * @return Lexer
-     */
-    public function setManager(Mustache $manager)
-    {
-        $this->manager = $manager;
-        return $this;
-    }
-
-    /**
-     * Retrieve the mustache manager
-     *
-     * @return null|Mustache
-     */
-    public function getManager()
-    {
-        return $this->manager;
-    }
-
-    /**
-     * Compile a string into a set of tokens
+     * Compile a string into a set of tokens.
      *
      * @todo   Store full matched text with each token?
+     * @param  Mustache $mustache Mustache instance invoking compilation.
      * @param  string $string
-     * @param  null|string $templateName Template to use in the case of a partial
+     * @param  null|string $templateName Template to use in the case of a partial; can be null.
      * @return array
      * @throws Exception
      */
-    public function compile($string, $templateName = null)
+    public function compile(Mustache $mustache, $string, $templateName = null)
     {
-        if (!is_string($string)) {
+        if (! is_string($string)) {
             throw new Exception\InvalidTemplateException();
         }
 
-        $len     = strlen($string);
+        $len           = strlen($string);
+        $delimStartLen = strlen($this->patterns[self::DS]);
+        $delimEndLen   = strlen($this->patterns[self::DE]);
 
         $state   = self::STATE_CONTENT;
+        $pragmas = $mustache->getPragmas();
         $tokens  = [];
         $content = '';
+        $tagData = '';
 
         for ($i = 0; $i < $len;) {
             switch ($state) {
                 case self::STATE_CONTENT:
                     $content .= $string[$i];
-                    $delimStartLen = strlen($this->patterns[self::DS]);
-                    if (substr($content, -$delimStartLen) === $this->patterns[self::DS]) {
-                        // Create token for content
-                        $tokens[] = [self::TOKEN_CONTENT, substr($content, 0, -$delimStartLen)];
-                        $content  = '';
-
-                        // Switch to tag state
-                        $state = self::STATE_TAG;
-                        $tagData = '';
+                    if (substr($content, -$delimStartLen) !== $this->patterns[self::DS]) {
+                        // No start delimiter found in content yet; continue to next character.
+                        $i += 1;
+                        break;
                     }
-                    ++$i;
+
+                    // Create token for content
+                    $tokens[] = $this->parseViaPragmas(
+                        [self::TOKEN_CONTENT, substr($content, 0, -$delimStartLen)],
+                        $pragmas
+                    );
+                    $content  = '';
+
+                    // Switch to tag state
+                    $state   = self::STATE_TAG;
+                    $tagData = '';
+
+                    $i += 1;
                     break;
 
                 case self::STATE_TAG:
-                    $tagData    .= $string[$i];
-                    $delimEndLen = strlen($this->patterns[self::DE]);
-                    if (substr($tagData, -$delimEndLen) === $this->patterns[self::DE]) {
-                        $tagData = substr($tagData, 0, -$delimEndLen);
-
-                        // Evaluate what kind of token we have
-                        switch ($tagData[0]) {
-                            case '#':
-                                // Section start
-                                $tagData     = ltrim($tagData, '#');
-                                $section     = trim($tagData);
-                                $sectionData = '';
-                                $tokenType   = self::TOKEN_SECTION;
-                                $state       = self::STATE_SECTION;
-                                $i          += 1;
-                                break;
-                            case '$':
-                                // Placeholder start
-                                //
-                                // Placeholders are captured as a set of tokens. They are
-                                // essentially a type of section.
-                                //
-                                // In a child template, any placeholders defined are then
-                                // replaced with the tokens they contain.
-                                $tagData     = ltrim($tagData, '$');
-                                $section     = trim($tagData);
-                                $sectionData = '';
-                                $tokenType   = self::TOKEN_PLACEHOLDER;
-                                $state       = self::STATE_SECTION;
-                                $i          += 1;
-                                break;
-                            case '^':
-                                // Inverted section start
-                                $tagData     = ltrim($tagData, '^');
-                                $section     = trim($tagData);
-                                $sectionData = '';
-                                $tokenType   = self::TOKEN_SECTION_INVERT;
-                                $state       = self::STATE_SECTION;
-                                $i          += 1;
-                                break;
-                            case '{':
-                                // Raw value start (triple mustaches)
-                                // Check that next character is a mustache; if
-                                // not, we're basically still in the tag.
-                                if ($i + 1 >= $len) {
-                                    // We've already reached the end of the string
-                                    $tagData .= $this->patterns[self::DE];
-                                    $i       += 1;
-                                    break;
-                                }
-                                if ('}' !== $string[$i + 1]) {
-                                    // We don't have triple mustaches yet
-                                    $tagData .= $this->patterns[self::DE];
-                                    $i       += 1;
-                                    break;
-                                }
-
-                                // Advance position by one
-                                $i += 1;
-
-                                // Create token
-                                $tokens[] = [self::TOKEN_VARIABLE_RAW, ltrim($tagData, '{')];
-                                $state    = self::STATE_CONTENT;
-                                $i       += 1;
-                                break;
-                            case '&':
-                                // Raw value start
-                                $tagData = ltrim($tagData, '&');
-                                $tagData = trim($tagData);
-
-                                // Create token
-                                $tokens[] = [self::TOKEN_VARIABLE_RAW, $tagData];
-                                $state    = self::STATE_CONTENT;
-                                $i       += 1;
-                                break;
-                            case '!':
-                                // Comment
-                                // Create token
-                                $tokens[] = [self::TOKEN_COMMENT, ltrim($tagData, '!')];
-                                $state    = self::STATE_CONTENT;
-                                $i       += 1;
-                                break;
-                            case '>':
-                                // Partial
-                                // Trim the value of whitespace
-                                $tagData = ltrim($tagData, '>');
-                                $partial = trim($tagData);
-
-                                // Create token
-                                $token = [self::TOKEN_PARTIAL, [
-                                    'partial' => $partial,
-                                ]];
-
-                                $tokens[] = $token;
-                                $state    = self::STATE_CONTENT;
-                                $i       += 1;
-                                break;
-                            case '<':
-                                // Template inheritance
-                                //
-                                // Indicates that the content provides placeholders for
-                                // the inherited template. The parent template is parsed,
-                                // and then the content is parsed for placeholders. Any
-                                // placeholders found are then used to replace placeholders
-                                // of the same name in the parent template. The content
-                                // is then replaced with the parent tokens.
-                                //
-                                // For purposes of first-pass lexing, it's a type of section.
-                                $tagData     = ltrim($tagData, '<');
-                                $section     = trim($tagData);
-                                $sectionData = '';
-                                $tokenType   = self::TOKEN_CHILD;
-                                $state       = self::STATE_SECTION;
-                                $i          += 1;
-                                break;
-                            case '=':
-                                // Delimiter set
-                                if (!preg_match('/^=(\S+)\s+(\S+)=$/', $tagData, $matches)) {
-                                    throw new Exception\InvalidDelimiterException('Did not find delimiters!');
-                                }
-                                $this->patterns[self::DS] = $delimStart = $matches[1];
-                                $this->patterns[self::DE] = $delimEnd   = $matches[2];
-
-                                // Create token
-                                $tokens[] = [self::TOKEN_DELIM_SET, [
-                                    'delim_start' => $delimStart,
-                                    'delim_end'   => $delimEnd,
-                                ]];
-                                $state = self::STATE_CONTENT;
-                                ++$i;
-                                break;
-                            case '%':
-                                // Pragmas
-                                $data    = ltrim($tagData, '%');
-                                $options = [];
-                                if (!strstr($data, '=')) {
-                                    // No options
-                                    if (! preg_match(
-                                        '/^(?P<pragma>' . $this->patterns['pragma'] . ')$/',
-                                        $data,
-                                        $matches
-                                    )) {
-                                        throw new Exception\InvalidPragmaNameException();
-                                    }
-                                    $pragma = $matches['pragma'];
-                                } else {
-                                    list($pragma, $options) = explode(' ', $data, 2);
-                                    if (!preg_match('/^' . $this->patterns['pragma'] . '$/', $pragma)) {
-                                        throw new Exception\InvalidPragmaNameException();
-                                    }
-                                    $pairs = explode(' ', $options);
-                                    $options = [];
-                                    foreach ($pairs as $pair) {
-                                        if (!strstr($pair, '=')) {
-                                            $options[$pair] = null;
-                                        } else {
-                                            list($key, $value) = explode('=', $pair, 2);
-                                            $options[$key] = $value;
-                                        }
-                                    }
-                                }
-                                $tokens[] = [self::TOKEN_PRAGMA, [
-                                    'pragma'  => $pragma,
-                                    'options' => $options,
-                                ]];
-                                $state = self::STATE_CONTENT;
-                                $i++;
-                                break;
-                            default:
-                                // We have a simple variable replacement
-                                if (!preg_match($this->patterns[self::VARNAME], $tagData)) {
-                                    throw new Exception\InvalidVariableNameException(sprintf(
-                                        'Invalid variable name provided (%s)',
-                                        $tagData
-                                    ));
-                                }
-
-                                // Create token
-                                $tokens[] = [self::TOKEN_VARIABLE, $tagData];
-                                $state = self::STATE_CONTENT;
-                                ++$i;
-                                break;
-                        }
-
+                    $tagData .= $string[$i];
+                    if (substr($tagData, -$delimEndLen) !== $this->patterns[self::DE]) {
+                        // Have not reached end of tag delimiter
+                        $i += 1;
                         break;
                     }
-                    // Otherwise, we're still gathering tag data
-                    ++$i;
+
+                    // End of tag reached; start processing.
+                    $tagData = substr($tagData, 0, -$delimEndLen);
+
+                    // Evaluate what kind of token we have
+                    switch ($tagData[0]) {
+                        case '#':
+                            // Section start
+                            $tagData     = ltrim($tagData, '#');
+                            $section     = trim($tagData);
+                            $sectionData = '';
+                            $tokenType   = self::TOKEN_SECTION;
+                            $state       = self::STATE_SECTION;
+                            $i          += 1;
+                            break;
+
+                        case '$':
+                            // Placeholder start
+                            //
+                            // Placeholders are captured as a set of tokens. They are
+                            // essentially a type of section.
+                            //
+                            // In a child template, any placeholders defined are then
+                            // replaced with the tokens they contain.
+                            $tagData     = ltrim($tagData, '$');
+                            $section     = trim($tagData);
+                            $sectionData = '';
+                            $tokenType   = self::TOKEN_PLACEHOLDER;
+                            $state       = self::STATE_SECTION;
+                            $i          += 1;
+                            break;
+
+                        case '^':
+                            // Inverted section start
+                            $tagData     = ltrim($tagData, '^');
+                            $section     = trim($tagData);
+                            $sectionData = '';
+                            $tokenType   = self::TOKEN_SECTION_INVERT;
+                            $state       = self::STATE_SECTION;
+                            $i          += 1;
+                            break;
+
+                        case '{':
+                            // Raw value start (triple mustaches)
+                            // Check that next character is a mustache; if
+                            // not, we're basically still in the tag.
+                            if ($i + 1 >= $len) {
+                                // We've already reached the end of the string
+                                $tagData .= $this->patterns[self::DE];
+                                $i       += 1;
+                                break;
+                            }
+                            if ('}' !== $string[$i + 1]) {
+                                // We don't have triple mustaches yet
+                                $tagData .= $this->patterns[self::DE];
+                                $i       += 1;
+                                break;
+                            }
+
+                            // Advance position by one
+                            $i += 1;
+
+                            // Create token
+                            $tokens[] = $this->parseViaPragmas(
+                                [self::TOKEN_VARIABLE_RAW, ltrim($tagData, '{')],
+                                $pragmas
+                            );
+                            $state    = self::STATE_CONTENT;
+                            $i       += 1;
+                            break;
+
+                        case '&':
+                            // Raw value start
+                            $tagData = ltrim($tagData, '&');
+                            $tagData = trim($tagData);
+
+                            // Create token
+                            $tokens[] = $this->parseViaPragmas([self::TOKEN_VARIABLE_RAW, $tagData], $pragmas);
+                            $state    = self::STATE_CONTENT;
+                            $i       += 1;
+                            break;
+
+                        case '!':
+                            // Comment
+                            // Create token
+                            $tokens[] = $this->parseViaPragmas([self::TOKEN_COMMENT, ltrim($tagData, '!')], $pragmas);
+                            $state    = self::STATE_CONTENT;
+                            $i       += 1;
+                            break;
+
+                        case '>':
+                            // Partial
+                            // Trim the value of whitespace
+                            $tagData = ltrim($tagData, '>');
+                            $partial = trim($tagData);
+
+                            // Create token
+                            $tokens[] = $this->parseViaPragmas([self::TOKEN_PARTIAL, [
+                                'partial' => $partial,
+                            ]], $pragmas);
+
+                            $state    = self::STATE_CONTENT;
+                            $i       += 1;
+                            break;
+
+                        case '<':
+                            // Template inheritance
+                            //
+                            // Indicates that the content provides placeholders for
+                            // the inherited template. The parent template is parsed,
+                            // and then the content is parsed for placeholders. Any
+                            // placeholders found are then used to replace placeholders
+                            // of the same name in the parent template. The content
+                            // is then replaced with the parent tokens.
+                            //
+                            // For purposes of first-pass lexing, it's a type of section.
+                            $tagData     = ltrim($tagData, '<');
+                            $section     = trim($tagData);
+                            $sectionData = '';
+                            $tokenType   = self::TOKEN_CHILD;
+                            $state       = self::STATE_SECTION;
+                            $i          += 1;
+                            break;
+
+                        case '=':
+                            // Delimiter set
+                            if (! preg_match('/^=(\S+)\s+(\S+)=$/', $tagData, $matches)) {
+                                throw new Exception\InvalidDelimiterException('Did not find delimiters!');
+                            }
+                            $this->patterns[self::DS] = $delimStart = $matches[1];
+                            $this->patterns[self::DE] = $delimEnd   = $matches[2];
+
+                            // Create token
+                            $tokens[] = $this->parseViaPragmas([self::TOKEN_DELIM_SET, [
+                                'delim_start' => $delimStart,
+                                'delim_end'   => $delimEnd,
+                            ]], $pragmas);
+                            $state    = self::STATE_CONTENT;
+                            $i       += 1;
+                            break;
+                        case '%':
+                            // Pragmas
+                            $data    = ltrim($tagData, '%');
+                            $options = [];
+                            if (! strstr($data, '=')) {
+                                // No options provided
+                                if (! preg_match(
+                                    '/^(?P<pragma>' . $this->patterns['pragma'] . ')$/',
+                                    $data,
+                                    $matches
+                                )) {
+                                    throw new Exception\InvalidPragmaNameException();
+                                }
+                                $pragma = $matches['pragma'];
+                            } else {
+                                // Options provided
+                                list($pragma, $options) = explode(' ', $data, 2);
+                                if (! preg_match('/^' . $this->patterns['pragma'] . '$/', $pragma)) {
+                                    throw new Exception\InvalidPragmaNameException();
+                                }
+                                $pairs = explode(' ', $options);
+                                $options = [];
+                                foreach ($pairs as $pair) {
+                                    if (!strstr($pair, '=')) {
+                                        $options[$pair] = null;
+                                    } else {
+                                        list($key, $value) = explode('=', $pair, 2);
+                                        $options[$key] = $value;
+                                    }
+                                }
+                            }
+                            $tokens[] = $this->parseViaPragmas([self::TOKEN_PRAGMA, [
+                                'pragma'  => $pragma,
+                                'options' => $options,
+                            ]], $pragmas);
+                            $state = self::STATE_CONTENT;
+                            $i += 1;
+                            break;
+
+                        default:
+                            // We have a simple variable replacement
+
+                            // First, create the token, passing it to pragmas; this allows pragmas
+                            // to filter the variable name if required.
+                            $token = $this->parseViaPragmas([self::TOKEN_VARIABLE, $tagData], $pragmas);
+
+                            // Now filter the tag data (index 1 of the token) to ensure it is valid.
+                            if (! preg_match($this->patterns[self::VARNAME], $token[1])) {
+                                throw new Exception\InvalidVariableNameException(sprintf(
+                                    'Invalid variable name provided (%s)',
+                                    $token[1]
+                                ));
+                            }
+
+                            // Add the token to the list, and continue.
+                            $tokens[] = $token;
+                            $state    = self::STATE_CONTENT;
+                            $i       += 1;
+                            break;
+                    }
+
                     break;
 
                 case self::STATE_SECTION:
@@ -374,9 +395,9 @@ class Lexer
                         $closed = 0;
                         foreach ($matches[3] as $match) {
                             if ('' === $match) {
-                                ++$open;
+                                $open += 1;
                             } else {
-                                ++$closed;
+                                $closed += 1;
                             }
                         }
 
@@ -386,10 +407,10 @@ class Lexer
                             $sectionData = substr($sectionData, 0, strlen($sectionData) - strlen($endTag));
 
                             // compile sections later
-                            $tokens[] = [$tokenType, [
+                            $tokens[] = $this->parseViaPragmas([$tokenType, [
                                 'name'     => $section,
                                 'template' => $sectionData,
-                            ]];
+                            ]], $pragmas);
                             $state = self::STATE_CONTENT;
                         }
                     }
@@ -410,16 +431,21 @@ class Lexer
         switch ($state) {
             case self::STATE_CONTENT:
                 // Un-collected content
-                $tokens[] = [self::TOKEN_CONTENT, $content];
+                $tokens[] = $this->parseViaPragmas([self::TOKEN_CONTENT, $content], $pragmas);
                 break;
+
             case self::STATE_TAG:
                 // Un-closed content
                 throw new Exception\UnbalancedTagException();
+
             case self::STATE_SECTION:
                 // Un-closed section
                 throw new Exception\UnbalancedSectionException(
                     'Unbalanced section, placeholder, or inheritance in template'
                 );
+
+            default:
+                // Do nothing.
         }
 
         // Tokenize any partials, sections, placeholders, or child templates
@@ -429,15 +455,10 @@ class Lexer
             $type = $token[0];
             switch ($type) {
                 case self::TOKEN_PARTIAL:
-                    // Need to grab the manager, compile the parent template
-                    // (using tokenize()) referenced by the token['template'].
-                    // If we have no manager, then we provide an empty token set.
-                    // Additionally, if the partial name is the same as the
-                    // template name provided, we should skip processing (prevents
+                    // If the partial name is the same as the template name
+                    // provided, we should skip processing (prevents
                     // recursion).
-                    if (null === ($manager = $this->getManager())
-                        || $token[1]['partial'] === $templateName
-                    ) {
+                    if ($token[1]['partial'] === $templateName) {
                         break;
                     }
 
@@ -449,7 +470,7 @@ class Lexer
 
                     // Tokenize the partial
                     $partial       = $token[1]['partial'];
-                    $partialTokens = $manager->tokenize($partial);
+                    $partialTokens = $mustache->tokenize($partial);
 
                     // Restore the delimiters
                     $this->patterns[self::DS] = $delimStart;
@@ -458,22 +479,14 @@ class Lexer
                     $token[1]['tokens'] = $partialTokens;
                     $tokens[$key]       = $token;
                     break;
-                case self::TOKEN_CHILD:
-                    // Need to grab the manager, compile the parent template
-                    // (using tokenize()) referenced by the token['name'].
-                    // If we have no manager, then we omit this section.
-                    if (null === ($manager = $this->getManager())) {
-                        $token[1]['content'] = '';
-                        $tokens[$key] = $token;
-                        break;
-                    }
 
-                    // Then, we need to compile the content (compile($token[1]['template'])).
+                case self::TOKEN_CHILD:
+                    // We need to compile the content (compile($token[1]['template'])).
                     // Once done, we determine what placeholders were in the content.
                     $delimStart = $this->patterns[self::DS];
                     $delimEnd   = $this->patterns[self::DE];
 
-                    $child      = $this->compile($token[1]['template'], $templateName);
+                    $child      = $this->compile($mustache, $token[1]['template'], $templateName);
 
                     // Reset delimiters to retain scope
                     $this->patterns[self::DS] = $delimStart;
@@ -492,7 +505,7 @@ class Lexer
                     // Now, tokenize the parent
                     $this->nestingLevel += 1;
                     $this->placeholders[$this->nestingLevel] = $placeholders;
-                    $parent = $manager->tokenize($token[1]['name'], false);
+                    $parent = $mustache->tokenize($token[1]['name'], false);
                     unset($this->placeholders[$this->nestingLevel]);
                     $this->nestingLevel -= 1;
 
@@ -527,6 +540,7 @@ class Lexer
                     $delimEnd   = $this->patterns[self::DE];
 
                     $token[1]['content'] = $this->compile(
+                        $mustache,
                         $token[1]['template'],
                         $templateName
                     );
@@ -537,15 +551,17 @@ class Lexer
                     $this->patterns[self::DE] = $delimEnd;
 
                     // Clean whitespace
-                    if (!$this->disableStripWhitespace()) {
+                    if (! $this->disableStripWhitespace()) {
                         $this->stripWhitespace($tokens, $key);
                     }
                     break;
+
                 case self::TOKEN_DELIM_SET:
-                    if (!$this->disableStripWhitespace()) {
+                    if (! $this->disableStripWhitespace()) {
                         $this->stripWhitespace($tokens, $key);
                     }
                     break;
+
                 default:
                     // do nothing
             }
@@ -637,7 +653,7 @@ class Lexer
     {
         $tokens = [];
         foreach ($originalTokens as $key => $token) {
-            if (!array_key_exists($key, $replacements)) {
+            if (! array_key_exists($key, $replacements)) {
                 $tokens[] = $token;
                 continue;
             }
@@ -647,5 +663,66 @@ class Lexer
             }
         }
         return $tokens;
+    }
+
+    /**
+     * Parse a token via a pragma.
+     *
+     * Passes the token and data to each pragma capable of handling the given token;
+     * pragmas are expected to return a valid token struct (array with token and data).
+     *
+     * Each pragma is passed the token data as returned by the previous pragma, which
+     * means that the order in which pragmas are registered can matter.
+     */
+    private function parseViaPragmas(array $tokenStruct, Pragma\PragmaCollection $pragmas)
+    {
+        $token = $tokenStruct[0];
+        foreach ($this->filterPragmasByToken($token, $pragmas) as $pragma) {
+            $data        = $tokenStruct[1];
+            $tokenStruct = $pragma->parse($tokenStruct);
+            $this->assertTokenStruct($tokenStruct);
+        }
+
+        return $tokenStruct;
+    }
+
+    /**
+     * Generator for filtering pragmas by those matching a given token.
+     *
+     * @param string $token
+     * @param Pragma\PragmaCollection $pragmas
+     * @return Pragma\PragmaInterface
+     */
+    private function filterPragmasByToken($token, Pragma\PragmaCollection $pragmas)
+    {
+        foreach ($pragmas as $pragma) {
+            if ($pragma->handlesToken($token)) {
+                yield $pragma;
+            }
+        }
+    }
+
+    /**
+     * Assert that a token struct is valid.
+     *
+     * @throws Exception\InvalidTokenException for any invalid token structures or elements.
+     */
+    private function assertTokenStruct($tokenStruct)
+    {
+        if (! is_array($tokenStruct)) {
+            throw new Exception\InvalidTokenException('Invalid token struct; must be an array');
+        }
+
+        if (2 > count($tokenStruct)) {
+            throw new Exception\InvalidTokenException('Invalid token struct; missing data');
+        }
+
+        if (! isset($tokenStruct[0]) || ! isset($tokenStruct[1])) {
+            throw new Exception\InvalidTokenException('Invalid token struct; missing either index 0 or 1');
+        }
+
+        if (! in_array($tokenStruct[0], $this->validTokens, true)) {
+            throw new Exception\InvalidTokenException('Invalid token struct; invalid token at position 0');
+        }
     }
 }

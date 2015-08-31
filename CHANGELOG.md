@@ -18,6 +18,17 @@ Initial tagged release.
   method `getNamespaces()` and `addTemplatePath()`. `Mustache` now composes an
   `AggregateResolver` by default, which in turn composes a `DefaultResolver` at
   low priority.
+- [#35](https://github.com/phly/mustach/pull/35) adds:
+  - `Phly\Mustache\Pragma\PragmaInterface`, which replaces
+    `Phly\Mustache\Pragma`, removing `getRenderer()` from the interface, and
+    adding an additional argument, `Phly\Mustache\Mustache $mustache` to the
+    `handle()` method. `handle()` was renamed to `render()`.
+  - `Phly\Mustache\Pragma\PragmaNameAndTokensTrait`, which replaces
+    `Phly\Mustache\Pragma\AbstractPragma`, removing the methods dealing with the
+    renderer.
+  - `Phly\Mustache\Pragma\PragmaCollection`, which aggregates pragmas.
+  - `Phly\Mustache\Mustache::getPragmas()`, which returns a `PragmaCollection`
+    instance.
 
 ### Deprecated
 
@@ -33,6 +44,15 @@ Initial tagged release.
 - [#33](https://github.com/phly/mustach/pull/33) removes the method
   `setTemplatePath()` from the `DefaultResolver`, and removes the methods
   `setTemplatePath()`, `setSuffix()`, and `getSuffix()` from `Mustache`.
+- [#35](https://github.com/phly/mustach/pull/35) removes:
+  - `Phly\Mustache\Pragma`, in favor of `Phly\Mustache\Pragma\PragmaInterface`;
+    the new interface removes the `getRenderer()` method, and renames the
+    `handle()` method to `render()`.
+  - All public methods in `Phly\Mustache\Renderer` related to adding, removing,
+    and manipulating pragmas; these are now managed by `Mustache::getPragmas()`.
+  - The `Mustache` argument to the `Phly\Mustache\Pragma\SubViews` constructor
+    was removed, as the `Mustache` instance is now passed to the `handle()`
+    method.
 
 ### Fixed
 

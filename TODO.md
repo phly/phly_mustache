@@ -63,17 +63,36 @@ Branch: feature/resolvers
 
 ## Pragmas
 
-- [ ] Add an `addPragma()` or `registerPragma()` method to `Mustache` class.
-  This will pull the pragma name from the Pragma class, using a new interface
-  method.
-- [ ] `addPragma` will inject `MustacheAware` instances with the mustache
-  instance on registration.
-- Pragmas will be collected in a collection object, which `Mustache` will pass to
-  the renderer when rendering.
-- [ ] Mustache will trigger the Pragma at specific points, passing related
-  objects and/or  contextual data, and expect specific return values.
+- [X] Move interface into Pragma namespace.
+- [X] Remove renderer awareness from Pragma interface; add new argument to
+    `handle()`, a `Mustache` instance.
+- [X] Replace `AbstractPragma` with a trait.
+- [X] Add a `PragmaCollection`.
+- [X] Add a `getPragmas()`  method to `Mustache` class.  This will return the
+  composed `PragmaCollection`.
+- [X] Refactor existing pragmas
+    - [X] ImplicitIterator
+    - [X] SubViews
+- [X] Documentation
+    - [X] Update all docs that reference adding pragmas.
+    - [X] Document PragmaInterface and writing pragmas.
+- [X] Alter pragma interface to allow lexer usage
+    - [X] add `parse` method that lexer will call
+    - [X] update lexer to query pragmas
+    - [X] rename `handle` to `render`
+    - [X] document changes
 
-## Rename package?
+## AggregateResolver
+
+- [ ] Is there any need to allow replacing the resolver at this point, if you
+  can specify one at higher priority in the Aggregate?
+
+## Escaping [#37]
+
+- [ ] Use `Zend\Escaper` by default.
+- [ ] Create a pragma for handling contextual escaping (CSS, JS, URLs)
+
+## Rename package? [#38]
 
 - Repo to phly/phly-mustache
 - Composer package to phly/phly-mustache
