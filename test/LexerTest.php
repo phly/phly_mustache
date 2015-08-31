@@ -6,6 +6,7 @@
 
 namespace PhlyTest\Mustache;
 
+use Phly\Mustache\Exception;
 use Phly\Mustache\Lexer;
 use Phly\Mustache\Mustache;
 use Phly\Mustache\Pragma\PragmaCollection;

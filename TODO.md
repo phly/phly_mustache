@@ -76,11 +76,11 @@ Branch: feature/resolvers
 - [X] Documentation
     - [X] Update all docs that reference adding pragmas.
     - [X] Document PragmaInterface and writing pragmas.
-- [ ] Alter pragma interface to allow lexer usage
+- [X] Alter pragma interface to allow lexer usage
     - [X] add `parse` method that lexer will call
     - [X] update lexer to query pragmas
     - [X] rename `handle` to `render`
-    - [ ] document changes
+    - [X] document changes
 
 ## AggregateResolver
 
