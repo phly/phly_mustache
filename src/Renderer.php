@@ -317,7 +317,7 @@ class Renderer
      * @param  mixed $view
      * @return mixed
      */
-    protected function getDotValue($key, $view)
+    private function getDotValue($key, $view)
     {
         list($first, $second) = explode('.', $key, 2);
 
@@ -336,7 +336,7 @@ class Renderer
      * @param  array $array
      * @return bool
      */
-    protected function isAssocArray(array $array)
+    private function isAssocArray(array $array)
     {
         return (is_array($array)
             && (count($array) == 0
@@ -350,7 +350,7 @@ class Renderer
      *
      * @param  array $definition
      */
-    protected function registerPragma(array $definition)
+    private function registerPragma(array $definition)
     {
         $pragmas = $this->mustache->getPragmas();
         $name    = $definition['pragma'];
@@ -368,7 +368,7 @@ class Renderer
      *
      * @param  array $pragmas
      */
-    protected function registerPragmas(array $pragmas)
+    private function registerPragmas(array $pragmas)
     {
         $this->invokedPragmas = $pragmas;
     }
@@ -376,7 +376,7 @@ class Renderer
     /**
      * Clear list of invoked pragmas
      */
-    protected function clearInvokedPragmas()
+    private function clearInvokedPragmas()
     {
         $this->invokedPragmas = [];
     }
@@ -395,7 +395,7 @@ class Renderer
      * @param  mixed $view
      * @return mixed
      */
-    protected function handlePragmas(array $tokenStruct, $view)
+    private function handlePragmas(array $tokenStruct, $view)
     {
         $mustache = $this->mustache;
         $pragmas  = $mustache->getPragmas();
@@ -419,7 +419,7 @@ class Renderer
      * @param  callback $callback
      * @return bool
      */
-    protected function isValidCallback($callback)
+    private function isValidCallback($callback)
     {
         // For security purposes, we don't want to call anything that isn't
         // an object callback

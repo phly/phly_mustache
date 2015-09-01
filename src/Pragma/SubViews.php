@@ -75,13 +75,13 @@ class SubViews implements PragmaInterface
      * Name of this pragma
      * @var string
      */
-    protected $name = 'SUB-VIEWS';
+    private $name = 'SUB-VIEWS';
 
     /**
      * Tokens this pragma handles
      * @var array
      */
-    protected $tokensHandled = [
+    private $tokensHandled = [
         Lexer::TOKEN_VARIABLE,
     ];
 
@@ -143,7 +143,7 @@ class SubViews implements PragmaInterface
      * @param  mixed $view
      * @return false|mixed
      */
-    protected function getValue($data, $view)
+    private function getValue($data, $view)
     {
         if (is_scalar($view)) {
             return false;

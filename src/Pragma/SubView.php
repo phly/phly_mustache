@@ -21,13 +21,13 @@ class SubView
      * Template name/path
      * @var string
      */
-    protected $template;
+    private $template;
 
     /**
      * View
      * @var null|array|object
      */
-    protected $view;
+    private $view;
 
     /**
      * Constructor

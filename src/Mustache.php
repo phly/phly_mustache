@@ -20,13 +20,13 @@ class Mustache
      * Cached file-based templates; contains template name/token pairs
      * @var array
      */
-    protected $cachedTemplates = [];
+    private $cachedTemplates = [];
 
     /**
      * Lexer
      * @var Lexer
      */
-    protected $lexer;
+    private $lexer;
 
     /**
      * @var Pragma\PragmaCollection
@@ -37,7 +37,7 @@ class Mustache
      * Renderer
      * @var Renderer
      */
-    protected $renderer;
+    private $renderer;
 
     /**
      * Template resolver stack
@@ -250,7 +250,7 @@ class Mustache
      * @return string
      * @throws Exception\TemplateNotFoundException
      */
-    protected function fetchTemplate($template)
+    private function fetchTemplate($template)
     {
         $resolver = $this->getResolver();
         $content  = $resolver->resolve($template);
