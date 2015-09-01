@@ -104,6 +104,16 @@ class Lexer
     ];
 
     /**
+     * @var string[] Whitespace characters allowed in tags.
+     */
+    private $whitespaceCharacters = [
+        ' ',
+        "\n",
+        "\r",
+        "\t",
+    ];
+
+    /**
      * Set or get the flag indicating whether or not to strip whitespace
      *
      * @param  null|bool $flag Null indicates retrieving; boolean value sets
@@ -146,6 +156,8 @@ class Lexer
         $tokens        = [];
         $content       = '';
         $tagData       = '';
+        $rawTagData    = '';
+        $sigilPattern  = '/^[' . preg_quote('%=<>!&^#$') . ']/';
 
         for ($i = 0; $i < $len;) {
             switch ($state) {
@@ -181,7 +193,17 @@ class Lexer
                     }
 
                     // End of tag reached; start processing.
-                    $tagData = substr($tagData, 0, -$delimEndLen);
+                    $tagData    = substr($tagData, 0, -$delimEndLen);
+
+                    // Whitespace check; whitespace not allowed before sigils
+                    $rawTagData = $tagData;
+                    $tagData    = trim($tagData);
+                    if (preg_match($sigilPattern, $tagData)
+                        && in_array($rawTagData[0], $this->whitespaceCharacters, true)
+                    ) {
+                        // Begins with a whitespace followed by sigil
+                        throw new Exception\InvalidTemplateException('Whitespace is not allowed before sigils (#, ^, $, etc.)');
+                    }
 
                     // Evaluate what kind of token we have
                     switch ($tagData[0]) {
@@ -407,13 +429,14 @@ class Lexer
                     $sectionData .= $string[$i];
                     $ds           = $this->patterns[self::DS];
                     $de           = $this->patterns[self::DE];
-                    $pattern      = $ds . '/' . $section . $de;
-                    if (preg_match('/' . preg_quote($pattern, '/') . '$/', $sectionData)) {
+                    $pattern      = $this->implodePregQuote('\\s*', [$ds, '/', $section, $de], '/');
+
+                    if (preg_match('/' . $pattern . '$/', $sectionData)) {
                         // we have a match. Now, let's make sure we're balanced
                         $pattern = '/(('
-                                 . preg_quote($ds . '#' . $section . $de, '/')
+                                 . $this->implodePregQuote('\\s*', [$ds . '#', $section, $de], '/')
                                  . ')|('
-                                 . preg_quote($ds . '/' . $section . $de, '/')
+                                 . $this->implodePregQuote('\\s*', [$ds . '/', $section, $de], '/')
                                  . '))/';
                         preg_match_all($pattern, $sectionData, $matches);
                         $open   = 0;
@@ -428,7 +451,7 @@ class Lexer
 
                         if ($closed > $open) {
                             // We're balanced if we have 1 more end tag then start tags
-                            $endTag      = $ds . '/' . $section . $de;
+                            $endTag      = end($matches[3]);
                             $sectionData = substr($sectionData, 0, strlen($sectionData) - strlen($endTag));
 
                             // compile sections later
@@ -756,5 +779,21 @@ class Lexer
         if (! in_array($tokenStruct[0], $this->validTokens, true)) {
             throw new Exception\InvalidTokenException('Invalid token struct; invalid token at position 0');
         }
+    }
+
+    /**
+     * Implode and preg_quote() an array of $pieces
+     *
+     * @param  string $glue       String to join $pieces with
+     * @param  array  $pieces     Strings to be quoted then joined
+     * @param  string $delimiter  The delimiter (required by PCRE functions)
+     * @return string
+     */
+    private function implodePregQuote($glue, array $pieces, $delimiter = null)
+    {
+        foreach ($pieces as &$p) {
+            $p = preg_quote($p, $delimiter);
+        }
+        return implode($glue, $pieces);
     }
 }

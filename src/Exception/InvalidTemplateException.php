@@ -11,6 +11,6 @@ use InvalidArgumentException;
 /**
  * Exception raised when the template provided to the lexer is not a string.
  */
-class InvalidTemplateException extends InvalidTemplateException implements ExceptionInterface
+class InvalidTemplateException extends InvalidArgumentException implements ExceptionInterface
 {
 }
