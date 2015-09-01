@@ -12,6 +12,7 @@ use Phly\Mustache\Mustache;
 use Phly\Mustache\Pragma\PragmaCollection;
 use Phly\Mustache\Pragma\PragmaInterface;
 use PHPUnit_Framework_TestCase as TestCase;
+use Prophecy\Argument;
 
 /**
  * Integration tests for Lexer.
@@ -31,6 +32,7 @@ class LexerTest extends TestCase
     {
         $pragma = $this->prophesize(PragmaInterface::class);
         $pragma->getName()->willReturn('TEST');
+        $pragma->handlesToken(Lexer::TOKEN_PRAGMA)->willReturn(false);
         $pragma->handlesToken(Lexer::TOKEN_CONTENT)->willReturn(false);
         $pragma->handlesToken(Lexer::TOKEN_VARIABLE)->willReturn(true);
         $pragma
@@ -44,7 +46,7 @@ class LexerTest extends TestCase
                 'js'
             ]);
         $this->pragmas->add($pragma->reveal());
-        $tokens = $this->lexer->compile($this->mustache->reveal(), '{{test|js}}');
+        $tokens = $this->lexer->compile($this->mustache->reveal(), '{{%TEST}}{{test|js}}');
         $this->assertContains([
             Lexer::TOKEN_VARIABLE,
             'test',
@@ -76,6 +78,7 @@ class LexerTest extends TestCase
     {
         $pragma = $this->prophesize(PragmaInterface::class);
         $pragma->getName()->willReturn('TEST');
+        $pragma->handlesToken(Lexer::TOKEN_PRAGMA)->willReturn(false);
         $pragma->handlesToken(Lexer::TOKEN_CONTENT)->willReturn(false);
         $pragma->handlesToken(Lexer::TOKEN_VARIABLE)->willReturn(true);
         $pragma
@@ -87,6 +90,32 @@ class LexerTest extends TestCase
         $this->pragmas->add($pragma->reveal());
 
         $this->setExpectedException('Phly\Mustache\Exception\InvalidTokenException');
-        $this->lexer->compile($this->mustache->reveal(), '{{test|js}}');
+        $this->lexer->compile($this->mustache->reveal(), '{{%TEST}}{{test|js}}');
+    }
+
+    public function testPragmaWillNotTriggerIfPragmaHasNotBeenDeclaredInCurrentScope()
+    {
+        $pragma = $this->prophesize(PragmaInterface::class);
+        $pragma->getName()->willReturn('TEST');
+        $pragma->handlesToken(Lexer::TOKEN_PRAGMA)->willReturn(false);
+        $pragma->handlesToken(Lexer::TOKEN_CONTENT)->willReturn(false);
+        $pragma->handlesToken(Lexer::TOKEN_VARIABLE)->willReturn(true);
+        $pragma
+            ->parse(Argument::any())
+            ->shouldNotBeCalled();
+
+        $this->pragmas->add($pragma->reveal());
+
+        $tokens   = $this->lexer->compile($this->mustache->reveal(), '{{test|js}}');
+        $found    = false;
+        $expected = [ Lexer::TOKEN_VARIABLE, 'test|js'];
+        foreach ($tokens as $struct) {
+            if ($struct === $expected) {
+                $found = true;
+                break;
+            }
+        }
+
+        $this->assertTrue($found, 'Expected token struct not received');
     }
 }

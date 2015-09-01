@@ -124,11 +124,14 @@ class Lexer
      * @todo   Store full matched text with each token?
      * @param  Mustache $mustache Mustache instance invoking compilation.
      * @param  string $string
-     * @param  null|string $templateName Template to use in the case of a partial; can be null.
+     * @param  null|string $templateName Template to use in the case of a
+     *     partial; can be null.
+     * @param  array $scopedPragmas List of pragmas currently in scope; should
+     *     only be used internally.
      * @return array
      * @throws Exception
      */
-    public function compile(Mustache $mustache, $string, $templateName = null)
+    public function compile(Mustache $mustache, $string, $templateName = null, $scopedPragmas = [])
     {
         if (! is_string($string)) {
             throw new Exception\InvalidTemplateException();
@@ -138,11 +141,11 @@ class Lexer
         $delimStartLen = strlen($this->patterns[self::DS]);
         $delimEndLen   = strlen($this->patterns[self::DE]);
 
-        $state   = self::STATE_CONTENT;
-        $pragmas = $mustache->getPragmas();
-        $tokens  = [];
-        $content = '';
-        $tagData = '';
+        $state         = self::STATE_CONTENT;
+        $pragmas       = $mustache->getPragmas();
+        $tokens        = [];
+        $content       = '';
+        $tagData       = '';
 
         for ($i = 0; $i < $len;) {
             switch ($state) {
@@ -157,7 +160,8 @@ class Lexer
                     // Create token for content
                     $tokens[] = $this->parseViaPragmas(
                         [self::TOKEN_CONTENT, substr($content, 0, -$delimStartLen)],
-                        $pragmas
+                        $pragmas,
+                        $scopedPragmas
                     );
                     $content  = '';
 
@@ -240,7 +244,8 @@ class Lexer
                             // Create token
                             $tokens[] = $this->parseViaPragmas(
                                 [self::TOKEN_VARIABLE_RAW, ltrim($tagData, '{')],
-                                $pragmas
+                                $pragmas,
+                                $scopedPragmas
                             );
                             $state    = self::STATE_CONTENT;
                             $i       += 1;
@@ -252,7 +257,11 @@ class Lexer
                             $tagData = trim($tagData);
 
                             // Create token
-                            $tokens[] = $this->parseViaPragmas([self::TOKEN_VARIABLE_RAW, $tagData], $pragmas);
+                            $tokens[] = $this->parseViaPragmas(
+                                [self::TOKEN_VARIABLE_RAW, $tagData],
+                                $pragmas,
+                                $scopedPragmas
+                            );
                             $state    = self::STATE_CONTENT;
                             $i       += 1;
                             break;
@@ -260,7 +269,11 @@ class Lexer
                         case '!':
                             // Comment
                             // Create token
-                            $tokens[] = $this->parseViaPragmas([self::TOKEN_COMMENT, ltrim($tagData, '!')], $pragmas);
+                            $tokens[] = $this->parseViaPragmas(
+                                [self::TOKEN_COMMENT, ltrim($tagData, '!')],
+                                $pragmas,
+                                $scopedPragmas
+                            );
                             $state    = self::STATE_CONTENT;
                             $i       += 1;
                             break;
@@ -272,9 +285,11 @@ class Lexer
                             $partial = trim($tagData);
 
                             // Create token
-                            $tokens[] = $this->parseViaPragmas([self::TOKEN_PARTIAL, [
-                                'partial' => $partial,
-                            ]], $pragmas);
+                            $tokens[] = $this->parseViaPragmas(
+                                [self::TOKEN_PARTIAL, [ 'partial' => $partial, ]],
+                                $pragmas,
+                                $scopedPragmas
+                            );
 
                             $state    = self::STATE_CONTENT;
                             $i       += 1;
@@ -308,50 +323,56 @@ class Lexer
                             $this->patterns[self::DE] = $delimEnd   = $matches[2];
 
                             // Create token
-                            $tokens[] = $this->parseViaPragmas([self::TOKEN_DELIM_SET, [
-                                'delim_start' => $delimStart,
-                                'delim_end'   => $delimEnd,
-                            ]], $pragmas);
+                            $tokens[] = $this->parseViaPragmas(
+                                [self::TOKEN_DELIM_SET, [
+                                    'delim_start' => $delimStart,
+                                    'delim_end'   => $delimEnd,
+                                ]],
+                                $pragmas,
+                                $scopedPragmas
+                            );
                             $state    = self::STATE_CONTENT;
                             $i       += 1;
                             break;
                         case '%':
                             // Pragmas
                             $data    = ltrim($tagData, '%');
+                            if (! preg_match(
+                                '/^(?P<pragma>' . $this->patterns['pragma'] . ')( (?P<options>.*))?$/',
+                                $data,
+                                $matches
+                            )) {
+                                throw new Exception\InvalidPragmaNameException();
+                            }
+
+                            $pragma  = $matches['pragma'];
                             $options = [];
-                            if (! strstr($data, '=')) {
-                                // No options provided
-                                if (! preg_match(
-                                    '/^(?P<pragma>' . $this->patterns['pragma'] . ')$/',
-                                    $data,
-                                    $matches
-                                )) {
-                                    throw new Exception\InvalidPragmaNameException();
-                                }
-                                $pragma = $matches['pragma'];
-                            } else {
-                                // Options provided
-                                list($pragma, $options) = explode(' ', $data, 2);
-                                if (! preg_match('/^' . $this->patterns['pragma'] . '$/', $pragma)) {
-                                    throw new Exception\InvalidPragmaNameException();
-                                }
-                                $pairs = explode(' ', $options);
-                                $options = [];
+
+                            if (! empty($matches['options'])) {
+                                $pairs = explode(' ', $matches['options']);
                                 foreach ($pairs as $pair) {
-                                    if (!strstr($pair, '=')) {
+                                    if (! strstr($pair, '=')) {
                                         $options[$pair] = null;
-                                    } else {
-                                        list($key, $value) = explode('=', $pair, 2);
-                                        $options[$key] = $value;
+                                        continue;
                                     }
+
+                                    list($key, $value) = explode('=', $pair, 2);
+                                    $options[$key] = $value;
                                 }
                             }
-                            $tokens[] = $this->parseViaPragmas([self::TOKEN_PRAGMA, [
-                                'pragma'  => $pragma,
-                                'options' => $options,
-                            ]], $pragmas);
-                            $state = self::STATE_CONTENT;
-                            $i += 1;
+
+                            $tokens[] = $this->parseViaPragmas(
+                                [self::TOKEN_PRAGMA, [
+                                    'pragma'  => $pragma,
+                                    'options' => $options,
+                                ]],
+                                $pragmas,
+                                $scopedPragmas
+                            );
+
+                            $scopedPragmas[] = $pragma;
+                            $state           = self::STATE_CONTENT;
+                            $i              += 1;
                             break;
 
                         default:
@@ -359,7 +380,11 @@ class Lexer
 
                             // First, create the token, passing it to pragmas; this allows pragmas
                             // to filter the variable name if required.
-                            $token = $this->parseViaPragmas([self::TOKEN_VARIABLE, $tagData], $pragmas);
+                            $token = $this->parseViaPragmas(
+                                [self::TOKEN_VARIABLE, $tagData],
+                                $pragmas,
+                                $scopedPragmas
+                            );
 
                             // Now filter the tag data (index 1 of the token) to ensure it is valid.
                             if (! preg_match($this->patterns[self::VARNAME], $token[1])) {
@@ -407,10 +432,14 @@ class Lexer
                             $sectionData = substr($sectionData, 0, strlen($sectionData) - strlen($endTag));
 
                             // compile sections later
-                            $tokens[] = $this->parseViaPragmas([$tokenType, [
-                                'name'     => $section,
-                                'template' => $sectionData,
-                            ]], $pragmas);
+                            $tokens[] = $this->parseViaPragmas(
+                                [$tokenType, [
+                                    'name'     => $section,
+                                    'template' => $sectionData,
+                                ]],
+                                $pragmas,
+                                $scopedPragmas
+                            );
                             $state = self::STATE_CONTENT;
                         }
                     }
@@ -431,7 +460,7 @@ class Lexer
         switch ($state) {
             case self::STATE_CONTENT:
                 // Un-collected content
-                $tokens[] = $this->parseViaPragmas([self::TOKEN_CONTENT, $content], $pragmas);
+                $tokens[] = $this->parseViaPragmas([self::TOKEN_CONTENT, $content], $pragmas, $scopedPragmas);
                 break;
 
             case self::STATE_TAG:
@@ -542,7 +571,8 @@ class Lexer
                     $token[1]['content'] = $this->compile(
                         $mustache,
                         $token[1]['template'],
-                        $templateName
+                        $templateName,
+                        $scopedPragmas
                     );
                     $tokens[$key] = $token;
 
@@ -674,10 +704,10 @@ class Lexer
      * Each pragma is passed the token data as returned by the previous pragma, which
      * means that the order in which pragmas are registered can matter.
      */
-    private function parseViaPragmas(array $tokenStruct, Pragma\PragmaCollection $pragmas)
+    private function parseViaPragmas(array $tokenStruct, Pragma\PragmaCollection $pragmas, array $scopedPragmas)
     {
         $token = $tokenStruct[0];
-        foreach ($this->filterPragmasByToken($token, $pragmas) as $pragma) {
+        foreach ($this->filterPragmasByToken($token, $pragmas, $scopedPragmas) as $pragma) {
             $data        = $tokenStruct[1];
             $tokenStruct = $pragma->parse($tokenStruct);
             $this->assertTokenStruct($tokenStruct);
@@ -693,10 +723,12 @@ class Lexer
      * @param Pragma\PragmaCollection $pragmas
      * @return Pragma\PragmaInterface
      */
-    private function filterPragmasByToken($token, Pragma\PragmaCollection $pragmas)
+    private function filterPragmasByToken($token, Pragma\PragmaCollection $pragmas, array $scopedPragmas)
     {
         foreach ($pragmas as $pragma) {
-            if ($pragma->handlesToken($token)) {
+            if (in_array($pragma->getName(), $scopedPragmas, true)
+                && $pragma->handlesToken($token)
+            ) {
                 yield $pragma;
             }
         }
