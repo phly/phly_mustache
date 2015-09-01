@@ -13,18 +13,16 @@ use Phly\Mustache\Renderer;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Escaper\Escaper;
 
-class ImplicitIteratorTest extends TestCase
+class ContextualEscapeTest extends TestCase
 {
     public function setUp()
     {
-        $this->escaper = new Escaper();
+        $this->escaper  = new Escaper();
+        $this->mustache = new Mustache();
+        $this->renderer = new Renderer($this->mustache);
+        $this->mustache->setRenderer($this->renderer);
 
-        $this->renderer = new Renderer();
-        $this->renderer->setEscaper($this->escaper);
-
-        $this->mustache = $this->prophesize(Mustache::class);
-
-        $this->pragma = new Pragma\ContextualEscape;
+        $this->pragma   = new Pragma\ContextualEscape;
     }
 
     public function testProvidesPragmaName()
@@ -77,7 +75,7 @@ class ImplicitIteratorTest extends TestCase
     public function testParseReturnsTokenUnchangedForTokensItDoesNotHandle($token)
     {
         $struct = [$token, 'foo'];
-        $this->assertSame($this->pragma->parse($struct));
+        $this->assertSame($struct, $this->pragma->parse($struct));
     }
 
     public function testParseLeavesTokenUnchangedIfItDoesNotHaveContextualInfo()
@@ -131,7 +129,7 @@ class ImplicitIteratorTest extends TestCase
             'css',
         ];
 
-        $this->assertNull($this->pragma->render($token, ['foo' => 'value'], [], $this->mustache->reveal()));
+        $this->assertNull($this->pragma->render($struct, ['foo' => 'value'], [], $this->mustache));
     }
 
     public function testRenderReturnsNullIfTokenHasNoContextualInfo()
@@ -141,7 +139,7 @@ class ImplicitIteratorTest extends TestCase
             'foo',
         ];
 
-        $this->assertNull($this->pragma->render($token, ['foo' => 'value'], [], $this->mustache));
+        $this->assertNull($this->pragma->render($struct, ['foo' => 'value'], [], $this->mustache));
     }
 
     public function escapeContexts()
@@ -158,10 +156,8 @@ class ImplicitIteratorTest extends TestCase
     /**
      * @dataProvider escapeContexts
      */
-    public function testRenderEscapesUsingContextualInfo($context, $escapeMethod)
+    public function testRenderEscapesArrayViewUsingContextualInfo($context, $escapeMethod)
     {
-        $this->mustache->getRenderer()->willReturn($this->renderer);
-
         $struct = [
             Lexer::TOKEN_VARIABLE,
             'foo',
@@ -171,6 +167,78 @@ class ImplicitIteratorTest extends TestCase
 
         $expected = $this->escaper->{$escapeMethod}($view['foo']);
 
-        $this->assertNull($this->pragma->render($token, $view, [], $this->mustache->reveal()));
+        $this->assertEquals($expected, $this->pragma->render($struct, $view, [], $this->mustache));
+    }
+
+    /**
+     * @dataProvider escapeContexts
+     */
+    public function testRenderEscapesCallableArrayViewUsingContextualInfo($context, $escapeMethod)
+    {
+        $struct = [
+            Lexer::TOKEN_VARIABLE,
+            'foo',
+            $context
+        ];
+        $view = ['foo' => function () {
+            return 'What\'s up, Doctor & Nurse?';
+        }];
+
+        $expected = $this->escaper->{$escapeMethod}($view['foo']());
+
+        $this->assertEquals($expected, $this->pragma->render($struct, $view, [], $this->mustache));
+    }
+
+    /**
+     * @dataProvider escapeContexts
+     */
+    public function testRenderEscapesObjectViewUsingContextualInfo($context, $escapeMethod)
+    {
+        $struct = [
+            Lexer::TOKEN_VARIABLE,
+            'foo',
+            $context
+        ];
+        $view = (object) ['foo' => 'What\'s up, Doctor & Nurse?'];
+
+        $expected = $this->escaper->{$escapeMethod}($view->foo);
+
+        $this->assertEquals($expected, $this->pragma->render($struct, $view, [], $this->mustache));
+    }
+
+    /**
+     * @dataProvider escapeContexts
+     */
+    public function testRenderEscapesCallableObjectViewUsingContextualInfo($context, $escapeMethod)
+    {
+        $struct = [
+            Lexer::TOKEN_VARIABLE,
+            'foo',
+            $context
+        ];
+        $view = (object) ['foo' => function () {
+            return 'What\'s up, Doctor & Nurse?';
+        }];
+
+        $expected = $this->escaper->{$escapeMethod}(call_user_func($view->foo));
+
+        $this->assertEquals($expected, $this->pragma->render($struct, $view, [], $this->mustache));
+    }
+
+    /**
+     * @dataProvider escapeContexts
+     */
+    public function testRenderEscapesScalarViewUsingContextualInfo($context, $escapeMethod)
+    {
+        $struct = [
+            Lexer::TOKEN_VARIABLE,
+            'foo',
+            $context
+        ];
+        $view = 'What\'s up, Doctor & Nurse?';
+
+        $expected = $this->escaper->{$escapeMethod}($view);
+
+        $this->assertEquals($expected, $this->pragma->render($struct, $view, [], $this->mustache));
     }
 }

@@ -90,9 +90,9 @@ Branch: feature/resolvers
 ## Escaping [#37]
 
 - [X] Use `Zend\Escaper` by default.
-- [ ] Modify `PragmaInterface::render`
+- [X] Modify `PragmaInterface::render` [#40]
   It needs to send the full token struct!
-- [ ] Create a pragma for handling contextual escaping (CSS, JS, URLs)
+- [X] Create a pragma for handling contextual escaping (CSS, JS, URLs)
 
 ## Visibility
 
