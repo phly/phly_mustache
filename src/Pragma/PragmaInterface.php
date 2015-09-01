@@ -63,12 +63,16 @@ interface PragmaInterface
      *
      * Returning an empty value returns control to the renderer.
      *
-     * @param  int $token
-     * @param  mixed $data
+     * $tokenStruct is an array consisting minimally of:
+     *
+     * - 0: int token (from Lexer::TOKEN_* constants)
+     * - 1: mixed data (data associated with the token)
+     *
+     * @param  array $tokenStruct
      * @param  mixed $view
      * @param  array $options
      * @param  Mustache $mustache Mustache instance handling rendering.
      * @return mixed
      */
-    public function render($token, $data, $view, array $options, Mustache $mustache);
+    public function render(array $tokenStruct, $view, array $options, Mustache $mustache);
 }
