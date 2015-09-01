@@ -143,7 +143,7 @@ class Renderer
                         break;
                     }
                     $section = $this->getValue($data['name'], $view);
-                    if (!$section) {
+                    if (! $section) {
                         // Section is not a true value; skip
                         break;
                     }
@@ -227,7 +227,7 @@ class Renderer
                     }
                     $invokedPragmas = $this->invokedPragmas;
                     $this->clearInvokedPragmas();
-                    if (!isset($data['tokens'])) {
+                    if (! isset($data['tokens'])) {
                         $name = $data['partial'];
                         if (isset($partials[$data['partial']])) {
                             // Partial invoked is an aliased partial
