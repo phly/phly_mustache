@@ -21,13 +21,13 @@ class SubView
      * Template name/path
      * @var string
      */
-    protected $template;
+    private $template;
 
     /**
      * View
      * @var null|array|object
      */
-    protected $view;
+    private $view;
 
     /**
      * Constructor
@@ -38,10 +38,10 @@ class SubView
      */
     public function __construct($template, $view = null)
     {
-        if (!is_string($template)) {
+        if (! is_string($template)) {
             throw new InvalidTemplateException();
         }
-        if (null !== $view && !is_array($view) && !is_object($view)) {
+        if (null !== $view && ! is_array($view) && ! is_object($view)) {
             throw new InvalidArgumentException('View must be an array or object');
         }
         $this->template = $template;

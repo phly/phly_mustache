@@ -55,7 +55,7 @@ class Lexer
      *
      * @var array
      */
-    protected $patterns = [
+    private $patterns = [
         'delim_start' => self::DEFAULT_DELIM_START,
         'delim_end'   => self::DEFAULT_DELIM_END,
         'varname'     => '([a-z.][a-z0-9_?.-]*|[.])',
@@ -67,7 +67,7 @@ class Lexer
      *
      * @var int
      */
-    protected $nestingLevel = 0;
+    private $nestingLevel = 0;
 
     /**
      * Placeholders
@@ -76,13 +76,13 @@ class Lexer
      *
      * @var array
      */
-    protected $placeholders = [];
+    private $placeholders = [];
 
     /**
      * Whether or not to strip whitespace
      * @var bool
      */
-    protected $stripWhitespaceFlag = true;
+    private $stripWhitespaceFlag = true;
 
     /**
      * Allowed tokens (used for validating returns from pragmas)
@@ -611,7 +611,7 @@ class Lexer
      * @param  int $position
      * @return void
      */
-    protected function stripWhitespace(&$tokens, $position)
+    private function stripWhitespace(&$tokens, $position)
     {
         switch ($tokens[$position][0]) {
             case self::TOKEN_PLACEHOLDER:
@@ -679,7 +679,7 @@ class Lexer
      * @param  array $replacements
      * @return array
      */
-    protected function replaceTokens(array $originalTokens, array $replacements)
+    private function replaceTokens(array $originalTokens, array $replacements)
     {
         $tokens = [];
         foreach ($originalTokens as $key => $token) {

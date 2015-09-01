@@ -53,6 +53,8 @@ Initial tagged release.
   - The `Mustache` argument to the `Phly\Mustache\Pragma\SubViews` constructor
     was removed, as the `Mustache` instance is now passed to the `handle()`
     method.
+- [#41](https://github.com/phly/mustach/pull/41) removes all protected methods
+  and properties, making the private.
 
 ### Fixed
 

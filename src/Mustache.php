@@ -20,13 +20,13 @@ class Mustache
      * Cached file-based templates; contains template name/token pairs
      * @var array
      */
-    protected $cachedTemplates = [];
+    private $cachedTemplates = [];
 
     /**
      * Lexer
      * @var Lexer
      */
-    protected $lexer;
+    private $lexer;
 
     /**
      * @var Pragma\PragmaCollection
@@ -37,7 +37,7 @@ class Mustache
      * Renderer
      * @var Renderer
      */
-    protected $renderer;
+    private $renderer;
 
     /**
      * Template resolver stack
@@ -145,13 +145,13 @@ class Mustache
         // Tokenize and alias partials
         $tokenizedPartials = [];
         if (null !== $partials) {
-            if (!is_array($partials) && !is_object($partials)) {
+            if (! is_array($partials) && ! is_object($partials)) {
                 throw new Exception\InvalidPartialsException();
             }
 
             // Get tokenized partials
             foreach ($partials as $alias => $partialTemplate) {
-                if (!is_string($partialTemplate)) {
+                if (! is_string($partialTemplate)) {
                     continue;
                 }
                 $tokenizedPartials[$alias] = $this->tokenize($partialTemplate);
@@ -198,7 +198,7 @@ class Mustache
             $templateOrTokens = iterator_to_array($templateOrTokens);
         }
 
-        if (!is_array($templateOrTokens)) {
+        if (! is_array($templateOrTokens)) {
             throw new Exception\InvalidTokensException(sprintf(
                 '%s was unable to either retrieve or compile tokens',
                 __METHOD__
@@ -250,12 +250,12 @@ class Mustache
      * @return string
      * @throws Exception\TemplateNotFoundException
      */
-    protected function fetchTemplate($template)
+    private function fetchTemplate($template)
     {
         $resolver = $this->getResolver();
         $content  = $resolver->resolve($template);
 
-        if (!$content) {
+        if (! $content) {
             throw new Exception\TemplateNotFoundException('Template by name "' . $template . '" not found');
         }
 

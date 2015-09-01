@@ -40,7 +40,7 @@ class ImplicitIterator implements PragmaInterface
      * Tokens handled by this pragma
      * @var array
      */
-    protected $tokensHandled = [
+    private $tokensHandled = [
         Lexer::TOKEN_VARIABLE,
         Lexer::TOKEN_VARIABLE_RAW,
     ];
