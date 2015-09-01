@@ -7,6 +7,7 @@
 namespace Phly\Mustache;
 
 use Traversable;
+use Zend\Escaper\Escaper;
 
 /**
  * Mustache renderer
@@ -17,48 +18,65 @@ use Traversable;
 class Renderer
 {
     /**
-     * The Mustache manager
-     *
      * @var Mustache
      */
-    protected $manager;
+    private $mustache;
 
     /**
-     * Callback for escaping variable content
+     * Hash map of escape types to Escaper method to use
      *
-     * @var Closure
+     * @var array
      */
-    protected $escaper;
+    private $escapeTypes = [
+        'html' => 'escapeHtml',
+        'attr' => 'escapeHtmlAttr',
+        'js'   => 'escapeJs',
+        'css'  => 'escapeCss',
+        'url'  => 'escapeUrl',
+    ];
+
+    /**
+     * @var Escaper
+     */
+    private $escaper;
 
     /**
      * List of pragmas invoked by current template
      *
      * @var array
      */
-    protected $invokedPragmas = [];
+    private $invokedPragmas = [];
 
     /**
-     * Set mustache manager
-     *
-     * Used internally to resolve and tokenize partials
-     *
-     * @param  Mustache $manager
-     * @return Lexer
+     * @param Mustache $mustache
+     * @param null|Escaper $escaper
      */
-    public function setManager(Mustache $manager)
+    public function __construct(Mustache $mustache, Escaper $escaper = null)
     {
-        $this->manager = $manager;
+        $this->mustache = $mustache;
+        $this->escaper  = $escaper;
+    }
+
+    /**
+     * @param  Escaper $callback
+     * @return Renderer
+     */
+    public function setEscaper(Escaper $escaper)
+    {
+        $this->escaper = $escaper;
         return $this;
     }
 
     /**
-     * Retrieve the mustache manager
-     *
-     * @return null|Mustache
+     * @return Escaper
      */
-    public function getManager()
+    public function getEscaper()
     {
-        return $this->manager;
+        if (! $this->escaper instanceof Escaper) {
+            $this->setEscaper(new Escaper());
+        }
+
+        return $this->escaper;
     }
 
     /**
@@ -153,16 +171,13 @@ class Renderer
                         // Higher order section
                         // Execute the callback, passing it the section's template
                         // string, as well as a renderer lambda.
+                        $mustache       = $this->mustache;
                         $invokedPragmas = $this->invokedPragmas;
                         $rendered .= call_user_func(
                             $section,
                             $data['template'],
-                            function ($text) use ($renderer, $view, $partials) {
-                                $manager = $renderer->getManager();
-                                if (!$manager instanceof Mustache) {
-                                    return $text;
-                                }
-                                $tokens = $manager->tokenize($text);
+                            function ($text) use ($renderer, $mustache, $view, $partials) {
+                                $tokens = $mustache->tokenize($text);
                                 return $renderer->render($tokens, $view, $partials);
                             }
                         );
@@ -218,16 +233,8 @@ class Renderer
                             // Partial invoked is an aliased partial
                             $rendered .= $this->render($partials[$data['partial']], $view);
                         } else {
-                            $manager = $this->getManager();
-                            if ($manager  instanceof Mustache) {
-                                $partialTokens = $manager->tokenize($data['partial']);
-                                $rendered .= $this->render($partialTokens, $view);
-                            } else {
-                                throw new Exception\InvalidPartialsException(sprintf(
-                                    'Unable to resolve partial "%s"',
-                                    $data['partial']
-                                ));
-                            }
+                            $partialTokens = $this->mustache->tokenize($data['partial']);
+                            $rendered .= $this->render($partialTokens, $view);
                         }
                         $this->registerPragmas($invokedPragmas);
                         break;
@@ -249,46 +256,19 @@ class Renderer
     }
 
     /**
-     * escape
-     *
-     * @todo   allow using a callback for escaping
      * @param  string $value
+     * @param  string $type Escape type to use: html, attr, js, css, url
      * @return string
+     * @throws Exceptin\InvalidEscaperException for invalid escape types
      */
-    public function escape($value)
+    public function escape($value, $type = 'html')
     {
         $escaper = $this->getEscaper();
-        return call_user_func($escaper, $value);
-    }
+        $type    = strtolower($type);
+        $this->assertEscapeType($type);
 
-    /**
-     * Set escaping mechanism
-     *
-     * @param  callback $callback
-     * @return Renderer
-     */
-    public function setEscaper($callback)
-    {
-        if (!is_callable($callback)) {
-            throw new Exception\InvalidEscaperException();
-        }
-        $this->escaper = $callback;
-        return $this;
-    }
-
-    /**
-     * Get escaping mechanism
-     *
-     * @return callback
-     */
-    public function getEscaper()
-    {
-        if (null === $this->escaper) {
-            $this->escaper = function ($value) {
-                return htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8');
-            };
-        }
-        return $this->escaper;
+        $method = $this->escapeTypes[$type];
+        return $escaper->{$method}($value);
     }
 
     /**
@@ -372,7 +352,7 @@ class Renderer
      */
     protected function registerPragma(array $definition)
     {
-        $pragmas = $this->getManager()->getPragmas();
+        $pragmas = $this->mustache->getPragmas();
         $name    = $definition['pragma'];
         if (! $pragmas->has($name)) {
             throw new Exception\UnregisteredPragmaException(sprintf(
@@ -417,7 +397,7 @@ class Renderer
      */
     protected function handlePragmas(array $tokenStruct, $view)
     {
-        $mustache = $this->getManager();
+        $mustache = $this->mustache;
         $pragmas  = $mustache->getPragmas();
         foreach ($this->invokedPragmas as $name => $options) {
             $pragma = $pragmas->get($name);
@@ -456,5 +436,18 @@ class Renderer
 
         // Object callback -- always okay
         return true;
+    }
+
+    /**
+     * Assert that a given escape type is valid.
+     *
+     * @param string $type
+     * @throws Exceptin\InvalidEscaperException
+     */
+    private function assertEscapeType($type)
+    {
+        if (! in_array($type, array_keys($this->escapeTypes), true)) {
+            throw new Exception\InvalidEscaperException('Invalid escape type provided');
+        }
     }
 }
