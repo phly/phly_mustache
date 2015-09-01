@@ -106,16 +106,15 @@ class SubViews implements PragmaInterface
      *
      * Otherwise, it will render the template and view in the SubView provided.
      *
-     * @param  int $token
-     * @param  mixed $data
+     * @param  array $tokenStruct
      * @param  mixed $view
      * @param  array $options
      * @param  Mustache $mustache
      * @return mixed
      */
-    public function render($token, $data, $view, array $options, Mustache $mustache)
+    public function render(array $tokenStruct, $view, array $options, Mustache $mustache)
     {
-        $subView = $this->getValue($data, $view);
+        $subView = $this->getValue($tokenStruct[1], $view);
 
         // If the view value is not a SubView, we cannot handle it here
         if (! $subView instanceof SubView) {

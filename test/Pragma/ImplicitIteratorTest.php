@@ -61,8 +61,7 @@ class ImplicitIteratorTest extends TestCase
     {
         $mustache = new Mustache();
         $result   = $this->pragma->render(
-            Lexer::TOKEN_VARIABLE,
-            '.',
+            [Lexer::TOKEN_VARIABLE, '.'],
             '<b>foo</b>',
             [],
             $mustache
@@ -75,8 +74,7 @@ class ImplicitIteratorTest extends TestCase
     {
         $mustache = new Mustache();
         $result   = $this->pragma->render(
-            Lexer::TOKEN_VARIABLE_RAW,
-            '.',
+            [Lexer::TOKEN_VARIABLE_RAW, '.'],
             '<b>foo</b>',
             [],
             $mustache
@@ -92,8 +90,7 @@ class ImplicitIteratorTest extends TestCase
     {
         $mustache = new Mustache();
         $this->assertNull($this->pragma->render(
-            $token,
-            '.',
+            [$token, '.'],
             '<b>foo</b>',
             [],
             $mustache
@@ -120,8 +117,7 @@ class ImplicitIteratorTest extends TestCase
     {
         $mustache = new Mustache();
         $this->assertNull($this->pragma->render(
-            $token,
-            '.',
+            [$token, '.'],
             $view,
             [],
             $mustache
@@ -132,8 +128,7 @@ class ImplicitIteratorTest extends TestCase
     {
         $mustache = new Mustache();
         $result   = $this->pragma->render(
-            Lexer::TOKEN_VARIABLE,
-            'foo',
+            [Lexer::TOKEN_VARIABLE, 'foo'],
             '<b>foo</b>',
             ['iterator' => 'foo'],
             $mustache
@@ -146,8 +141,7 @@ class ImplicitIteratorTest extends TestCase
     {
         $mustache = new Mustache();
         $this->assertNull($this->pragma->render(
-            Lexer::TOKEN_VARIABLE,
-            '.',
+            [Lexer::TOKEN_VARIABLE, '.'],
             '<b>foo</b>',
             ['iterator' => 'foo'],
             $mustache
@@ -158,8 +152,7 @@ class ImplicitIteratorTest extends TestCase
     {
         $mustache = new Mustache();
         $this->assertNull($this->pragma->render(
-            Lexer::TOKEN_VARIABLE,
-            'foo',
+            [Lexer::TOKEN_VARIABLE, 'foo'],
             '<b>foo</b>',
             [],
             $mustache

@@ -67,13 +67,12 @@ class ImplicitIterator implements PragmaInterface
      * Otherwise, it will output the view, escaping it unless the token
      * indicates a raw value.
      *
-     * @param  int $token
-     * @param  mixed $data
+     * @param  array $tokenStruct
      * @param  mixed $view
      * @param  array $options
      * @return mixed
      */
-    public function render($token, $data, $view, array $options, Mustache $mustache)
+    public function render(array $tokenStruct, $view, array $options, Mustache $mustache)
     {
         // If we don't have a scalar view, implicit iteration isn't possible
         if (! is_scalar($view)) {
@@ -82,7 +81,7 @@ class ImplicitIterator implements PragmaInterface
 
         // Do we escape?
         $escape = true;
-        switch ($token) {
+        switch ($tokenStruct[0]) {
             case Lexer::TOKEN_VARIABLE:
                 // Yes
                 break;
@@ -97,7 +96,7 @@ class ImplicitIterator implements PragmaInterface
 
         // Get the iterator option, and compare it to the token we received
         $iterator = isset($options['iterator']) ? $options['iterator'] : '.';
-        if ($iterator !== $data) {
+        if ($iterator !== $tokenStruct[1]) {
             return;
         }
 

@@ -87,7 +87,7 @@ class Renderer
         $rendered = '';
         foreach ($tokens as $token) {
             list($type, $data) = $token;
-            if ($value = $this->handlePragmas($type, $data, $view)) {
+            if ($value = $this->handlePragmas($token, $view)) {
                 $rendered .= $value;
                 continue;
             }
@@ -98,16 +98,22 @@ class Renderer
                 case Lexer::TOKEN_VARIABLE:
                     $value = $this->getValue($data, $view);
                     if (is_scalar($value)) {
-                        $value = ('' === $value) ? '' : $this->escape($value);
-                    } else {
-                        $pragmaView = [$data => $value];
-                        if ($test = $this->handlePragmas($type, $data, $pragmaView)) {
-                            $value = $test;
-                        } else {
-                            $value = (string) $value;
+                        if ($test = $this->handlePragmas($token, $value)) {
+                            $rendered .= $test;
+                            break;
                         }
+
+                        $rendered .= ('' === $value) ? '' : $this->escape($value);
+                        break;
                     }
-                    $rendered .= $value;
+
+                    $pragmaView = [$data => $value];
+                    if ($test = $this->handlePragmas($token, $pragmaView)) {
+                        $rendered .= $test;
+                        break;
+                    }
+
+                    $rendered .= (string) $value;
                     break;
                 case Lexer::TOKEN_VARIABLE_RAW:
                     $value = $this->getValue($data, $view);
@@ -405,22 +411,21 @@ class Renderer
      * This implementation includes the IMPLICIT-ITERATOR pragma, which affects
      * values within loops.
      *
-     * @param  string $token
-     * @param  mixed $data
+     * @param  array $tokenStruct
      * @param  mixed $view
      * @return mixed
      */
-    protected function handlePragmas($token, $data, $view)
+    protected function handlePragmas(array $tokenStruct, $view)
     {
         $mustache = $this->getManager();
         $pragmas  = $mustache->getPragmas();
         foreach ($this->invokedPragmas as $name => $options) {
             $pragma = $pragmas->get($name);
-            if (! $pragma->handlesToken($token)) {
+            if (! $pragma->handlesToken($tokenStruct[0])) {
                 continue;
             }
 
-            $value = $pragma->render($token, $data, $view, $options, $mustache);
+            $value = $pragma->render($tokenStruct, $view, $options, $mustache);
 
             if ($value) {
                 return $value;
