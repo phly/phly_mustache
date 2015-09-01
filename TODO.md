@@ -94,11 +94,23 @@ Branch: feature/resolvers
   It needs to send the full token struct!
 - [X] Create a pragma for handling contextual escaping (CSS, JS, URLs)
 
-## Visibility
+## Visibility [#41]
 
-- [ ] Use private visibility whenever possible.
+- [X] Use private visibility whenever possible.
 
 ## Rename package?
 
-- Repo to phly/phly-mustache
-- Composer package to phly/phly-mustache
+- [ ] Update CHANGELOG for all issues and push to develop
+- [ ] Disable Travis, Packagist, RTD hooks
+- [ ] Rename repo to phly-mustache
+- [ ] Update composer.json to reference new package name
+- [ ] Update all history to use new package name in composer.json
+- [ ] Merge develop to master
+- [ ] Tag v2.0
+- [ ] Force Push all changes up to new repository
+- [ ] Enable travis on repo, trigger build
+- [ ] Add phly/phly-mustache to packagist, pointing at current repo
+- [ ] Mark phly/mustache on Packagist as abandoned; point to phly/phly-mustache
+- [ ] Re-enable packagist hook, test
+- [ ] On RTD, change build type to MkDocs
+- [ ] Re-enable RTD hook, trigger builds for 2.0 and latest
