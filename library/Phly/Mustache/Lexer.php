@@ -24,9 +24,9 @@ class Lexer
      * Constants referenced within lexer
      * @var string
      */
-    CONST DS                  = 'delim_start';
-    CONST DE                  = 'delim_end';
-    CONST VARNAME             = 'varname';
+    const DS                  = 'delim_start';
+    const DE                  = 'delim_end';
+    const VARNAME             = 'varname';
     const DEFAULT_DELIM_START = '{{';
     const DEFAULT_DELIM_END   = '}}';
     /**@-*/
@@ -97,6 +97,16 @@ class Lexer
     protected $stripWhitespaceFlag = true;
 
     /**
+     * @var string[] Whitespace characters that occur in tags.
+     */
+    protected $whitespaceCharacters = array(
+        ' ',
+        "\n",
+        "\r",
+        "\t",
+    );
+
+    /**
      * Set or get the flag indicating whether or not to strip whitespace
      *
      * @param  null|bool $flag Null indicates retrieving; boolean value sets
@@ -152,11 +162,14 @@ class Lexer
 
         $len     = strlen($string);
 
-        $state   = self::STATE_CONTENT;
-        $tokens  = array();
-        $content = '';
+        $state        = self::STATE_CONTENT;
+        $tokens       = array();
+        $content      = '';
+        $tagData      = '';
+        $rawTagData   = '';
+        $sigilPattern = '/^[' . preg_quote('% = <>!&^#$') . ']/';
 
-        for ($i = 0; $i < $len; ) {
+        for ($i = 0; $i < $len; $i = $i) {
             switch ($state) {
                 case self::STATE_CONTENT:
                     $content .= $string[$i];
@@ -177,7 +190,16 @@ class Lexer
                     $tagData    .= $string[$i];
                     $delimEndLen = strlen($this->patterns[self::DE]);
                     if (substr($tagData, -$delimEndLen) === $this->patterns[self::DE]) {
-                        $tagData = substr($tagData, 0, -$delimEndLen);
+                        $tagData    = substr($tagData, 0, -$delimEndLen);
+                        $rawTagData = $tagData;
+                        $tagData    = trim($tagData);
+
+                        if (preg_match($sigilPattern, $tagData)
+                            && in_array($rawTagData[0], $this->whitespaceCharacters, true)
+                        ) {
+                            // Whitespace before sigil is not allowed.
+                            throw new Exception\InvalidTemplateException('Whitespace is not allowed before sigils (#, ^, $, etc.)');
+                        }
 
                         // Evaluate what kind of token we have
                         switch ($tagData[0]) {
@@ -361,13 +383,14 @@ class Lexer
                     $sectionData .= $string[$i];
                     $ds           = $this->patterns[self::DS];
                     $de           = $this->patterns[self::DE];
-                    $pattern      = $ds . '/' . $section . $de;
-                    if (preg_match('/' . preg_quote($pattern, '/') . '$/', $sectionData)) {
+                    $pattern      = $this->implodePregQuote('\\s*', array($ds,'/',$section,$de), '/');
+
+                    if (preg_match('/' . $pattern . '$/', $sectionData)) {
                         // we have a match. Now, let's make sure we're balanced
                         $pattern = '/(('
-                                 . preg_quote($ds . '#' . $section . $de, '/')
+                                 . $this->implodePregQuote('\\s*', array($ds . '#',$section,$de), '/')
                                  . ')|('
-                                 . preg_quote($ds . '/' . $section . $de, '/')
+                                 . $this->implodePregQuote('\\s*', array($ds . '/',$section,$de), '/')
                                  . '))/';
                         preg_match_all($pattern, $sectionData, $matches);
                         $open   = 0;
@@ -382,7 +405,7 @@ class Lexer
 
                         if ($closed > $open) {
                             // We're balanced if we have 1 more end tag then start tags
-                            $endTag      = $ds . '/' . $section . $de;
+                            $endTag      = end($matches[3]);
                             $sectionData = substr($sectionData, 0, strlen($sectionData) - strlen($endTag));
 
                             // compile sections later
@@ -551,6 +574,23 @@ class Lexer
         }
 
         return $tokens;
+    }
+
+    /**
+     * Implode and preg_quote() an array of $pieces
+     *
+     * @param  string $glue       String to join $pieces with
+     * @param  array  $pieces     Strings to be quoted then joined
+     * @param  string $delimiter  The delimiter required by PCRE functions
+     *                            If included, it will also be escaped
+     * @return string
+     */
+    protected function implodePregQuote($glue, array $pieces, $delimiter = null)
+    {
+        foreach ($pieces as &$p) {
+            $p = preg_quote($p, $delimiter);
+        }
+        return implode($glue, $pieces);
     }
 
     /**
