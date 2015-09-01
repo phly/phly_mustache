@@ -4,8 +4,6 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## 2.0.0 - TBD
 
-Initial tagged release.
-
 ### Added
 
 - [#32](https://github.com/phly/mustach/pull/32) adds
@@ -18,6 +16,9 @@ Initial tagged release.
   method `getNamespaces()` and `addTemplatePath()`. `Mustache` now composes an
   `AggregateResolver` by default, which in turn composes a `DefaultResolver` at
   low priority.
+- [#38](https://github.com/phly/mustach/pull/38) updates `Mustache`:
+  - The constructor now can accept an `AggregateResolver` instance.
+  - `getResolver()` now *always* returns an `AggregateResolver` instance.
 - [#35](https://github.com/phly/mustach/pull/35) adds:
   - `Phly\Mustache\Pragma\PragmaInterface`, which replaces
     `Phly\Mustache\Pragma`, removing `getRenderer()` from the interface, and
@@ -29,6 +30,12 @@ Initial tagged release.
   - `Phly\Mustache\Pragma\PragmaCollection`, which aggregates pragmas.
   - `Phly\Mustache\Mustache::getPragmas()`, which returns a `PragmaCollection`
     instance.
+- [#37](https://github.com/phly/mustach/pull/37) adds a new pragma,
+  `CONTEXTUAL-ESCAPE`, handled by `Phly\Mustache\Pragma\ContextualEscape`. It
+  allows specifying an escape context for variables using the syntax
+  `{{varname|context}}`, and supports the contexts `html`, `attr`, `js`, `css`,
+  and `url`. When encountered, it will pass the current value for the variable
+  to the appropriate `Zend\Escaper\Escaper` method in order to escape it.
 
 ### Deprecated
 
@@ -53,8 +60,17 @@ Initial tagged release.
   - The `Mustache` argument to the `Phly\Mustache\Pragma\SubViews` constructor
     was removed, as the `Mustache` instance is now passed to the `handle()`
     method.
+- [#38](https://github.com/phly/mustach/pull/38) updates `Mustache` to remove
+  the `setResolver()` method; an `AggregateResolver` can be added at
+  construction if desired.
 - [#41](https://github.com/phly/mustach/pull/41) removes all protected methods
   and properties, making the private.
+- [#40](https://github.com/phly/mustach/pull/40) modifies the
+  `PragmaInterface::render()` signature to remove the `$token` and `$data`
+  arguments, and replace them with `array $tokenStruct`.
+- [#37](https://github.com/phly/mustach/pull/37) removes the ability to specify
+  a custom escaper callback; it now only accepts `Zend\Escaper\Escaper`
+  instances.
 
 ### Fixed
 
@@ -67,3 +83,6 @@ Initial tagged release.
       matrix with conditional tests based on environment, etc.
 - [#32](https://github.com/phly/mustach/pull/32) refactors exceptions, having
   them extend appropriate SPL exceptions.
+- [#40](https://github.com/phly/mustach/pull/40) fixes the `Lexer` to only
+  delegate to a composed `PragmaInterface` instance *if* the given pragma has
+  been matched in the current scope.
