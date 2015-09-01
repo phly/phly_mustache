@@ -100,7 +100,7 @@ Branch: feature/resolvers
 
 ## Rename package?
 
-- [ ] Update CHANGELOG for all issues and push to develop
+- [X] Update CHANGELOG for all issues and push to develop
 - [ ] Disable Travis, Packagist, RTD hooks
 - [ ] Rename repo to phly-mustache
 - [ ] Update composer.json to reference new package name
