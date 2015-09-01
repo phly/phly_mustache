@@ -159,14 +159,18 @@ interface PragmaInterface
      *
      * Returning an empty value returns control to the renderer.
      *
-     * @param  int $token
-     * @param  mixed $data
+     * $tokenStruct is an array consisting minimally of:
+     *
+     * - 0: int token (from Lexer::TOKEN_* constants)
+     * - 1: mixed data (data associated with the token)
+     *
+     * @param  array $tokenStruct
      * @param  mixed $view
      * @param  array $options
      * @param  Mustache $mustache Mustache instance handling rendering.
      * @return mixed
      */
-    public function render($token, $data, $view, array $options, Mustache $mustache);
+    public function render(array $tokenStruct, $view, array $options, Mustache $mustache);
 }
 ```
 
@@ -191,7 +195,12 @@ class FooBarPragma implements PragmaInterface
         Lexer::TOKEN_VARIABLE,
     ];
 
-    public function render($token, $data, $view, array $options, Mustache $mustache)
+    public function parse(array $tokenStruct)
+    {
+        // ...
+    }
+
+    public function render(array $tokenStruct, $view, array $options, Mustache $mustache)
     {
         // ...
     }
@@ -283,9 +292,45 @@ resulted in the following template:
 {{/foo}}
 ```
 
+### Contextual Escape
+
+The CONTEXTUAL-ESCAPE pragma allows you to specify an escaping context when
+specifying a variable in your template. Contexts include:
+
+- html (default; you need not specify this)
+- attr (for escaping HTML attribute values)
+- js (for escaping JavaScript)
+- css (for escaping CSS)
+- url (for escaping URLs)
+
+This allows the following:
+
+```html
+{{%CONTEXTUAL-ESCAPE}}
+<html>
+<head>
+   <script>{{scripts|js}}</script>
+   <style>{{styles|css}}</script>
+</head>
+<body>
+    <article class="{{article_class|attr}}">
+        <a href="{{article_url|url}}">link</a>
+    </article>
+</body>
+</html>
+```
+
+In order to use the pragma, you must first register it with `Mustache`:
+
+```php
+use Phly\Mustache\Pragma\ContextualEscape;
+
+$mustache->getPragmas()->add(new ContextualEscape());
+```
+
 ### Sub-Views
 
-The Sub-Views pragma allows you to implement the two-step view pattern.  When
+The SUB-VIEWS pragma allows you to implement the two-step view pattern.  When
 active, any variable whose value is an instance of
 `Phly\Mustache\Pragma\SubView` will be substituted by rendering the template and
 view that object encapsulates.
