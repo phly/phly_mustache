@@ -98,19 +98,20 @@ Branch: feature/resolvers
 
 - [X] Use private visibility whenever possible.
 
-## Rename package?
+## Rename package
 
 - [X] Update CHANGELOG for all issues and push to develop
 - [ ] Disable Travis, Packagist, RTD hooks
-- [ ] Rename repo to phly-mustache
+- [ ] Create new repo, phly-mustache
 - [ ] Update composer.json to reference new package name
 - [ ] Update all history to use new package name in composer.json
 - [ ] Merge develop to master
 - [ ] Tag v2.0
-- [ ] Force Push all changes up to new repository
-- [ ] Enable travis on repo, trigger build
+- [ ] Push all changes up to new repository
+- [ ] Enable travis on new repo, trigger build
 - [ ] Add phly/phly-mustache to packagist, pointing at current repo
 - [ ] Mark phly/mustache on Packagist as abandoned; point to phly/phly-mustache
-- [ ] Re-enable packagist hook, test
+- [ ] Enable packagist hook on new repo, test
 - [ ] On RTD, change build type to MkDocs
-- [ ] Re-enable RTD hook, trigger builds for 2.0 and latest
+- [ ] Enable RTD hook on new repo, trigger builds for 2.0 and latest
+- [ ] Add "MOVED" message to old repo README.md
