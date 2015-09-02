@@ -101,13 +101,17 @@ Branch: feature/resolvers
 ## Rename package
 
 - [X] Update CHANGELOG for all issues and push to develop
-- [ ] Disable Travis, Packagist, RTD hooks
-- [ ] Create new repo, phly-mustache
-- [ ] Update composer.json to reference new package name
-- [ ] Update all history to use new package name in composer.json
+- [X] Disable Travis, Packagist, RTD hooks
+- [X] Filter-Branch
+    - [X] Update all history to use new package name in composer.json.
+    - [X] Update all commit messages to reference issue IDs by full URL to
+        original.
+    - [X] Update CHANGELOG.md to reference issue IDs by full URL to original.
+    - [X] Ensure tags are re-written correctly.
 - [ ] Merge develop to master
 - [ ] Tag v2.0
-- [ ] Push all changes up to new repository
+- [ ] Create new repo, phly-mustache
+- [ ] Push all branches, tags changes up to new repository
 - [ ] Enable travis on new repo, trigger build
 - [ ] Add phly/phly-mustache to packagist, pointing at current repo
 - [ ] Mark phly/mustache on Packagist as abandoned; point to phly/phly-mustache
