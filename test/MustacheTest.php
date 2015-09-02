@@ -108,9 +108,9 @@ EOT;
 
     public function testTagsCanContainWhitespace()
     {
-        $robert = array(
-            'person' => array('name'=>'Robert')
-        );
+        $robert = [
+            'person' => ['name'=>'Robert']
+        ];
 
         $test = $this->mustache->render(
             'template-with-whitespace-in-tags',

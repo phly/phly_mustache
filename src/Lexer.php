@@ -202,7 +202,9 @@ class Lexer
                         && in_array($rawTagData[0], $this->whitespaceCharacters, true)
                     ) {
                         // Begins with a whitespace followed by sigil
-                        throw new Exception\InvalidTemplateException('Whitespace is not allowed before sigils (#, ^, $, etc.)');
+                        throw new Exception\InvalidTemplateException(
+                            'Whitespace is not allowed before sigils (#, ^, $, etc.)'
+                        );
                     }
 
                     // Evaluate what kind of token we have
