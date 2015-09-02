@@ -1,14 +1,21 @@
-Phly\Mustache
-=============
+# Phly\Mustache
 
-[![Build Status](https://secure.travis-ci.org/phly/phly_mustache.png?branch=master)](http://travis-ci.org/phly/phly_mustache)
+> # MOVED!
+>
+> This package has moved to [phly/phly-mustache](https://github.com/phly/phly-mustache),
+> and the package name has changed to `phly/phly-mustache`.
+>
+> I have updated packagist to mark `phly/mustache` as abandoned and to point
+> users to the new package name. All previous releases are available under the
+> old package name, and have the same functionality. The new package contains
+> the v2 code, however, which has never been released under the old name.
 
 Phly\Mustache is a Mustache (http://mustache.github.com) implementation written
 for PHP 5.3+. It conforms to the principles of mustache, and allows for
 extension of the format via pragmas.
 
 For full documentation, please visit 
-[ReadTheDocs](http://phly_mustache.readthedocs.org/).
+[ReadTheDocs](http://phly-mustache.readthedocs.org/).
 
 The mailing list is at https://groups.google.com/d/forum/phly_mustache
 
