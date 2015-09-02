@@ -108,14 +108,14 @@ Branch: feature/resolvers
         original.
     - [X] Update CHANGELOG.md to reference issue IDs by full URL to original.
     - [X] Ensure tags are re-written correctly.
-- [ ] Merge develop to master
-- [ ] Tag v2.0
-- [ ] Create new repo, phly-mustache
-- [ ] Push all branches, tags changes up to new repository
-- [ ] Enable travis on new repo, trigger build
-- [ ] Add phly/phly-mustache to packagist, pointing at current repo
-- [ ] Mark phly/mustache on Packagist as abandoned; point to phly/phly-mustache
-- [ ] Enable packagist hook on new repo, test
-- [ ] On RTD, change build type to MkDocs
-- [ ] Enable RTD hook on new repo, trigger builds for 2.0 and latest
-- [ ] Add "MOVED" message to old repo README.md
+- [X] Merge develop to master
+- [X] Tag v2.0
+- [X] Create new repo, phly-mustache
+- [X] Push all branches, tags changes up to new repository
+- [X] Enable travis on new repo, trigger build
+- [X] Add phly/phly-mustache to packagist, pointing at current repo
+- [X] Mark phly/mustache on Packagist as abandoned; point to phly/phly-mustache
+- [X] Enable packagist hook on new repo, test
+- [X] On RTD, change build type to MkDocs
+- [X] Enable RTD hook on new repo, trigger builds for 2.0 and latest
+- [X] Add "MOVED" message to old repo README.md
